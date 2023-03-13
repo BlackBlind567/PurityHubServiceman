@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_process"
+    app:startDestination="@id/numberCheckFragment">
+
+    <fragment
+        android:id="@+id/numberCheckFragment"
+        android:name="com.atoms.purityhubserviceman.fragments.NumberCheckFragment"
+        android:label="fragment_number_check"
+        tools:layout="@layout/fragment_number_check" >
+        <action
+            android:id="@+id/action_numberCheckFragment_to_otpFragment"
+            app:destination="@id/otpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.atoms.purityhubserviceman.fragments.OtpFragment"
+        android:label="fragment_otp"
+        tools:layout="@layout/fragment_otp" >
+        <action
+            android:id="@+id/action_otpFragment_to_registationFragment"
+            app:destination="@id/registationFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/registationFragment"
+        android:name="com.atoms.purityhubserviceman.fragments.RegistrationFragment"
+        android:label="fragment_registation"
+        tools:layout="@layout/fragment_registation" >
+
+    </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@+id/detailHistoryServiceFragment2"-->
+<!--        android:name="com.atoms.purityhubserviceman.fragments.request.DetailHistoryServiceFragment"-->
+<!--        android:label="DetailHistoryServiceFragment" />-->
+
+</navigation>
