@@ -34,21 +34,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PurityHubServiceman"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".activity.ProfileActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".ServiceRequestActivity"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".activity.ProfileActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".UserDashboardActivity"
-            android:exported="true" />
-<!--        <activity-->
-<!--            android:name=".ProductsActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ServiceRequestActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".SplashActivity"-->
-<!--            android:exported="true" />-->
+            android:exported="true" /> <!-- <activity -->
+        <!-- android:name=".ProductsActivity" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".ServiceRequestActivity" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".SplashActivity" -->
+        <!-- android:exported="true" /> -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

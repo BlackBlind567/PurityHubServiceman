@@ -25,10 +25,13 @@
         <entry key="..\:/AppSpace/Android/PurityHubServiceman/app/src/main/res/layout/state_city_layout.xml" value="0.1453125" />
         <entry key="..\:/AppSpace/Android/PurityHubServiceman/app/src/main/res/layout/user_main_content_layout.xml" value="0.1453125" />
         <entry key="..\:/AppSpace/Android/PurityHubServiceman/app/src/main/res/menu/side_nav.xml" value="0.1453125" />
+        <entry key="..\:/home/PurityHubServiceman/app/src/main/res/layout/activity_service_request.xml" value="0.23697916666666666" />
+        <entry key="..\:/home/PurityHubServiceman/app/src/main/res/layout/image_dialog_layout.xml" value="0.23697916666666666" />
+        <entry key="..\:/home/PurityHubServiceman/app/src/main/res/layout/service_request_layout.xml" value="0.24114583333333334" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -14,4 +14,8 @@ public interface UpdateListener {
 
     }
 
+    public default void openRequest(String requestId){
+
+    }
+
 }

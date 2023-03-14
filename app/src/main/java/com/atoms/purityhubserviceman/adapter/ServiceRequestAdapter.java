@@ -1,6 +1,7 @@
 package com.atoms.purityhubserviceman.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -10,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.atoms.purityhubserviceman.R;
+import com.atoms.purityhubserviceman.activity.ServiceRequestDetailActivity;
 import com.atoms.purityhubserviceman.databinding.ServiceRequestLayoutBinding;
+import com.chinalwb.slidetoconfirmlib.ISlideListener;
 import com.myapplication.model.ServiceRequestData;
 
 import java.text.ParseException;
@@ -55,20 +58,44 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
 //                val bundle = bundleOf("mobile" to numberValue)
 //                Navigation.findNavController(numberCheckFragment.root)
 //                        .navigate(R.id.action_numberCheckFragment_to_otpFragment, bundle)
-                Bundle bundle = new Bundle();
-                bundle.putString("servicemanName",model.getServiceman());
-                bundle.putString("brandName",model.getBrand());
-                bundle.putString("categoryName",model.getService_category());
-                bundle.putString("image", (String) model.getImage());
-                bundle.putString("state",model.getState());
-                bundle.putString("city",model.getCity());
-                bundle.putString("address",model.getAddress());
-                bundle.putString("priority",model.getPriority());
-                bundle.putString("problemType",model.getProblem_type());
-                bundle.putString("remark",model.getRemark());
-                bundle.putString("createdAt",model.getCreated_at());
+                Intent intent = new Intent(getContext(), ServiceRequestDetailActivity.class);
+                intent.putExtra("servicemanName",model.getServiceman());
+                intent.putExtra("brandName",model.getBrand());
+                intent.putExtra("categoryName",model.getService_category());
+                intent.putExtra("image", (String) model.getImage());
+                intent.putExtra("state",model.getState());
+                intent.putExtra("city",model.getCity());
+                intent.putExtra("address",model.getAddress());
+                intent.putExtra("priority",model.getPriority());
+                intent.putExtra("problemType",model.getProblem_type());
+                intent.putExtra("remark",model.getRemark());
+                intent.putExtra("createdAt",model.getCreated_at());
+                getContext().startActivity(intent);
 //                Navigation.findNavController(dataBinding.getRoot())
 //                        .navigate(R.id.action_historyServiceRequestFragment_to_detailHistoryServiceFragment, bundle);
+            }
+        });
+
+        dataBinding.btnSlider.setSlideListener(new ISlideListener() {
+            @Override
+            public void onSlideStart() {
+                System.out.println("slider1");
+            }
+
+            @Override
+            public void onSlideMove(float percent) {
+                System.out.println("slider4 = " + percent);
+            }
+
+            @Override
+            public void onSlideCancel() {
+                System.out.println("slider3");
+            }
+
+            @Override
+            public void onSlideDone() {
+                System.out.println("api call ");
+                getUpdatelistner().openRequest(model.getId());
             }
         });
     }

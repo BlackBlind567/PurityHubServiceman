@@ -14,5 +14,6 @@
     <color name="color_text_end">#1A0074D1</color>
     <color name="text_active_color">#026467</color>
     <color name="text_inactive_color">#27908E</color>
+    <color name="slide_inactive_color">#A14CAAA9</color>
     <color name="bg_card_color">#D5E7E8</color>
 </resources>
