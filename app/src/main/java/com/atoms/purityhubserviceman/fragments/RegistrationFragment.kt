@@ -83,65 +83,10 @@ class RegistrationFragment : Fragment() {
         sharedpref = Sharedpref.getInstance(requireContext())
         tokenValue = sharedpref.getString(Constants.token)
         checkPermission()
-//        binding.submitRequestBtn.setOnClickListener {
-//            validation()
-//
-//        }
-        binding.chooseProblemAt.setAdapter(
-            ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item, problemArray
-            )
-        )
-        binding.choosePriorityAt.setAdapter(
-            ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item, priorityArray
-            )
-        )
-
-        binding.chooseProblemAt.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                problemType = problemArray[position].toString()
-                ArrayAdapter<String>(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item, problemArray
-                )
-            }
-
-        binding.choosePriorityAt.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                priorityType = priorityArray[position].toString()
-                ArrayAdapter<String>(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item, priorityArray
-                )
-            }
-
-        binding.chooseBrand.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                brandId = brandArray[position].id.toString()
-                binding.chooseBrand.setText(brandArray[position].name)
-
-                val brandCategoryAdapter = BrandCategoryAdapter(requireContext(), brandArray)
-                binding.chooseBrand.setAdapter(brandCategoryAdapter)
-            }
 
         binding.ivAddLayout.setOnClickListener {
             uploadFile()
         }
-
-        binding.chooseCategory.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-//            binding.chooseCategory.setText(brandCategoryArray[position].name)
-                categoryId = categoryArray[position].id.toString()
-                binding.chooseCategory.setText(categoryArray[position].name)
-                getBrandsDetails(apiType = "Category")
-                val brandCategoryAdapter = BrandCategoryAdapter(requireContext(), categoryArray)
-                binding.chooseCategory.setAdapter(brandCategoryAdapter)
-//            val brandCategoryAdapter = BrandCategoryAdapter(requireContext(),brandCategoryArray )
-//            binding.chooseCategory.setAdapter(brandCategoryAdapter)
-            }
 
         binding.chooseState.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -161,201 +106,195 @@ class RegistrationFragment : Fragment() {
                 binding.chooseState.setAdapter(stateCityAdapter)
             }
 
-        getBrandsDetails(apiType = "Brands")
-        getBrandsDetails(apiType = "Category")
+//        getBrandsDetails(apiType = "Brands")
         getCityStateDetails(apiType = "State")
-
 
 
 
         return binding.root
     }
 
-    private fun validation() {
-        binding.brandLayout.error = null
-        binding.categoryLayout.error = null
-        binding.problemLayout.error = null
-        binding.stateLayout.error = null
-        binding.cityLayout.error = null
-        binding.priorityLayout.error = null
-        binding.remarkTil.error = null
-        binding.addressTil.error = null
-//        binding.addImgLayout.error = null
-
-//        brandId = binding.chooseBrand.text.toString()
-//        categoryId = binding.chooseCategory.text.toString()
-//        problemType = binding.chooseProblemAt.text.toString()
-        addValue = binding.addressEt.text.toString()
-//        stateId = binding.chooseState.text.toString()
-//        cityId = binding.chooseCity.text.toString()
-//        priorityType = binding.choosePriorityAt.text.toString()
-        remarkValue = binding.remarkEt.text.toString()
-
-
-        var cancel = false
-        var focusView: View? = null
-
-        if (brandId == "") {
-            focusView = binding.brandLayout
-            binding.brandLayout.error = "Please choose any brand"
-            cancel = true
-        } else if (categoryId == "") {
-            focusView = binding.categoryLayout
-            binding.brandLayout.error = "Please choose any category"
-            cancel = true
-        } else if (problemType == "") {
-            focusView = binding.problemLayout
-            binding.problemLayout.error = "Please choose any problem type"
-            cancel = true
-        } else if (addValue == "") {
-            focusView = binding.addressTil
-            binding.addressTil.error = "Please enter address"
-            cancel = true
-        } else if (stateId == "") {
-            focusView = binding.stateLayout
-            binding.stateLayout.error = "Please choose any brand"
-            cancel = true
-        } else if (cityId == "") {
-            focusView = binding.cityLayout
-            binding.cityLayout.error = "Please choose any brand"
-            cancel = true
-        } else if (priorityType == "") {
-            focusView = binding.priorityLayout
-            binding.priorityLayout.error = "Please choose any brand"
-            cancel = true
-        } else if (remarkValue == "") {
-            focusView = binding.remarkTil
-            binding.remarkTil.error = "Please choose any brand"
-            cancel = true
-        } else if (base64Image == "") {
-            focusView = binding.addImgLayout
-            Toast.makeText(requireContext(), "Please upload image", Toast.LENGTH_SHORT).show()
-            cancel = true
-        }
-
-        if (cancel) {
-            focusView!!.requestFocus()
-        } else {
-            startLoading("Please wait while getting serviceman list...")
-            getServiceManList(brandId = "1", categoryId = "2", cityId = "1")
-
-        }
-
-    }
-
-    private fun getServiceManList(brandId: String, categoryId: String, cityId: String) {
-        val blackBlind = BlackBlind(requireContext())
-        blackBlind.headersRequired(true)
-        blackBlind.authToken(tokenValue)
-        blackBlind.addParams("brands_id", brandId)
-        blackBlind.addParams("service_req_catid", categoryId)
-        blackBlind.addParams("city_id", cityId)
-        blackBlind.requestUrl(ServerApi.TECHNICIAN_REQUEST)
-        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
-            override fun getResponse(response: String?) {
-                val jsonObject = JSONObject(response.toString())
-                if (jsonObject.has("data")) {
-                    val dataString = jsonObject.get("data")
-                    if (dataString is JSONObject) {
-                        Toast.makeText(
-                            requireContext(),
-                            jsonObject.getString("message"),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else if (dataString is JSONArray) {
-                        val gsonBuilder = GsonBuilder()
-                        gsonBuilder.setDateFormat("M/d/yy hh:mm a")
-                        val gson = gsonBuilder.create()
-//                        serviceman = gson.fromJson(
-//                            response,
-//                            Serviceman::class.java
-//                        )
-//                        responseMsg = serviceman!!.message
-//                        if (serviceman!!.success && serviceman!!.status == 1) {
-//                            servicemanArray = serviceman!!.data as ArrayList<ServicemanData>
-//                            stopLoading()
-//                            val bottomSheet = ServicemanFragment(
-//                                brandId, categoryId, cityId, problemType,
-//                                stateId, priorityType, remarkValue, base64Image, addValue, latitude,
-//                                longitude, servicemanArray
-//                            )
-//                            bottomSheet.show(
-//                                parentFragmentManager,
-//                                "BrandsFragment"
-//                            )
-//                        } else {
+//    private fun validation() {
 //
-//                            Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-//                        }
-
-
-                    }
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        jsonObject.getString("message"),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-            override fun getError(error: String?) {
-                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun getBrandsDetails(apiType: String) {
-        val blackBlind = BlackBlind(requireContext())
-        blackBlind.headersRequired(false)
-        if (apiType.equals("Brands")) {
-            brandArray.clear()
-            blackBlind.requestUrl(ServerApi.BRAND_REQUEST)
-        } else if (apiType.equals("Category")) {
-            categoryArray.clear()
-            blackBlind.requestUrl(ServerApi.CATEGORY_REQUEST)
-        }
-
-        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
-            override fun getResponse(response: String?) {
-                val gsonBuilder = GsonBuilder()
-                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
-                val gson = gsonBuilder.create()
-                val brandCategory = gson.fromJson(
-                    response,
-                    BrandCategory::class.java
-                )
-                responseMsg = brandCategory.message
-                if (brandCategory.success && brandCategory.status == 1) {
-//                    Toast.makeText(requireContext(), brandCategory.message, Toast.LENGTH_SHORT)
-//                        .show()
+//        binding.stateLayout.error = null
+//        binding.cityLayout.error = null
+//        binding.addressTil.error = null
+////        binding.addImgLayout.error = null
 //
-//                    for (i in 0 until brandCategory.data.size) {
+////        brandId = binding.chooseBrand.text.toString()
+////        categoryId = binding.chooseCategory.text.toString()
+////        problemType = binding.chooseProblemAt.text.toString()
+//        addValue = binding.addressEt.text.toString()
+////        stateId = binding.chooseState.text.toString()
+////        cityId = binding.chooseCity.text.toString()
+////        priorityType = binding.choosePriorityAt.text.toString()
+//
+//
+//
+//        var cancel = false
+//        var focusView: View? = null
+//
+//        if (brandId == "") {
+//            focusView = binding.brandLayout
+//            binding.brandLayout.error = "Please choose any brand"
+//            cancel = true
+//        } else if (categoryId == "") {
+//            focusView = binding.categoryLayout
+//            binding.brandLayout.error = "Please choose any category"
+//            cancel = true
+//        } else if (problemType == "") {
+//            focusView = binding.problemLayout
+//            binding.problemLayout.error = "Please choose any problem type"
+//            cancel = true
+//        } else if (addValue == "") {
+//            focusView = binding.addressTil
+//            binding.addressTil.error = "Please enter address"
+//            cancel = true
+//        } else if (stateId == "") {
+//            focusView = binding.stateLayout
+//            binding.stateLayout.error = "Please choose any brand"
+//            cancel = true
+//        } else if (cityId == "") {
+//            focusView = binding.cityLayout
+//            binding.cityLayout.error = "Please choose any brand"
+//            cancel = true
+//        } else if (priorityType == "") {
+//            focusView = binding.priorityLayout
+//            binding.priorityLayout.error = "Please choose any brand"
+//            cancel = true
+//        } else if (remarkValue == "") {
+//            focusView = binding.remarkTil
+//            binding.remarkTil.error = "Please choose any brand"
+//            cancel = true
+//        } else if (base64Image == "") {
+//            focusView = binding.addImgLayout
+//            Toast.makeText(requireContext(), "Please upload image", Toast.LENGTH_SHORT).show()
+//            cancel = true
+//        }
+//
+//        if (cancel) {
+//            focusView!!.requestFocus()
+//        } else {
+//            startLoading("Please wait while getting serviceman list...")
+//            getServiceManList(brandId = "1", categoryId = "2", cityId = "1")
+//
+//        }
+//
+//    }
+
+//    private fun getServiceManList(brandId: String, categoryId: String, cityId: String) {
+//        val blackBlind = BlackBlind(requireContext())
+//        blackBlind.headersRequired(true)
+//        blackBlind.authToken(tokenValue)
+//        blackBlind.addParams("brands_id", brandId)
+//        blackBlind.addParams("service_req_catid", categoryId)
+//        blackBlind.addParams("city_id", cityId)
+//        blackBlind.requestUrl(ServerApi.TECHNICIAN_REQUEST)
+//        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
+//            override fun getResponse(response: String?) {
+//                val jsonObject = JSONObject(response.toString())
+//                if (jsonObject.has("data")) {
+//                    val dataString = jsonObject.get("data")
+//                    if (dataString is JSONObject) {
+//                        Toast.makeText(
+//                            requireContext(),
+//                            jsonObject.getString("message"),
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    } else if (dataString is JSONArray) {
+//                        val gsonBuilder = GsonBuilder()
+//                        gsonBuilder.setDateFormat("M/d/yy hh:mm a")
+//                        val gson = gsonBuilder.create()
+////                        serviceman = gson.fromJson(
+////                            response,
+////                            Serviceman::class.java
+////                        )
+////                        responseMsg = serviceman!!.message
+////                        if (serviceman!!.success && serviceman!!.status == 1) {
+////                            servicemanArray = serviceman!!.data as ArrayList<ServicemanData>
+////                            stopLoading()
+////                            val bottomSheet = ServicemanFragment(
+////                                brandId, categoryId, cityId, problemType,
+////                                stateId, priorityType, remarkValue, base64Image, addValue, latitude,
+////                                longitude, servicemanArray
+////                            )
+////                            bottomSheet.show(
+////                                parentFragmentManager,
+////                                "BrandsFragment"
+////                            )
+////                        } else {
+////
+////                            Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
+////                        }
+//
 //
 //                    }
+//                } else {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        jsonObject.getString("message"),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//            }
+//
+//            override fun getError(error: String?) {
+//                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
-                    if (apiType.equals("Brands")) {
-                        brandArray = brandCategory.data as ArrayList<BrandCategoryData>
-                        val brandCategoryAdapter =
-                            BrandCategoryAdapter(requireContext(), brandArray)
-                        binding.chooseBrand.setAdapter(brandCategoryAdapter)
-                    } else if (apiType.equals("Category")) {
-                        categoryArray = brandCategory.data as ArrayList<BrandCategoryData>
-                        val brandCategoryAdapter =
-                            BrandCategoryAdapter(requireContext(), categoryArray)
-                        binding.chooseCategory.setAdapter(brandCategoryAdapter)
-                    }
-
-                } else {
-                    Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun getError(error: String?) {
-                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun getBrandsDetails(apiType: String) {
+//        val blackBlind = BlackBlind(requireContext())
+//        blackBlind.headersRequired(false)
+//        if (apiType.equals("Brands")) {
+//            brandArray.clear()
+//            blackBlind.requestUrl(ServerApi.BRAND_REQUEST)
+//        } else if (apiType.equals("Category")) {
+//            categoryArray.clear()
+//            blackBlind.requestUrl(ServerApi.CATEGORY_REQUEST)
+//        }
+//
+//        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
+//            override fun getResponse(response: String?) {
+//                val gsonBuilder = GsonBuilder()
+//                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
+//                val gson = gsonBuilder.create()
+//                val brandCategory = gson.fromJson(
+//                    response,
+//                    BrandCategory::class.java
+//                )
+//                responseMsg = brandCategory.message
+//                if (brandCategory.success && brandCategory.status == 1) {
+////                    Toast.makeText(requireContext(), brandCategory.message, Toast.LENGTH_SHORT)
+////                        .show()
+////
+////                    for (i in 0 until brandCategory.data.size) {
+////
+////                    }
+//
+//                    if (apiType.equals("Brands")) {
+//                        brandArray = brandCategory.data as ArrayList<BrandCategoryData>
+//                        val brandCategoryAdapter =
+//                            BrandCategoryAdapter(requireContext(), brandArray)
+//                        binding.chooseBrand.setAdapter(brandCategoryAdapter)
+//                    } else if (apiType.equals("Category")) {
+//                        categoryArray = brandCategory.data as ArrayList<BrandCategoryData>
+//                        val brandCategoryAdapter =
+//                            BrandCategoryAdapter(requireContext(), categoryArray)
+//                        binding.chooseCategory.setAdapter(brandCategoryAdapter)
+//                    }
+//
+//                } else {
+//                    Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun getError(error: String?) {
+//                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
 
     private fun getCityStateDetails(apiType: String) {

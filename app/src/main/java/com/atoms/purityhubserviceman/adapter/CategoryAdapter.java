@@ -27,7 +27,7 @@ public class CategoryAdapter extends BlindAdapter<BrandCategoryData, SpinnerLayo
     @Override
     public void onBindData(BrandCategoryData model, int position, SpinnerLayoutBinding dataBinding) {
         dataBinding.tv.setText(model.getName());
-        Glide.with(getContext()).load(model.getImage()).into(dataBinding.shapeIv);
+//        Glide.with(getContext()).load(model.getImage()).into(dataBinding.shapeIv);
         dataBinding.radioButton.setVisibility(View.VISIBLE);
 
         if (valueCheck.equalsIgnoreCase(model.getName())){

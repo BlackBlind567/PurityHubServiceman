@@ -22,7 +22,7 @@ import com.myapplication.model.HistoryRequest
 import com.myapplication.model.ServiceRequestData
 import java.util.*
 
-class PendingFragment : Fragment() {
+class PendingFragment : Fragment(), UpdateListener {
 
     lateinit var binding: FragmentPendingBinding
     lateinit var sharedpref: Sharedpref
@@ -67,7 +67,8 @@ class PendingFragment : Fragment() {
                     stopLoading()
                     Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
-                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray)
+                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
+                        updateListener, "Pending")
                     binding.pendingRv.adapter = serviceAdapter
 
                 }else {
@@ -92,5 +93,48 @@ class PendingFragment : Fragment() {
     fun stopLoading() {
         binding.loading.customLoading.pauseAnimation()
         binding.loading.layoutPage.visibility = View.GONE
+    }
+
+    val updateListener = object: UpdateListener{
+        override fun openRequest(requestId: String?) {
+            super.openRequest(requestId)
+            openServiceRequest(requestId)
+        }
+    }
+
+    private fun openServiceRequest(requestId: String?) {
+        val blackBlind = BlackBlind(requireContext())
+        blackBlind.headersRequired(true)
+        blackBlind.authToken(tokenValue)
+        blackBlind.addParams("service_request_id",requestId)
+        blackBlind.addParams("status","open")
+        blackBlind.requestUrl(ServerApi.OPEN_SERVICE_REQUEST)
+        blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
+            override fun getResponse(response: String?) {
+//                val gsonBuilder = GsonBuilder()
+//                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
+//                val gson = gsonBuilder.create()
+//                val historyRequest = gson.fromJson(
+//                    response,
+//                    HistoryRequest::class.java
+//                )
+//                responseMsg = historyRequest.message
+//                if (historyRequest.success && historyRequest.status == 1){
+//                    stopLoading()
+//                    Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
+//                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
+//                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
+//                        updateListener, "Pending")
+//                    binding.pendingRv.adapter = serviceAdapter
+//
+//                }else {
+//                    Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
+//                }
+            }
+
+            override fun getError(error: String?) {
+                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

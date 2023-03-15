@@ -18,4 +18,8 @@ public interface UpdateListener {
 
     }
 
+    public default void closeRequest(String requestId){
+
+    }
+
 }

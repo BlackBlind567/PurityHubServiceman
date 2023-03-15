@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.atoms.purityhubserviceman.R;
+import com.atoms.purityhubserviceman.UpdateListener;
 import com.atoms.purityhubserviceman.activity.ServiceRequestDetailActivity;
 import com.atoms.purityhubserviceman.databinding.ServiceRequestLayoutBinding;
 import com.chinalwb.slidetoconfirmlib.ISlideListener;
@@ -23,8 +24,8 @@ import java.util.Date;
 
 public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, ServiceRequestLayoutBinding> {
 
-    public ServiceRequestAdapter(Context context, ArrayList<ServiceRequestData> arrayList) {
-        super(context, arrayList);
+    public ServiceRequestAdapter(Context mContext, ArrayList<ServiceRequestData> mArrayList, UpdateListener updatelistner, String valueCheck) {
+        super(mContext, mArrayList, updatelistner, valueCheck);
     }
 
     @Override
@@ -34,8 +35,8 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
 
     @Override
     public void onBindData(ServiceRequestData model, int position, ServiceRequestLayoutBinding dataBinding) {
-            dataBinding.srServiceman.setText(model.getServiceman());
-            dataBinding.srBrandCategory.setText(model.getBrand() + ", " + model.getService_category());
+            dataBinding.srServiceman.setText(model.getUser());
+            dataBinding.srBrandCategory.setText(model.getAddress() + ", " + model.getCity() + ", " + model.getState());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date = format.parse(model.getCreated_at());
@@ -50,14 +51,11 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        bind(dataBinding , model);
 
         dataBinding.srViewDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                val bundle = bundleOf("mobile" to numberValue)
-//                Navigation.findNavController(numberCheckFragment.root)
-//                        .navigate(R.id.action_numberCheckFragment_to_otpFragment, bundle)
+
                 Intent intent = new Intent(getContext(), ServiceRequestDetailActivity.class);
                 intent.putExtra("servicemanName",model.getServiceman());
                 intent.putExtra("brandName",model.getBrand());
@@ -71,8 +69,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                 intent.putExtra("remark",model.getRemark());
                 intent.putExtra("createdAt",model.getCreated_at());
                 getContext().startActivity(intent);
-//                Navigation.findNavController(dataBinding.getRoot())
-//                        .navigate(R.id.action_historyServiceRequestFragment_to_detailHistoryServiceFragment, bundle);
+
             }
         });
 
@@ -95,19 +92,15 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
             @Override
             public void onSlideDone() {
                 System.out.println("api call ");
-                getUpdatelistner().openRequest(model.getId());
+                if (valueCheck.equals("Pending")) {
+                    getUpdatelistner().openRequest(String.valueOf(model.getId()));
+                }else if (valueCheck.equals("Open")) {
+                    getUpdatelistner().closeRequest(String.valueOf(model.getId()));
+                }
             }
         });
     }
 
-//    private void bind(ServiceRequestLayoutBinding dataBinding, ServiceRequestData model) {
-//        boolean expanded = model.getExpanded();
-//        dataBinding.subItemView.setVisibility(expanded ? View.VISIBLE : View.GONE);
-//
-//        dataBinding.srRemark.setText(model.getRemark());
-//        dataBinding.srPriority.setText(model.getPriority());
-//        dataBinding.srProblemType.setText(model.getProblem_type());
-//    }
 
     @Override
     protected void onBindDataHolder(ServiceRequestData serviceRequestData, int position, ServiceRequestLayoutBinding mDataBinding, RecyclerView.ViewHolder holder) {

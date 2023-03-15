@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
+            android:layout_above="@+id/register_btn">
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -64,69 +64,79 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/brand_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:hint="Choose Brand"
-                        android:orientation="horizontal"
-                        app:errorEnabled="true">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/choose_brand"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/category_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/name_til"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
-                        android:hint="Choose Category"
-                        android:orientation="horizontal"
-                        app:errorEnabled="true">
+                        android:hint="Name"
+                        app:errorEnabled="true"
+                        app:errorTextColor="@color/red_error"
+                        app:helperTextEnabled="true">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/choose_category"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            tools:ignore="LabelFor" />
+                            android:inputType="text"
+                            android:maxLength="100"
+                            android:maxLines="1" />
+
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/problem_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/email_til"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
-                        android:hint="Choose Problem Type"
-                        android:orientation="horizontal"
-                        app:errorEnabled="true">
+                        android:hint="Email"
+                        app:errorEnabled="true"
+                        app:errorTextColor="@color/red_error"
+                        app:helperTextEnabled="true">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/choose_problem_at"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/email_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
-                            tools:ignore="LabelFor" />
+                            android:inputType="text"
+                            android:maxLength="200"
+                            android:maxLines="2" />
+
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/mobile_til"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:hint="Mobile"
+                        app:errorEnabled="true"
+                        app:errorTextColor="@color/red_error"
+                        app:helperTextEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/mobile_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLength="200"
+                            android:maxLines="2" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/address_til"
@@ -196,51 +206,8 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/priority_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="20dp"
-                        android:hint="Choose Priority"
-                        android:orientation="horizontal"
-                        app:errorEnabled="true">
 
 
-                        <AutoCompleteTextView
-                            android:id="@+id/choose_priority_at"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/remark_til"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="20dp"
-                        android:hint="Remark"
-                        app:errorEnabled="true"
-                        app:errorTextColor="@color/red_error"
-                        app:helperTextEnabled="true">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/remark_et"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:maxLength="200"
-                            android:maxLines="2" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:id="@+id/add_img_layout"
@@ -249,6 +216,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
                         android:background="@drawable/border_qr_list"
                         android:orientation="horizontal"
                         android:visibility="visible">
