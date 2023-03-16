@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -42,8 +43,11 @@ class PendingFragment : Fragment(), UpdateListener {
         (Objects.requireNonNull(binding.pendingRv.itemAnimator) as SimpleItemAnimator).supportsChangeAnimations =
             false
         binding.pendingRv.addItemDecoration(BlindGridSpacing(10))
-        startLoading("Getting data...")
-        callUserServiceRequestHistory()
+
+            callUserServiceRequestHistory()
+
+
+
         return binding.root
     }
 
@@ -100,6 +104,8 @@ class PendingFragment : Fragment(), UpdateListener {
             super.openRequest(requestId)
             openServiceRequest(requestId)
         }
+
+
     }
 
     private fun openServiceRequest(requestId: String?) {
@@ -137,4 +143,15 @@ class PendingFragment : Fragment(), UpdateListener {
             }
         })
     }
+
+
+
+//    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+//        super.setUserVisibleHint(isVisibleToUser)
+//
+//        if (isVisibleToUser){
+//            startLoading("Getting data...")
+//            callUserServiceRequestHistory()
+//        }
+//    }
 }

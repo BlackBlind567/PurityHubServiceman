@@ -4,7 +4,7 @@ public class ServerApi {
 
     public static final String BASE_URL = "https://application.purityhub.co.in/api/";
 
-    public static final String SIGNUP_REQUEST = BASE_URL + "user/signup";
+    public static final String SIGNUP_REQUEST = BASE_URL + "serviceman/signup";
     public static final String SEND_OTP_REQUEST = BASE_URL +"send/otp";
     public static final String VERIFY_OTP_REQUEST = BASE_URL + "verified/otp";
     public static final String DASHBOARD_REQUEST = BASE_URL +  "get/dashboard";

@@ -44,8 +44,8 @@ class ClosedFragment : Fragment(), UpdateListener {
         (Objects.requireNonNull(binding.closeRv.itemAnimator) as SimpleItemAnimator).supportsChangeAnimations =
             false
         binding.closeRv.addItemDecoration(BlindGridSpacing(10))
-        startLoading("Getting data...")
-        callUserServiceRequestHistory()
+
+
         return binding.root
     }
 
@@ -98,6 +98,23 @@ class ClosedFragment : Fragment(), UpdateListener {
     }
 
     val updateListener = object: UpdateListener{
+        override fun initiateApiCallClosed(apiCall: String?) {
+            super.initiateApiCallClosed(apiCall)
+            if (apiCall == "true"){
+                startLoading("Getting data...")
+                callUserServiceRequestHistory()
+            }
+        }
+    }
 
+
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+
+        if (isVisibleToUser){
+            startLoading("Getting data...")
+            callUserServiceRequestHistory()
+        }
     }
 }

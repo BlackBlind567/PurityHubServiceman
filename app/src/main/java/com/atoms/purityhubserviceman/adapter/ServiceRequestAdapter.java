@@ -111,4 +111,9 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
     public void onItemClick(ServiceRequestData model, int position) {
 
     }
+
+    @Override
+    public void removeItem(int removeItemPosition, ArrayList<ServiceRequestData> arrayList) {
+        super.removeItem(removeItemPosition, arrayList);
+    }
 }

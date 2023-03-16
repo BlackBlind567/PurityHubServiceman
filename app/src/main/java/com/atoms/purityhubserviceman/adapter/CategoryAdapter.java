@@ -2,6 +2,7 @@ package com.atoms.purityhubserviceman.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,29 +27,30 @@ public class CategoryAdapter extends BlindAdapter<BrandCategoryData, SpinnerLayo
 
     @Override
     public void onBindData(BrandCategoryData model, int position, SpinnerLayoutBinding dataBinding) {
-        dataBinding.tv.setText(model.getName());
+//        dataBinding.tv.setText(model.getName());
 //        Glide.with(getContext()).load(model.getImage()).into(dataBinding.shapeIv);
-        dataBinding.radioButton.setVisibility(View.VISIBLE);
+        dataBinding.checkButton.setVisibility(View.VISIBLE);
 
-        if (valueCheck.equalsIgnoreCase(model.getName())){
-            dataBinding.radioButton.setChecked(true);
-        }else {
-            dataBinding.radioButton.setChecked(false);
-        }
-        dataBinding.radioButton.setChecked(valueCheck.equalsIgnoreCase(model.getName()));
+//        if (valueCheck.equalsIgnoreCase(model.getName())){
+//            dataBinding.radioButton.setChecked(true);
+//        }else {
+//            dataBinding.radioButton.setChecked(false);
+//        }
+//        dataBinding.radioButton.setChecked(valueCheck.equalsIgnoreCase(model.getName()));
 
+        dataBinding.checkButton.setText(model.getName());
 
-
-        dataBinding.radioButton.setOnClickListener(new View.OnClickListener() {
+        dataBinding.checkButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                dataBinding.radioButton.setChecked(true);
-
-                    getUpdatelistner().selectCategoryName(model.getName(), model.getId());
-
-
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    getUpdatelistner().selectCategoryName("true", model.getId());
+                }else {
+                    getUpdatelistner().selectCategoryName("false", model.getId());
+                }
             }
         });
+
     }
 
     @Override

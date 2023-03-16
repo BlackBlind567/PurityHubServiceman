@@ -30,9 +30,24 @@
         android:label="fragment_registation"
         tools:layout="@layout/fragment_registation" >
 
+        <action
+            android:id="@+id/action_registationFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.atoms.purityhubserviceman.fragments.CategoryFragment"
+        android:label="CategoryFragment" >
+        <action
+            android:id="@+id/action_categoryFragment_to_brandFragment"
+            app:destination="@id/brandFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/brandFragment"
+        android:name="com.atoms.purityhubserviceman.fragments.BrandFragment"
+        android:label="BrandFragment" />
 
-<!--    <fragment-->
+    <!--    <fragment-->
 <!--        android:id="@+id/detailHistoryServiceFragment2"-->
 <!--        android:name="com.atoms.purityhubserviceman.fragments.request.DetailHistoryServiceFragment"-->
 <!--        android:label="DetailHistoryServiceFragment" />-->

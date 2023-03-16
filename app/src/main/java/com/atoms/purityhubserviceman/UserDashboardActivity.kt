@@ -31,6 +31,7 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
     var tokenValue = ""
     var responseMsg = ""
     var name = ""
+    var updateListener: UpdateListener? = null
     var email = ""
     lateinit var sharedpref: Sharedpref
 
@@ -80,35 +81,7 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
 
         setupViewPager(binding.mainContent.viewpager);
         binding.mainContent.tabs.setupWithViewPager(binding.mainContent.viewpager);
-        val tabText: String =
-            binding.mainContent.tabs.getTabAt(binding.mainContent.tabs.selectedTabPosition)!!.text.toString()
-        println("tabName == $tabText")
-//        binding.mainContent.viewpager.cu
-        binding.mainContent.viewpager
-            .addOnPageChangeListener(object : OnPageChangeListener {
-            // This method will be invoked when a new page becomes selected.
-            override fun onPageSelected(position: Int) {
-                Toast.makeText(
-                    this@UserDashboardActivity,
-                    "Selected page position: $position", Toast.LENGTH_SHORT
-                ).show()
-            }
 
-            // This method will be invoked when the current page is scrolled
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                // Code goes here
-            }
-
-            // Called when the scroll state changes:
-            // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
-            override fun onPageScrollStateChanged(state: Int) {
-                // Code goes here
-            }
-        })
     }
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
@@ -153,4 +126,7 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         binding.mainContent.loading.layoutPage.visibility = View.GONE
     }
 
+//    var updateListener = object: UpdateListener{
+//
+//    }
 }

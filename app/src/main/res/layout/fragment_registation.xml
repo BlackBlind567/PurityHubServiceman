@@ -129,9 +129,10 @@
                             android:id="@+id/mobile_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:maxLength="200"
-                            android:maxLines="2" />
+                            android:inputType="number"
+                            android:clickable="false"
+                            android:enabled="false"
+                            android:maxLength="10" />
 
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -264,15 +265,15 @@
 
         <Button
             android:id="@+id/register_btn"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:text="Register"
-            android:layout_gravity="end" />
+            android:text="Register" />
 
         <include
             android:id="@+id/loading"

@@ -42,8 +42,9 @@ class OpenFragment : Fragment(), UpdateListener {
         (Objects.requireNonNull(binding.openRv.itemAnimator) as SimpleItemAnimator).supportsChangeAnimations =
             false
         binding.openRv.addItemDecoration(BlindGridSpacing(10))
-        startLoading("Getting data...")
-        callUserServiceRequestHistory()
+
+//        if (isV)
+
         return binding.root
     }
 
@@ -51,7 +52,7 @@ class OpenFragment : Fragment(), UpdateListener {
         val blackBlind = BlackBlind(requireContext())
         blackBlind.headersRequired(true)
         blackBlind.authToken(tokenValue)
-        blackBlind.addParams("status","Open")
+        blackBlind.addParams("status","open")
         blackBlind.requestUrl(ServerApi.VIEW_HISTORY_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
@@ -99,6 +100,25 @@ class OpenFragment : Fragment(), UpdateListener {
         override fun closeRequest(requestId: String?) {
             super.closeRequest(requestId)
 
+        }
+
+//        override fun initiateApiCallOpen(apiCall: String?) {
+//            super.initiateApiCallOpen(apiCall)
+//            println("call Api Open")
+//            if (apiCall.equals("true")){
+//                startLoading("Getting data...")
+//                callUserServiceRequestHistory()
+//            }
+//        }
+    }
+
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+
+        if (isVisibleToUser){
+            startLoading("Getting data...")
+            callUserServiceRequestHistory()
         }
     }
 }

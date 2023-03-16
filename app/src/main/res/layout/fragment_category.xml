@@ -10,11 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.CategoryFragment">
-
+        <include layout="@layout/custom_toolbar_layout"
+            android:id="@+id/tool"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_rv"
+            android:layout_below="@+id/tool"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_above="@id/continue_btn" />
+
+
+        <Button
+            android:id="@+id/continue_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Continue" />
 
         <include
             android:id="@+id/loading"

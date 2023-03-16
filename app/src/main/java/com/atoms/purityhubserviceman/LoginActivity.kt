@@ -26,15 +26,15 @@ class LoginActivity : AppCompatActivity() {
         nameValue = sharedpref.getString(Constants.name)
 //        getLoginToken()
 
-//        if (loginValue != "" && nameValue != ""){
-//            val intent = Intent(this@LoginActivity, UserDashboardActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }else{
-//            val navController: NavController =
-//                Navigation.findNavController(this, R.id.nav_host_fragment)
-//            navController.navigate(R.id.numberCheckFragment)
-//        }
+        if (loginValue != "" && nameValue != ""){
+            val intent = Intent(this@LoginActivity, UserDashboardActivity::class.java)
+            startActivity(intent)
+            finish()
+        }else{
+            val navController: NavController =
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+            navController.navigate(R.id.numberCheckFragment)
+        }
 
     }
 

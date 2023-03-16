@@ -40,8 +40,8 @@ public class BrandCategoryAdapter extends ArrayAdapter<BrandCategoryData> {
             currentItemView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_layout, parent, false);
         }
 
-        ShapeableImageView shapeableImageView = currentItemView.findViewById(R.id.shape_iv);
-        Glide.with(getContext()).load(brandCategoryData.getImage()).diskCacheStrategy(DiskCacheStrategy.NONE).into(shapeableImageView);
+//        ShapeableImageView shapeableImageView = currentItemView.findViewById(R.id.shape_iv);
+//        Glide.with(getContext()).load(brandCategoryData.getImage()).diskCacheStrategy(DiskCacheStrategy.NONE).into(shapeableImageView);
         TextView textView = currentItemView.findViewById(R.id.tv);
         textView.setText(brandCategoryData.getName());
 
