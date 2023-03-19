@@ -53,7 +53,7 @@ class ClosedFragment : Fragment(), UpdateListener {
         val blackBlind = BlackBlind(requireContext())
         blackBlind.headersRequired(true)
         blackBlind.authToken(tokenValue)
-        blackBlind.addParams("status","Closed")
+        blackBlind.addParams("status","closed")
         blackBlind.requestUrl(ServerApi.VIEW_HISTORY_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
@@ -70,7 +70,7 @@ class ClosedFragment : Fragment(), UpdateListener {
                     Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
                     val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
-                        updateListener, "Open")
+                        updateListener, "Close")
                     binding.closeRv.adapter = serviceAdapter
 
                 }else {
@@ -98,13 +98,7 @@ class ClosedFragment : Fragment(), UpdateListener {
     }
 
     val updateListener = object: UpdateListener{
-        override fun initiateApiCallClosed(apiCall: String?) {
-            super.initiateApiCallClosed(apiCall)
-            if (apiCall == "true"){
-                startLoading("Getting data...")
-                callUserServiceRequestHistory()
-            }
-        }
+
     }
 
 

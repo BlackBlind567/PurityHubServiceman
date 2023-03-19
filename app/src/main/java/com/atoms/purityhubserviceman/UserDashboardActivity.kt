@@ -50,7 +50,6 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         binding.tool.toolbarText.textSize = 25f
         drawerLayout = findViewById(R.id.drawer_layout)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true);
-        sharedpref = Sharedpref.getInstance(this)
         tokenValue = sharedpref.getString(Constants.token)
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this@UserDashboardActivity, drawerLayout, binding.tool.toolbar,

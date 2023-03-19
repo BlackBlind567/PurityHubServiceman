@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -21,6 +19,8 @@ import com.atoms.purityhubserviceman.extra.Constants
 import com.google.gson.GsonBuilder
 import com.myapplication.model.HistoryRequest
 import com.myapplication.model.ServiceRequestData
+import org.json.JSONObject
+import java.text.FieldPosition
 import java.util.*
 
 class PendingFragment : Fragment(), UpdateListener {
@@ -29,6 +29,7 @@ class PendingFragment : Fragment(), UpdateListener {
     lateinit var sharedpref: Sharedpref
     private var tokenValue = ""
     var responseMsg = ""
+    lateinit var serviceAdapter:ServiceRequestAdapter
     private var serviceRequestArray = ArrayList<ServiceRequestData>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +72,7 @@ class PendingFragment : Fragment(), UpdateListener {
                     stopLoading()
                     Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
-                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
+                    serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Pending")
                     binding.pendingRv.adapter = serviceAdapter
 
@@ -100,15 +101,15 @@ class PendingFragment : Fragment(), UpdateListener {
     }
 
     val updateListener = object: UpdateListener{
-        override fun openRequest(requestId: String?) {
-            super.openRequest(requestId)
-            openServiceRequest(requestId)
+        override fun openRequest(requestId: String?, position: Int) {
+            super.openRequest(requestId, position)
+            openServiceRequest(requestId, position)
         }
 
 
     }
 
-    private fun openServiceRequest(requestId: String?) {
+    private fun openServiceRequest(requestId: String?, position: Int) {
         val blackBlind = BlackBlind(requireContext())
         blackBlind.headersRequired(true)
         blackBlind.authToken(tokenValue)
@@ -117,6 +118,13 @@ class PendingFragment : Fragment(), UpdateListener {
         blackBlind.requestUrl(ServerApi.OPEN_SERVICE_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
+
+                val jsonObject = JSONObject(response.toString())
+                val status = jsonObject.getInt("status")
+                val success = jsonObject.getBoolean("success")
+                if (success && status == 1){
+                    serviceAdapter.removeItem(position, serviceRequestArray)
+                }
 //                val gsonBuilder = GsonBuilder()
 //                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
 //                val gson = gsonBuilder.create()

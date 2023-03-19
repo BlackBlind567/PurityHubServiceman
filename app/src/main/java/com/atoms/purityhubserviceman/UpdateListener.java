@@ -14,25 +14,15 @@ public interface UpdateListener {
 
     }
 
-    public default void openRequest(String requestId){
+    public default void openRequest(String requestId, int position){
 
     }
 
-    public default void closeRequest(String requestId){
+    public default void closeRequest(String requestId, int position){
 
     }
 
-    public default void initiateApiCallOpen(String apiCall){
-
-    }
-
-    public default void initiateApiCallPending(String apiCall){
-
-    }
-
-    public default void initiateApiCallClosed(String apiCall){
-
-    }
+//   public default void generateBill
 
 
 

@@ -35,9 +35,11 @@
         android:theme="@style/Theme.PurityHubServiceman"
         tools:targetApi="31">
         <activity
-            android:name=".ServiceRequestActivity"
+            android:name=".GenerateBillActivity"
             android:exported="false" />
-        <!-- <activity -->
+        <activity
+            android:name=".ServiceRequestActivity"
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".activity.ProfileActivity" -->
         <!-- android:exported="false" /> -->
         <activity

@@ -22,12 +22,13 @@ import com.myapplication.model.ServiceRequestData
 import java.util.*
 
 
-class OpenFragment : Fragment(), UpdateListener {
+class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServiceRequest {
 
     lateinit var binding: FragmentOpenBinding
     lateinit var sharedpref: Sharedpref
     private var tokenValue = ""
     var responseMsg = ""
+    lateinit var serviceAdapter:ServiceRequestAdapter
     private var serviceRequestArray = ArrayList<ServiceRequestData>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +69,7 @@ class OpenFragment : Fragment(), UpdateListener {
                     stopLoading()
                     Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
-                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
+                     serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Open")
                     binding.openRv.adapter = serviceAdapter
 
@@ -97,9 +98,14 @@ class OpenFragment : Fragment(), UpdateListener {
     }
 
     val updateListener = object: UpdateListener{
-        override fun closeRequest(requestId: String?) {
-            super.closeRequest(requestId)
+        override fun closeRequest(requestId: String?, position: Int) {
+            super.closeRequest(requestId, position)
 
+            val bottomSheet = CloseRequestOtpFragment(requestId, position)
+            bottomSheet.show(
+                parentFragmentManager,
+                "CategoryFragment"
+            )
         }
 
 //        override fun initiateApiCallOpen(apiCall: String?) {
@@ -120,5 +126,9 @@ class OpenFragment : Fragment(), UpdateListener {
             startLoading("Getting data...")
             callUserServiceRequestHistory()
         }
+    }
+
+    override fun OnServiceRequestListener(requestID: String, requestPosition: Int) {
+        serviceAdapter.removeItem(requestPosition, serviceRequestArray)
     }
 }

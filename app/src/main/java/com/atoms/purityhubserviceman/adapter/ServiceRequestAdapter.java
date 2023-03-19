@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.atoms.purityhubserviceman.R;
 import com.atoms.purityhubserviceman.UpdateListener;
+import com.atoms.purityhubserviceman.activity.GenerateBillActivity;
 import com.atoms.purityhubserviceman.activity.ServiceRequestDetailActivity;
 import com.atoms.purityhubserviceman.databinding.ServiceRequestLayoutBinding;
 import com.chinalwb.slidetoconfirmlib.ISlideListener;
+import com.chinalwb.slidetoconfirmlib.SlideToConfirm;
 import com.myapplication.model.ServiceRequestData;
 
 import java.text.ParseException;
@@ -72,6 +74,17 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
 
             }
         });
+        if (valueCheck.equals("Open")){
+            dataBinding.btnSlider.setEngageText("Slide to close");
+            dataBinding.btnSlider.setCompletedText("Closed");
+        }else if (valueCheck.equals("Close")){
+            dataBinding.btnSlider.setEngageText("Generate Bill");
+            dataBinding.btnSlider.setCompletedText("Generated");
+        }else if (valueCheck.equals("Pending")){
+            dataBinding.btnSlider.setEngageText("Slide to open");
+            dataBinding.btnSlider.setCompletedText("Opened");
+        }
+
 
         dataBinding.btnSlider.setSlideListener(new ISlideListener() {
             @Override
@@ -93,9 +106,13 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
             public void onSlideDone() {
                 System.out.println("api call ");
                 if (valueCheck.equals("Pending")) {
-                    getUpdatelistner().openRequest(String.valueOf(model.getId()));
+                    getUpdatelistner().openRequest(String.valueOf(model.getId()), position);
                 }else if (valueCheck.equals("Open")) {
-                    getUpdatelistner().closeRequest(String.valueOf(model.getId()));
+                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
+                }else if (valueCheck.equals("Close")){
+                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
+                    Intent intent = new Intent(getContext(), GenerateBillActivity.class);
+                    getContext().startActivity(intent);
                 }
             }
         });

@@ -165,7 +165,7 @@
 
             </LinearLayout>
 
-        <com.chinalwb.slidetoconfirmlib.SlideToConfirm
+            <com.chinalwb.slidetoconfirmlib.SlideToConfirm
             android:id="@+id/btn_slider"
             android:layout_width="match_parent"
             android:layout_height="30dp"

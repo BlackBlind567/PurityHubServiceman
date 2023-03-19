@@ -17,6 +17,7 @@ public class ServerApi {
     public static final String TECHNICIAN_REQUEST = BASE_URL + "get/technician/user";
     public static final String SUBMIT_SERVICE_REQUEST = BASE_URL + "service/request/store";
     public static final String OPEN_SERVICE_REQUEST = BASE_URL + "update/service/open/status";
+    public static final String CLOSE_SERVICE_REQUEST = BASE_URL + "update/service/close/status";
     public static final String MY_FLATS_REQUEST =  "myflats/";
     public static final String USER_BILLS_REQUEST =  "userbills/";
     public static final String USER_HOME_REQUEST =  "userhome/";
