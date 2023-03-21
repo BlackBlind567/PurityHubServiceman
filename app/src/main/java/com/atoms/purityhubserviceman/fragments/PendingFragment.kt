@@ -1,12 +1,13 @@
 package com.atoms.purityhubserviceman.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.volley.Request
@@ -20,7 +21,6 @@ import com.google.gson.GsonBuilder
 import com.myapplication.model.HistoryRequest
 import com.myapplication.model.ServiceRequestData
 import org.json.JSONObject
-import java.text.FieldPosition
 import java.util.*
 
 class PendingFragment : Fragment(), UpdateListener {
@@ -29,6 +29,9 @@ class PendingFragment : Fragment(), UpdateListener {
     lateinit var sharedpref: Sharedpref
     private var tokenValue = ""
     var responseMsg = ""
+    private var fragmentResume = false
+    private var fragmentVisible = false
+    private var fragmentOnCreated = false
     lateinit var serviceAdapter:ServiceRequestAdapter
     private var serviceRequestArray = ArrayList<ServiceRequestData>()
     override fun onCreateView(
@@ -45,8 +48,11 @@ class PendingFragment : Fragment(), UpdateListener {
             false
         binding.pendingRv.addItemDecoration(BlindGridSpacing(10))
 
-            callUserServiceRequestHistory()
+        if(!fragmentResume && fragmentVisible) {
 
+            startLoading("Getting Request...")
+            callUserServiceRequestHistory()
+        }
 
 
         return binding.root
@@ -56,7 +62,7 @@ class PendingFragment : Fragment(), UpdateListener {
         val blackBlind = BlackBlind(requireContext())
         blackBlind.headersRequired(true)
         blackBlind.authToken(tokenValue)
-        blackBlind.addParams("status","Pending")
+        blackBlind.addParams("status","pending")
         blackBlind.requestUrl(ServerApi.VIEW_HISTORY_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
@@ -70,7 +76,7 @@ class PendingFragment : Fragment(), UpdateListener {
                 responseMsg = historyRequest.message
                 if (historyRequest.success && historyRequest.status == 1){
                     stopLoading()
-                    Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "pending == " + historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
                     serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Pending")
@@ -154,12 +160,25 @@ class PendingFragment : Fragment(), UpdateListener {
 
 
 
-//    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-//        super.setUserVisibleHint(isVisibleToUser)
-//
-//        if (isVisibleToUser){
-//            startLoading("Getting data...")
-//            callUserServiceRequestHistory()
-//        }
-//    }
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser && isResumed){
+            // only at fragment screen is resumed
+            fragmentResume=true;
+            fragmentVisible=false;
+            fragmentOnCreated=true;
+            startLoading("Getting data...")
+            callUserServiceRequestHistory()
+        }else  if (isVisibleToUser){        // only at fragment onCreated
+            fragmentResume=false;
+            fragmentVisible=true;
+            fragmentOnCreated=true;
+        }
+        else if(!isVisibleToUser && fragmentOnCreated){// only when you go out of fragment screen
+            fragmentVisible=false;
+            fragmentResume=false;
+        }
+    }
+
+
 }

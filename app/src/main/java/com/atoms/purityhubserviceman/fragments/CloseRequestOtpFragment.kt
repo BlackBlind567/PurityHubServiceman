@@ -1,12 +1,14 @@
 package com.atoms.purityhubserviceman.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
@@ -21,6 +23,8 @@ class CloseRequestOtpFragment(var requestId: String?, var position: Int) : Botto
     var otpValue = ""
     var responseMsg = ""
     var tokenValue = ""
+//    var callback: OnServiceRequest = parentFragment as OnServiceRequest
+
     var callback: OnServiceRequest? = null
     interface OnServiceRequest{
         fun OnServiceRequestListener(requestID: String, requestPosition: Int)
@@ -114,11 +118,11 @@ class CloseRequestOtpFragment(var requestId: String?, var position: Int) : Botto
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         callback = try {
-            activity as OnServiceRequest
+            parentFragment as OnServiceRequest
         } catch (e: ClassCastException) {
             throw ClassCastException(
                 activity.toString()
-                        + " must implement onBrandListener"
+                        + " must implement OnServiceRequest"
             )
         }
     }

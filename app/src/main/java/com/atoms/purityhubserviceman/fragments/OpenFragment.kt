@@ -28,6 +28,9 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
     lateinit var sharedpref: Sharedpref
     private var tokenValue = ""
     var responseMsg = ""
+    private var fragmentResume = false
+    private var fragmentVisible = false
+    private var fragmentOnCreated = false
     lateinit var serviceAdapter:ServiceRequestAdapter
     private var serviceRequestArray = ArrayList<ServiceRequestData>()
     override fun onCreateView(
@@ -45,7 +48,11 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
         binding.openRv.addItemDecoration(BlindGridSpacing(10))
 
 //        if (isV)
+        if(!fragmentResume && fragmentVisible) {
 
+            startLoading("Getting Request...")
+            callUserServiceRequestHistory()
+        }
         return binding.root
     }
 
@@ -103,7 +110,7 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
 
             val bottomSheet = CloseRequestOtpFragment(requestId, position)
             bottomSheet.show(
-                parentFragmentManager,
+                childFragmentManager,
                 "CategoryFragment"
             )
         }
@@ -121,10 +128,21 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-
-        if (isVisibleToUser){
+        if (isVisibleToUser && isResumed){
+            // only at fragment screen is resumed
+            fragmentResume=true;
+            fragmentVisible=false;
+            fragmentOnCreated=true;
             startLoading("Getting data...")
             callUserServiceRequestHistory()
+        }else  if (isVisibleToUser){        // only at fragment onCreated
+            fragmentResume=false;
+            fragmentVisible=true;
+            fragmentOnCreated=true;
+        }
+        else if(!isVisibleToUser && fragmentOnCreated){// only when you go out of fragment screen
+            fragmentVisible=false;
+            fragmentResume=false;
         }
     }
 

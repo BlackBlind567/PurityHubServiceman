@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atoms.purityhubserviceman.R;
 import com.atoms.purityhubserviceman.UpdateListener;
 import com.atoms.purityhubserviceman.activity.GenerateBillActivity;
+import com.atoms.purityhubserviceman.activity.ProductsActivity;
 import com.atoms.purityhubserviceman.activity.ServiceRequestDetailActivity;
 import com.atoms.purityhubserviceman.databinding.ServiceRequestLayoutBinding;
 import com.chinalwb.slidetoconfirmlib.ISlideListener;
@@ -110,7 +111,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                 }else if (valueCheck.equals("Open")) {
                     getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
                 }else if (valueCheck.equals("Close")){
-                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
+//                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
                     Intent intent = new Intent(getContext(), GenerateBillActivity.class);
                     getContext().startActivity(intent);
                 }

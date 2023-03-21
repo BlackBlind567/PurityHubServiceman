@@ -28,6 +28,9 @@ class ClosedFragment : Fragment(), UpdateListener {
     lateinit var sharedpref: Sharedpref
     private var tokenValue = ""
     var responseMsg = ""
+    private var fragmentResume = false
+    private var fragmentVisible = false
+    private var fragmentOnCreated = false
     private var serviceRequestArray = ArrayList<ServiceRequestData>()
 
     override fun onCreateView(
@@ -45,7 +48,11 @@ class ClosedFragment : Fragment(), UpdateListener {
             false
         binding.closeRv.addItemDecoration(BlindGridSpacing(10))
 
+        if(!fragmentResume && fragmentVisible) {
 
+            startLoading("Getting Request...")
+            callUserServiceRequestHistory()
+        }
         return binding.root
     }
 
@@ -67,7 +74,7 @@ class ClosedFragment : Fragment(), UpdateListener {
                 responseMsg = historyRequest.message
                 if (historyRequest.success && historyRequest.status == 1){
                     stopLoading()
-                    Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"closed == " + historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
                     val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Close")
@@ -105,10 +112,22 @@ class ClosedFragment : Fragment(), UpdateListener {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-
-        if (isVisibleToUser){
+        if (isVisibleToUser && isResumed){
+            // only at fragment screen is resumed
+            fragmentResume=true;
+            fragmentVisible=false;
+            fragmentOnCreated=true;
             startLoading("Getting data...")
             callUserServiceRequestHistory()
+        }else  if (isVisibleToUser){        // only at fragment onCreated
+            fragmentResume=false;
+            fragmentVisible=true;
+            fragmentOnCreated=true;
+        }
+        else if(!isVisibleToUser && fragmentOnCreated){// only when you go out of fragment screen
+            fragmentVisible=false;
+            fragmentResume=false;
         }
     }
+
 }

@@ -22,7 +22,10 @@ public interface UpdateListener {
 
     }
 
-//   public default void generateBill
+   public default void generateBillData(String productId, String productName,
+                                        String totalQuantity, String totalPrice){
+
+   }
 
 
 
