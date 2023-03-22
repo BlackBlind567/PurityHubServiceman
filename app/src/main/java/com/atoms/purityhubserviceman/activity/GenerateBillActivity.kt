@@ -1,40 +1,300 @@
 package com.atoms.purityhubserviceman.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.atoms.purityhubserviceman.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.atoms.purityhubserviceman.*
+import com.atoms.purityhubserviceman.adapter.GenerateBillAdapter
 import com.atoms.purityhubserviceman.databinding.ActivityGenerateBillBinding
+import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.model.GenerateBill
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
+import java.lang.reflect.Type
 
-class GenerateBillActivity : AppCompatActivity() {
-    private var generateBillArray = ArrayList<GenerateBill>()
+class GenerateBillActivity : AppCompatActivity(), UpdateListener {
+    private var generateBillArray = java.util.ArrayList<GenerateBill>()
     lateinit var binding: ActivityGenerateBillBinding
     var id = ""
     var title = ""
     var price = ""
     var quantity = ""
+    var tokenValue = ""
+    var totalItemPrice = ""
+    var discountValue = ""
+    var serviceId = ""
+    var notChangedAmount = 0
+    var otpValue = ""
+    var finalTotalItemPrice = 0
+    var newItemArray = false
+    var selectedQuantityId = ArrayList<String>()
+    var selectedQuantityIdValue = ""
+    var selectedProductId = ArrayList<String>()
+    var selectedProductIdValue = ""
+    lateinit var sharedpref: Sharedpref
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_generate_bill)
-
-        if(intent != null){
+        sharedpref = Sharedpref.getInstance(this)
+        tokenValue = sharedpref.getString(Constants.token)
+        binding.itemLayout.layoutManager =
+            LinearLayoutManager(this@GenerateBillActivity, LinearLayoutManager.VERTICAL, false)
+        binding.tool.toolbarText.text = "Generate Bill"
+        setSupportActionBar(binding.tool.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        prefs = PreferenceManager.getDefaultSharedPreferences(this@GenerateBillActivity)
+        if (intent != null) {
             id = intent.getStringExtra("id").toString()
             title = intent.getStringExtra("title").toString()
             price = intent.getStringExtra("price").toString()
             quantity = intent.getStringExtra("quantity").toString()
-            val itemData = GenerateBill(id,title, price, quantity)
-            generateBillArray.add(itemData)
+            serviceId = intent.getStringExtra("serviceId").toString()
+            totalItemPrice = intent.getIntExtra("totalItemPrice", 0).toString()
+            newItemArray = intent.getBooleanExtra("itemArray", false)
+
+            println("array1 == $selectedProductIdValue")
+            println("array13 == $selectedQuantityIdValue")
+            if (newItemArray) {
+                binding.itemLayout.visibility = View.VISIBLE
+                println("array12 == ${generateBillArray.size}")
+//                if (generateBillArray.size != 0){
+
+                generateBillArray = getArrayList("arrayName")
+//                }
+
+                val itemData = GenerateBill(id, title, price, quantity, totalItemPrice)
+                generateBillArray.add(itemData)
+                val generateBillAdapter = GenerateBillAdapter(
+                    this@GenerateBillActivity,
+                    generateBillArray, updateListener
+                )
+                binding.itemLayout.adapter = generateBillAdapter
+                for (i in 0 until generateBillArray.size) {
+                    finalTotalItemPrice += generateBillArray[i].productTotalItemPrice.toInt()
+                    selectedProductId.add(generateBillArray[i].productId)
+                    selectedQuantityId.add(generateBillArray[i].productQuantity)
+                    selectedProductIdValue = TextUtils.join(", ", selectedProductId)
+                    selectedQuantityIdValue = TextUtils.join(", ", selectedQuantityId)
+                }
+
+                binding.btnLayout.visibility = View.VISIBLE
+                binding.totalPrice.text = "\u20B9" + finalTotalItemPrice.toString()
+
+                println("array == $generateBillArray")
+            }
+
         }
 
-        binding.addLayout.setOnClickListener{
+        binding.addLayout.setOnClickListener {
+
+            saveArrayList(generateBillArray, "arrayName")
+
+            newItemArray = true
             val intent = Intent(this@GenerateBillActivity, ProductsActivity::class.java)
+            intent.putExtra("arrayName", newItemArray)
+            intent.putExtra("serviceId", serviceId)
             startActivity(intent)
         }
 
+        binding.generateBill.setOnClickListener {
+
+            discountValue = binding.discountEt.text.toString()
+
+            otpValue = binding.otpView.otp
+            if (otpValue.length < 6){
+                binding.otpView.showError()
+            }else {
+                startLoading("sending data...")
+                generateBillForUser()
+            }
 
 
+        }
+
+        binding.applyTv.setOnClickListener {
+            discountValue = binding.discountEt.text.toString()
+            if (discountValue.equals("")){
+                Toast.makeText(this, "please enter discount amount", Toast.LENGTH_SHORT).show()
+            }else{
+                notChangedAmount = finalTotalItemPrice
+                finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
+                binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+            }
+
+        }
+
+        binding.itemDiscount.setOnClickListener {
+            binding.discountLayout.visibility = View.VISIBLE
+            binding.viewBg.visibility = View.VISIBLE
+        }
+
+        binding.discountEt.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (count == 0){
+                        finalTotalItemPrice = notChangedAmount
+                    binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+                }else {
+
+                }
+            }
+        })
+
+    }
+
+    private fun generateBillForUser() {
+        val blackBlind = BlackBlind(this@GenerateBillActivity)
+        blackBlind.headersRequired(true)
+        blackBlind.authToken(tokenValue)
+        if (discountValue.equals("")){
+            discountValue = "0"
+        }
+        blackBlind.addParams("service_req_id", serviceId)
+        blackBlind.addParams("product_id", selectedProductIdValue)
+        blackBlind.addParams("quantity", selectedQuantityIdValue)
+        blackBlind.addParams("discount", discountValue)
+        blackBlind.addParams("otp", otpValue)
+        blackBlind.requestUrl(ServerApi.GENERATE_BILL_REQUEST)
+        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
+            override fun getResponse(response: String?) {
+
+                val jsonObject = JSONObject(response.toString())
+                val msg = jsonObject.getString("message")
+                val status = jsonObject.getInt("status")
+                val success = jsonObject.getBoolean("success")
+                if (jsonObject.has("data")) {
+                    val dataString = jsonObject.get("data")
+                    if (dataString is JSONObject) {
+                        Toast.makeText(
+                            this@GenerateBillActivity,
+                            jsonObject.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    if (success && status == 1) {
+                        Toast.makeText(
+                            this@GenerateBillActivity,
+                            msg,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent =
+                            Intent(this@GenerateBillActivity, UserDashboardActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
+//                    else if (dataString is JSONArray){
+//                        val gsonBuilder = GsonBuilder()
+//                        gsonBuilder.setDateFormat("M/d/yy hh:mm a")
+//                        val gson = gsonBuilder.create()
+//                        product = gson.fromJson(
+//                            response,
+//                            Product::class.java
+//                        )
+//                        responseMsg = product!!.message
+//                        if (product!!.success && product!!.status == 1){
+////                    Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
+//                            productArray = product!!.data as ArrayList<ProductData>
+////                    for (i in 0 until product.data.size){
+////
+////                    }
+//
+//
+//
+//                        }else {
+//
+//                            Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
+//                        }
+
+
+//                    }
+                } else {
+                    Toast.makeText(
+                        this@GenerateBillActivity,
+                        jsonObject.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+//                val productsAdapter = ProductsAdapter(
+//                    this@ProductsActivity,
+//                    productArray
+//                )
+//                binding.productsRv.setAdapter(productsAdapter)
+
+            }
+
+            override fun getError(error: String?) {
+//                Toast.makeText(this@GenerateBillActivity, responseMsg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getArrayList(key: String?): java.util.ArrayList<GenerateBill> {
+
+        val gson = Gson()
+//        val json: String = gson.toJson(generateBillArray)
+        val json: String? = prefs.getString(key, null)
+        val type: Type = object : TypeToken<java.util.ArrayList<GenerateBill>?>() {}.type
+        return gson.fromJson(json, type)
+    }
+
+    private fun saveArrayList(list: java.util.ArrayList<GenerateBill>, key: String?) {
+
+        val editor: SharedPreferences.Editor = prefs.edit()
+        val gson = Gson()
+        val json: String = gson.toJson(list)
+//        sharedpref.putString(key, json)
+        editor.putString(key, json)
+        editor.apply()
+    }
+
+    val updateListener = object : UpdateListener {
+        override fun generatedRemoveBillData(
+            productId: String?,
+            productQuantity: String?,
+            productPrice: String
+        ) {
+            super.generatedRemoveBillData(productId, productQuantity, productPrice)
+            if (!selectedProductId.contains(id)) {
+                selectedProductId.remove(id)
+            }
+            if (!selectedQuantityId.contains(id)) {
+                selectedQuantityId.remove(id)
+            }
+            println("array14 == $selectedProductId")
+            println("array134 == $selectedQuantityId")
+            finalTotalItemPrice -= productPrice.toInt()
+            binding.totalPrice.text = "\u20B9" + finalTotalItemPrice.toString()
+        }
+    }
+
+    public fun startLoading(msg: String) {
+        binding.loading.layoutPage.visibility = View.VISIBLE
+        binding.loading.customLoading.playAnimation()
+        binding.loading.customLoading.loop(true)
+        binding.loading.customDialogMessage.text = msg
+    }
+
+    public fun stopLoading() {
+        binding.loading.customLoading.pauseAnimation()
+        binding.loading.layoutPage.visibility = View.GONE
     }
 }

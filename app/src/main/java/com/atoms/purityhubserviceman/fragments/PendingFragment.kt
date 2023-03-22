@@ -83,6 +83,7 @@ class PendingFragment : Fragment(), UpdateListener {
                     binding.pendingRv.adapter = serviceAdapter
 
                 }else {
+                    stopLoading()
                     Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
                 }
             }

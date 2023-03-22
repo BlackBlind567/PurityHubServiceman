@@ -22,8 +22,9 @@ public interface UpdateListener {
 
     }
 
-   public default void generateBillData(String productId, String productName,
-                                        String totalQuantity, String totalPrice){
+   public default void generatedRemoveBillData(String productId,
+                                        String productQuantity,
+                                               String productPrice){
 
    }
 

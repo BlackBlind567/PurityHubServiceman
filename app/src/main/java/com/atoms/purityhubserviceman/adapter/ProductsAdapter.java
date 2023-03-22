@@ -33,7 +33,7 @@ public class ProductsAdapter extends BlindAdapter<ProductData, ProductsLayoutBin
 
     @Override
     public void onBindData(ProductData model, int position, ProductsLayoutBinding dataBinding) {
-        dataBinding.title.setText(model.getTitle());
+        dataBinding.title.setText(model.getTitle() + " == " + model.getId());
         dataBinding.mrp.setText( model.getMrp());
         dataBinding.price.setText( "Price: " + model.getPrice());
         dataBinding.mrp.setPaintFlags(dataBinding.mrp.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);

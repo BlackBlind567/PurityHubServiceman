@@ -94,7 +94,13 @@ public abstract class BlindAdapter <T, D> extends RecyclerView.Adapter<RecyclerV
     }
 
     public void removeItem(int removeItemPosition,ArrayList<T> arrayList){
-        mArrayList = arrayList;
+            mArrayList = arrayList;
+        mArrayList.remove(removeItemPosition);
+        notifyItemRemoved(removeItemPosition);
+        notifyItemRangeChanged(removeItemPosition, mArrayList.size());
+    }
+
+    public void removeWithoutItemList(int removeItemPosition){
         mArrayList.remove(removeItemPosition);
         notifyItemRemoved(removeItemPosition);
         notifyItemRangeChanged(removeItemPosition, mArrayList.size());

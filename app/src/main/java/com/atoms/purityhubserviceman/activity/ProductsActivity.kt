@@ -13,14 +13,11 @@ import com.atoms.purityhubserviceman.adapter.ProductsAdapter
 import com.atoms.purityhubserviceman.databinding.ActivityProductsBinding
 import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.fragments.*
-import com.atoms.purityhubserviceman.model.GenerateBill
 import com.atoms.purityhubserviceman.model.Product
 import com.atoms.purityhubserviceman.model.ProductData
 import com.google.gson.GsonBuilder
-import com.myapplication.*
 import org.json.JSONArray
 import org.json.JSONObject
-import java.security.AccessController.getContext
 
 class ProductsActivity : AppCompatActivity(),
     CategoryBottomFragment.onCateoryListener, BrandBottomFragment.onBrandListener, UpdateListener,
@@ -35,7 +32,8 @@ class ProductsActivity : AppCompatActivity(),
     private var brandSortName = ""
     private var categoryId = ""
     private var brandId = ""
-
+    private var serviceId = ""
+    private var itemArray = false
     var product: Product? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +41,9 @@ class ProductsActivity : AppCompatActivity(),
         binding.productToolbar.toolbarText.text = "Products"
         sharedpref = Sharedpref.getInstance(this)
         tokenValue = sharedpref.getString(Constants.token)
+        itemArray = intent.getBooleanExtra("arrayName", false)
+        serviceId = intent.getStringExtra("serviceId").toString()
+        println("itemArray == $itemArray")
         binding.productsRv.layoutManager = LinearLayoutManager(this@ProductsActivity, LinearLayoutManager.VERTICAL, false)
         getBrandsDetails(brandId,categoryId)
 
@@ -161,7 +162,8 @@ class ProductsActivity : AppCompatActivity(),
         itemId: String,
         itemName: String,
         itemPrice: String,
-        itemQuantity: String
+        itemQuantity: String,
+        totalItemPrice: Int
     ) {
 
         val intent = Intent(this@ProductsActivity, GenerateBillActivity::class.java)
@@ -169,6 +171,9 @@ class ProductsActivity : AppCompatActivity(),
         intent.putExtra("title",itemName)
         intent.putExtra("price", itemPrice)
         intent.putExtra("quantity", itemQuantity)
+        intent.putExtra("itemArray", itemArray)
+        intent.putExtra("serviceId", serviceId)
+        intent.putExtra("totalItemPrice", totalItemPrice.toInt())
         startActivity(intent)
     }
 

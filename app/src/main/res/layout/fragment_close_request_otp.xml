@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".fragments.CloseRequestOtpFragment">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,16 +80,15 @@
                 app:width="40dp" />
 
             <Button
-                android:layout_alignParentBottom="true"
                 android:id="@+id/validate_otp_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Validate OTP"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="end"
-                android:layout_margin="20dp" />
+                android:layout_margin="20dp"
+                android:text="Validate OTP" />
 
         </LinearLayout>
-
 
         <include
             android:id="@+id/loading"

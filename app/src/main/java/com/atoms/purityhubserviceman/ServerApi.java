@@ -14,10 +14,12 @@ public class ServerApi {
     public static final String GET_STATE_LIST = BASE_URL +"get-state-api";
     public static final String GET_CITY_LIST = BASE_URL +"get-city-api";
     public static final String PRODUCT_REQUEST = BASE_URL + "get/product/api";
+    public static final String GENERATE_BILL_REQUEST = BASE_URL + "generate/service/bill";
     public static final String TECHNICIAN_REQUEST = BASE_URL + "get/technician/user";
     public static final String SUBMIT_SERVICE_REQUEST = BASE_URL + "service/request/store";
     public static final String OPEN_SERVICE_REQUEST = BASE_URL + "update/service/open/status";
     public static final String CLOSE_SERVICE_REQUEST = BASE_URL + "update/service/close/status";
+    public static final String GET_SERVICE_REQUEST = BASE_URL + "get/service/bill";
     public static final String MY_FLATS_REQUEST =  "myflats/";
     public static final String USER_BILLS_REQUEST =  "userbills/";
     public static final String USER_HOME_REQUEST =  "userhome/";

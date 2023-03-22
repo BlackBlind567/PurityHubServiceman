@@ -3,18 +3,21 @@ package com.atoms.purityhubserviceman.adapter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.atoms.purityhubserviceman.R;
+import com.atoms.purityhubserviceman.UpdateListener;
 import com.atoms.purityhubserviceman.databinding.GenerateBillItemLayoutBinding;
 import com.atoms.purityhubserviceman.model.GenerateBill;
 
 import java.util.ArrayList;
 
 public class GenerateBillAdapter extends BlindAdapter<GenerateBill, GenerateBillItemLayoutBinding>{
-    public GenerateBillAdapter(Context context, ArrayList<GenerateBill> arrayList) {
-        super(context, arrayList);
+
+    public GenerateBillAdapter(Context mContext, ArrayList<GenerateBill> mArrayList, UpdateListener updatelistner) {
+        super(mContext, mArrayList, updatelistner);
     }
 
     @Override
@@ -24,22 +27,16 @@ public class GenerateBillAdapter extends BlindAdapter<GenerateBill, GenerateBill
 
     @Override
     public void onBindData(GenerateBill model, int position, GenerateBillItemLayoutBinding dataBinding) {
-        dataBinding.itemPrize.setText(model.getProductMrp());
+        dataBinding.itemPrize.setText("\u20B9" +model.getProductMrp());
         dataBinding.itemTitle.setText(model.getProductName());
-        dataBinding.itemQuantity.addTextChangedListener(new TextWatcher() {
+        dataBinding.itemQuantity.setText(model.getProductQuantity());
+        dataBinding.itemTotalPrize.setText("\u20B9" + String.valueOf(Integer.parseInt(model.getProductMrp()) * Integer.parseInt(model.getProductQuantity())));
+        dataBinding.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View v) {
+                removeWithoutItemList(position);
+                getUpdatelistner().generatedRemoveBillData(model.getProductId(), model.getProductQuantity(),
+                        String.valueOf(Integer.parseInt(model.getProductMrp()) * Integer.parseInt(model.getProductQuantity())));
             }
         });
     }
@@ -52,5 +49,10 @@ public class GenerateBillAdapter extends BlindAdapter<GenerateBill, GenerateBill
     @Override
     public void onItemClick(GenerateBill model, int position) {
 
+    }
+
+    @Override
+    public void removeWithoutItemList(int removeItemPosition) {
+        super.removeWithoutItemList(removeItemPosition);
     }
 }

@@ -35,11 +35,13 @@
         android:theme="@style/Theme.PurityHubServiceman"
         tools:targetApi="31">
         <activity
+            android:name=".ViewBillActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.GenerateBillActivity"
             android:exported="false"
             android:label="@string/title_activity_generate_bill"
-            android:theme="@style/Theme.PurityHubServiceman.NoActionBar" />
-        <!-- <activity -->
+            android:theme="@style/Theme.PurityHubServiceman.NoActionBar" /> <!-- <activity -->
         <!-- android:name=".GenerateBillActivity" -->
         <!-- android:exported="false" /> -->
         <!--  -->
@@ -48,10 +50,10 @@
             android:exported="true" />
         <activity
             android:name=".activity.ProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ServiceRequestDetailActivity"
             android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".ServiceRequestActivity" -->
-        <!-- android:exported="false" /> -->
-        <!-- <activity -->
         <!-- android:name=".SplashActivity" -->
         <!-- android:exported="true" /> -->
         <activity

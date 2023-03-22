@@ -15,6 +15,7 @@ import com.atoms.purityhubserviceman.UpdateListener;
 import com.atoms.purityhubserviceman.activity.GenerateBillActivity;
 import com.atoms.purityhubserviceman.activity.ProductsActivity;
 import com.atoms.purityhubserviceman.activity.ServiceRequestDetailActivity;
+import com.atoms.purityhubserviceman.activity.ViewBillActivity;
 import com.atoms.purityhubserviceman.databinding.ServiceRequestLayoutBinding;
 import com.chinalwb.slidetoconfirmlib.ISlideListener;
 import com.chinalwb.slidetoconfirmlib.SlideToConfirm;
@@ -79,7 +80,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
             dataBinding.btnSlider.setEngageText("Slide to close");
             dataBinding.btnSlider.setCompletedText("Closed");
         }else if (valueCheck.equals("Close")){
-            dataBinding.btnSlider.setEngageText("Generate Bill");
+            dataBinding.btnSlider.setEngageText("View Bill");
             dataBinding.btnSlider.setCompletedText("Generated");
         }else if (valueCheck.equals("Pending")){
             dataBinding.btnSlider.setEngageText("Slide to open");
@@ -109,10 +110,14 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                 if (valueCheck.equals("Pending")) {
                     getUpdatelistner().openRequest(String.valueOf(model.getId()), position);
                 }else if (valueCheck.equals("Open")) {
-                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
-                }else if (valueCheck.equals("Close")){
 //                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
                     Intent intent = new Intent(getContext(), GenerateBillActivity.class);
+                    intent.putExtra("serviceId", String.valueOf(model.getId()));
+                    getContext().startActivity(intent);
+                }else if (valueCheck.equals("Close")){
+//                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
+                    Intent intent = new Intent(getContext(), ViewBillActivity.class);
+                    intent.putExtra("serviceId", String.valueOf(model.getId()));
                     getContext().startActivity(intent);
                 }
             }

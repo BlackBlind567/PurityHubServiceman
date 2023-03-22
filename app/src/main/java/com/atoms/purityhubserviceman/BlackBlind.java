@@ -109,7 +109,7 @@ public class BlackBlind {
             }
         };
 
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(100000,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

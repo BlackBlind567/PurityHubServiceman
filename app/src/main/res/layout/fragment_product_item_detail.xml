@@ -27,7 +27,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_active_color"
                 android:padding="10dp"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/item_price"
@@ -37,9 +37,9 @@
                 android:text="Item Name"
                 android:textAlignment="textEnd"
                 android:textStyle="bold"
-                android:textColor="@color/text_active_color"
+                android:textColor="@color/black"
                 android:padding="10dp"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -48,6 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:maxLines="1"
+            android:inputType="number"
             android:layout_margin="10dp"
             android:hint="Quantity" />
 
@@ -56,6 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add Item"
+            android:backgroundTint="@color/text_active_color"
+            android:textColor="@color/white"
             android:layout_margin="20dp" />
 
     </LinearLayout>

@@ -2,7 +2,6 @@ package com.atoms.purityhubserviceman.fragments
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +19,12 @@ class ProductItemDetailFragment(Id: Int, var Title: String, var Price: String) :
     var callback: OnAddItemListener? = null
     var productId = Id
     interface OnAddItemListener{
-        fun onAddItem(itemId: String,
+        fun onAddItem(
+            itemId: String,
             itemName: String,
-        itemPrice: String,
-        itemQuantity: String,)
+            itemPrice: String,
+            itemQuantity: String,
+            totalItemPrice: Int,)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +33,16 @@ class ProductItemDetailFragment(Id: Int, var Title: String, var Price: String) :
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_item_detail, container, false)
 
+        binding.itemName.text = Title
+        binding.itemPrice.text = Price
 
         binding.addItem.setOnClickListener {
             itemQuantity = binding.itemQuantity.text.toString()
             if (itemQuantity.isEmpty()){
                 Toast.makeText(requireContext(), "Please enter quantity", Toast.LENGTH_SHORT).show()
             }else {
-                callback!!.onAddItem(productId.toString(), Title, Price, itemQuantity)
+                val totalItemPrice = Price.toInt() * itemQuantity.toInt()
+                callback!!.onAddItem(productId.toString(), Title, Price, itemQuantity,totalItemPrice)
             }
 
         }

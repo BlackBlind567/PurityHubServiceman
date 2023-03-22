@@ -12,9 +12,15 @@
         android:layout_height="match_parent"
         tools:context=".activity.GenerateBillActivity">
 
+        <include layout="@layout/custom_toolbar_layout"
+            android:id="@+id/tool"/>
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            android:layout_below="@id/tool"
+            android:layout_above="@id/btn_layout">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -23,9 +29,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/item_layout"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/add_layout"
@@ -33,146 +39,197 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/grey_text" />
+
+
                     <TextView
-                        android:id="@+id/item_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Add Item"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
-                        android:paddingBottom="5dp"
                         android:paddingEnd="10dp"
-                        android:textColor="@color/text_active_color"
+                        android:paddingBottom="5dp"
+                        android:text="Please click on add item to add new product for generate bill for user"
+                        android:textColor="@color/grey_text"
                         android:textSize="16sp"
+                        android:textStyle="italic" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/item_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/text_active_color"
+                                android:drawableLeft="@drawable/ic_baseline_add_circle_outline_24"
+                                android:drawablePadding="5dp"
+                                android:paddingStart="10dp"
+                                android:paddingTop="10dp"
+                                android:paddingEnd="10dp"
+                                android:paddingBottom="5dp"
+                                android:text="Add Item"
+                                android:textColor="@color/text_active_color"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/item_discount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/text_active_color"
+                                android:drawableLeft="@drawable/ic_baseline_percent_24"
+                                android:drawablePadding="5dp"
+                                android:paddingStart="10dp"
+                                android:paddingTop="10dp"
+                                android:paddingEnd="10dp"
+                                android:paddingBottom="5dp"
+                                android:text="Apply Discount"
+                                android:textColor="@color/text_active_color"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/grey_text" />
+
+                    <LinearLayout
+                        android:id="@+id/discount_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.80"
+                            android:gravity="center">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/discount_til"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:hint="Discount in Rs"
+                                app:errorTextColor="@color/red_error"
+                                app:helperTextEnabled="true">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/discount_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:maxLength="10" />
+
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.20"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/apply_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/text_active_color"
+                                android:gravity="center"
+                                android:paddingStart="10dp"
+                                android:paddingTop="10dp"
+                                android:paddingEnd="10dp"
+                                android:paddingBottom="5dp"
+                                android:text="Apply"
+                                android:textColor="@color/text_active_color"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/grey_text" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Enter OTP"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/color_primary_text"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/otp_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:textStyle="italic"
+                        android:textAlignment="textStart"
+                        android:text="You can find this otp from user" />
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="horizontal">-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="0.25"-->
-<!--                            android:orientation="horizontal">-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:paddingStart="10dp"-->
-<!--                                android:paddingTop="10dp"-->
-<!--                                android:paddingEnd="5dp"-->
-<!--                                android:paddingBottom="5dp"-->
-<!--                                android:text="P:"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/item_prize"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:text="10000.00"-->
-<!--                                android:paddingStart="5dp"-->
-<!--                                android:paddingTop="10dp"-->
-<!--                                android:paddingBottom="10dp"-->
-<!--                                android:paddingEnd="5dp"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-<!--                        </LinearLayout>-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_weight="0.06"-->
-<!--                            android:gravity="center"-->
-<!--                            android:orientation="horizontal">-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:text="*"-->
-<!--                                android:textAlignment="center"-->
-<!--                                android:gravity="center"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-
-<!--                        </LinearLayout>-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_weight="0.18"-->
-<!--                            android:orientation="horizontal">-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:text="Q:"-->
-<!--                                android:paddingStart="5dp"-->
-<!--                                android:paddingTop="10dp"-->
-<!--                                android:paddingBottom="10dp"-->
-<!--                                android:paddingEnd="5dp"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-<!--                            <EditText-->
-<!--                                android:id="@+id/item_quantity"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:paddingStart="5dp"-->
-<!--                                android:paddingTop="10dp"-->
-<!--                                android:paddingEnd="5dp"-->
-<!--                                android:paddingBottom="10dp"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-<!--                        </LinearLayout>-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_weight="0.06"-->
-<!--                            android:orientation="horizontal">-->
-
-<!--                            <TextView-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:text="="-->
-<!--                                android:paddingStart="5dp"-->
-<!--                                android:paddingTop="10dp"-->
-<!--                                android:paddingBottom="10dp"-->
-<!--                                android:paddingEnd="5dp"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-<!--                        </LinearLayout>-->
-
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_weight="0.3355"-->
-<!--                            android:gravity="center"-->
-<!--                            android:orientation="horizontal">-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/item_total_prize"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center|end"-->
-<!--                                android:paddingStart="5dp"-->
-<!--                                android:paddingTop="10dp"-->
-<!--                                android:paddingBottom="10dp"-->
-<!--                                android:paddingEnd="10dp"-->
-<!--                                android:text="10000.00"-->
-<!--                                android:textSize="16sp"-->
-<!--                                android:textStyle="bold" />-->
-
-<!--                        </LinearLayout>-->
-
-<!--                    </LinearLayout>-->
+                    <in.aabhasjindal.otptextview.OtpTextView
+                        android:id="@+id/otp_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="40dp"
+                        android:textColor="@color/text_active_color"
+                        app:bar_active_color="@color/text_active_color"
+                        app:bar_enabled="true"
+                        app:bar_height="2dp"
+                        app:bar_inactive_color="@color/text_inactive_color"
+                        app:height="40dp"
+                        app:length="6"
+                        app:otp=""
+                        app:otp_box_background="@color/otp_color"
+                        app:otp_text_size="24dp"
+                        app:width="40dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -236,6 +293,14 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <include
+            android:id="@+id/loading"
+            layout="@layout/custom_loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </layout>
