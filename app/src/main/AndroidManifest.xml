@@ -35,7 +35,7 @@
         android:theme="@style/Theme.PurityHubServiceman"
         tools:targetApi="31">
         <activity
-            android:name=".ViewBillActivity"
+            android:name=".activity.ViewBillActivity"
             android:exported="false" />
         <activity
             android:name=".activity.GenerateBillActivity"
