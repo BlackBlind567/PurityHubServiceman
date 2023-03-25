@@ -25,7 +25,7 @@ public class VIewBillAdapter extends BlindAdapter<ViewBillData, GenerateBillItem
     public void onBindData(ViewBillData model, int position, GenerateBillItemLayoutBinding dataBinding) {
         dataBinding.itemPrize.setText("\u20B9" +model.getPrice());
         dataBinding.itemTitle.setText(model.getProduct_name());
-        dataBinding.itemQuantity.setText(model.getQuantity());
+        dataBinding.itemQuantity.setText(String.valueOf(model.getQuantity()));
         dataBinding.itemTotalPrize.setText("\u20B9" + model.getTotal_amount());
         dataBinding.deleteItem.setVisibility(View.GONE);
     }

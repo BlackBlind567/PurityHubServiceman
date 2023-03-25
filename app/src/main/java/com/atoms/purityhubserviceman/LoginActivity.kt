@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.atoms.purityhubserviceman.R
-import com.atoms.purityhubserviceman.Sharedpref
-import com.atoms.purityhubserviceman.UserDashboardActivity
+import com.atoms.purityhubserviceman.activity.UserDashboardActivity
 import com.atoms.purityhubserviceman.databinding.ActivityLoginBinding
 import com.atoms.purityhubserviceman.extra.Constants
 

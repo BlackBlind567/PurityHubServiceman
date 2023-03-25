@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
+import com.atoms.purityhubserviceman.activity.UserDashboardActivity
 import com.atoms.purityhubserviceman.databinding.FragmentOtpBinding
 import com.atoms.purityhubserviceman.extra.Constants
-import com.atoms.purityhubserviceman.extra.Constants.*
 import com.atoms.purityhubserviceman.model.SendOtp
 import com.atoms.purityhubserviceman.model.VerifyOtp
 import com.google.gson.GsonBuilder
@@ -124,6 +124,7 @@ class OtpFragment : Fragment() {
                         sharedpref.putString(Constants.name, verifyOtp.data.name)
                         sharedpref.putString(Constants.email, verifyOtp.data.email)
                         sharedpref.putString(Constants.mobile, verifyOtp.data.mobile)
+                        sharedpref.putString(Constants.online, verifyOtp.data.online.toString())
                         sharedpref.putString(Constants.login, "true")
 
 //                        val bundle = bundleOf("token" to verifyOtp.data.token)

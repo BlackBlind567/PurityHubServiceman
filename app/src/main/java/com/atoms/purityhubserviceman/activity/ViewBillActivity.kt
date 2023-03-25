@@ -5,25 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
-import com.atoms.purityhubserviceman.adapter.GenerateBillAdapter
-import com.atoms.purityhubserviceman.adapter.ServiceRequestAdapter
 import com.atoms.purityhubserviceman.adapter.VIewBillAdapter
-import com.atoms.purityhubserviceman.databinding.ActivityGenerateBillBinding
 import com.atoms.purityhubserviceman.databinding.ActivityViewBillBinding
-import com.atoms.purityhubserviceman.databinding.FragmentProductItemDetailBinding
 import com.atoms.purityhubserviceman.extra.BlindRecyclerMargin
 import com.atoms.purityhubserviceman.extra.Constants
-import com.atoms.purityhubserviceman.model.ProductData
 import com.atoms.purityhubserviceman.model.ViewBill
 import com.atoms.purityhubserviceman.model.ViewBillData
 import com.google.gson.GsonBuilder
-import com.myapplication.model.HistoryRequest
-import com.myapplication.model.ServiceRequestData
 import java.util.ArrayList
 
 class ViewBillActivity : AppCompatActivity() {

@@ -20,6 +20,8 @@ public class ServerApi {
     public static final String OPEN_SERVICE_REQUEST = BASE_URL + "update/service/open/status";
     public static final String CLOSE_SERVICE_REQUEST = BASE_URL + "update/service/close/status";
     public static final String GET_SERVICE_REQUEST = BASE_URL + "get/service/bill";
+    public static final String UPDATE_SERVICEMAN_STATUS_REQUEST = BASE_URL + "update/user/online/status";
+    public static final String DYNAMIC_PAGE_REQUEST = BASE_URL + "get/page";
     public static final String MY_FLATS_REQUEST =  "myflats/";
     public static final String USER_BILLS_REQUEST =  "userbills/";
     public static final String USER_HOME_REQUEST =  "userhome/";

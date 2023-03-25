@@ -1,38 +1,53 @@
-package com.atoms.purityhubserviceman
+package com.atoms.purityhubserviceman.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.CompoundButtonBindingAdapter.setChecked
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.android.volley.Request
+import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.adapter.ViewPagerAdapter
 import com.atoms.purityhubserviceman.databinding.ActivityUserDashboardBinding
 import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.fragments.ClosedFragment
 import com.atoms.purityhubserviceman.fragments.OpenFragment
 import com.atoms.purityhubserviceman.fragments.PendingFragment
+import com.atoms.purityhubserviceman.model.VerifyOtp
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
 
 
-class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelectedListener{
+class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationItemSelectedListener,
+    CompoundButton.OnCheckedChangeListener {
 
     lateinit var binding: ActivityUserDashboardBinding
     var drawerLayout: DrawerLayout? = null
+    var navSwitchStatus: SwitchCompat? = null
     var actionBarDrawerToggle: ActionBarDrawerToggle? = null
     var tokenValue = ""
     var responseMsg = ""
     var name = ""
     var updateListener: UpdateListener? = null
     var email = ""
+    var apiCallCheck = false
+    var online = ""
     lateinit var sharedpref: Sharedpref
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +57,7 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         binding.tool.toolbarText.text = "Purity Hub"
         sharedpref = Sharedpref.getInstance(this@UserDashboardActivity)
         name = sharedpref.getString(Constants.name)
+        online = sharedpref.getString(Constants.online)
         println("nameValue == $name")
 //        binding.tool.toolbarText.setTextColor(ContextCompat.getColor(this@UserDashboardActivity,
 //            R.color.text_active_color
@@ -75,13 +91,60 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         val navTitle = headerView.findViewById<View>(R.id.nav_header_title) as TextView
+        navSwitchStatus = headerView.findViewById<View>(R.id.switchcompat) as SwitchCompat
         navTitle.text = "Hi ${name},"
+
+        navSwitchStatus!!.setOnCheckedChangeListener(this)
+
+        if (online.equals("0")){
+            navSwitchStatus!!.isChecked = false
+        }else if (online.equals("1")){
+            navSwitchStatus!!.isChecked = true
+        }
+
 
 
         setupViewPager(binding.mainContent.viewpager);
         binding.mainContent.tabs.setupWithViewPager(binding.mainContent.viewpager);
 
     }
+
+    private fun updateServiceManStatus(updateStatus: String) {
+        val blackBlind = BlackBlind(this@UserDashboardActivity)
+        blackBlind.addParams("online",updateStatus)
+        blackBlind.headersRequired(true)
+        blackBlind.authToken(tokenValue)
+        blackBlind.requestUrl(ServerApi.UPDATE_SERVICEMAN_STATUS_REQUEST)
+        blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
+            override fun getResponse(response: String?) {
+                val jsonObject = JSONObject(response.toString())
+                val msg = jsonObject.getString("message")
+                val status = jsonObject.getInt("status")
+                val success = jsonObject.getBoolean("success")
+                responseMsg = msg
+                if (success && status == 1) {
+                    Toast.makeText(this@UserDashboardActivity, responseMsg, Toast.LENGTH_SHORT).show()
+
+                }else {
+                    Toast.makeText(this@UserDashboardActivity, responseMsg, Toast.LENGTH_SHORT).show()
+                    navSwitchStatus!!.setOnCheckedChangeListener (null);
+                    if(updateStatus.equals("0")){
+
+                        navSwitchStatus!!.isChecked = false
+                        navSwitchStatus!!.setOnCheckedChangeListener(this@UserDashboardActivity)
+                    }else if (updateStatus.equals("1")){
+                        navSwitchStatus!!.isChecked = true
+                        navSwitchStatus!!.setOnCheckedChangeListener(this@UserDashboardActivity)
+                    }
+                }
+            }
+
+            override fun getError(error: String?) {
+                Toast.makeText(this@UserDashboardActivity, responseMsg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun setupViewPager(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(PendingFragment(), "Pending")
@@ -97,10 +160,32 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
 //                startActivity(intent)
             }
             R.id.nav_call_us -> {
-
+                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
+                intent.putExtra("PageId", "5")
+                startActivity(intent)
             }
             R.id.nav_how_it_work -> {
+                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
+                intent.putExtra("PageId", "4")
+                startActivity(intent)
+            }
 
+            R.id.nav_about_us -> {
+                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
+                intent.putExtra("PageId", "1")
+                startActivity(intent)
+            }
+
+            R.id.nav_privacy_policy -> {
+                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
+                intent.putExtra("PageId", "2")
+                startActivity(intent)
+            }
+
+            R.id.nav_temrs -> {
+                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
+                intent.putExtra("PageId", "3")
+                startActivity(intent)
             }
             R.id.nav_logout -> {
                 sharedpref.clearData()
@@ -123,6 +208,17 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
     public fun stopLoading() {
         binding.mainContent.loading.customLoading.pauseAnimation()
         binding.mainContent.loading.layoutPage.visibility = View.GONE
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+
+        if(isChecked){
+            navSwitchStatus!!.text = "Switch to Offline"
+            updateServiceManStatus("0")
+        }else {
+            updateServiceManStatus("1")
+            navSwitchStatus!!.text = "Switch to Online"
+        }
     }
 
 //    var updateListener = object: UpdateListener{

@@ -1,6 +1,5 @@
 package com.atoms.purityhubserviceman.fragments
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -14,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
+import com.atoms.purityhubserviceman.activity.UserDashboardActivity
 import com.atoms.purityhubserviceman.adapter.BrandAdapter
 import com.atoms.purityhubserviceman.databinding.FragmentBrandBinding
 import com.atoms.purityhubserviceman.extra.Constants

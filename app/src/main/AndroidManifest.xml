@@ -28,12 +28,15 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/purity_hub_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/purity_hub_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.PurityHubServiceman"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.DynamicPageActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.ViewBillActivity"
             android:exported="false" />
@@ -46,7 +49,7 @@
         <!-- android:exported="false" /> -->
         <!--  -->
         <activity
-            android:name=".UserDashboardActivity"
+            android:name=".activity.UserDashboardActivity"
             android:exported="true" />
         <activity
             android:name=".activity.ProductsActivity"

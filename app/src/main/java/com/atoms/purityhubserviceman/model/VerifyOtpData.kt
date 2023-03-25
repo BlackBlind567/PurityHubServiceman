@@ -6,5 +6,7 @@ data class VerifyOtpData(
     val token: String,
     val name: String,
     val email: String,
-    val mobile: String
+    val mobile: String,
+    val online: Int,
+
 )

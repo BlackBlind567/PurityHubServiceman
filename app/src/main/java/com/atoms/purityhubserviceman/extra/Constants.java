@@ -8,5 +8,6 @@ public class Constants {
     public static final String email ="email";
     public static final String mobile ="mobile";
     public static final String login ="login";
+    public static final String online ="online";
 //    public static final String otp_id ="otp_id";
 }

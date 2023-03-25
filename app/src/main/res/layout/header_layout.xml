@@ -1,45 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:orientation="vertical"
     android:background="@drawable/header_bg">
 
-    <TextView
-        android:id="@+id/nav_header_title"
-        android:layout_width="match_parent"
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+
+       <TextView
+           android:id="@+id/nav_header_title"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="hi"
+           android:paddingLeft="10dp"
+           android:paddingTop="10dp"
+           android:paddingRight="10dp"
+           android:paddingBottom="5dp"
+           android:textSize="20sp"
+           android:textColor="@color/black"/>
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:paddingLeft="10dp"
+           android:paddingTop="5dp"
+           android:paddingRight="10dp"
+           android:paddingBottom="5dp"
+           android:text="Welcome to the"
+           android:textColor="@color/black"
+           android:textSize="20sp" />
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Purity Hub"
+           android:paddingLeft="10dp"
+           android:paddingTop="5dp"
+           android:paddingRight="10dp"
+           android:paddingBottom="5dp"
+           android:textSize="28sp"
+           android:textColor="@color/text_active_color"
+           android:textStyle="bold"/>
+
+   </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchcompat"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hi"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp"
-        android:textSize="20sp"
-        android:textColor="@color/black"/>
+        android:text="Switch to Online"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp"
-        android:text="Welcome to the"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Purity Hub"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp"
-        android:textSize="28sp"
-        android:textColor="@color/text_active_color"
-        android:textStyle="bold"/>
-
-
-
-</LinearLayout>
+</RelativeLayout>
