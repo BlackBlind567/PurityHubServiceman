@@ -65,7 +65,7 @@ class ViewBillActivity : AppCompatActivity() {
                 if (viewBill.success && viewBill.status == 1){
                     stopLoading()
 //                    Toast.makeText(requireContext(), "pending == " + historyRequest.message, Toast.LENGTH_SHORT).show()
-                    viewBillArray = viewBill.data as ArrayList<ViewBillData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
+                    viewBillArray = viewBill.data as ArrayList<ViewBillData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
                     val viewBillAdapter = VIewBillAdapter(
                         this@ViewBillActivity,
                         viewBillArray

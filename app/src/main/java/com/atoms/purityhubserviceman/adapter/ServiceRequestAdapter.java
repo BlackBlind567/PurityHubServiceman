@@ -2,24 +2,20 @@ package com.atoms.purityhubserviceman.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
 
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.atoms.purityhubserviceman.R;
 import com.atoms.purityhubserviceman.UpdateListener;
 import com.atoms.purityhubserviceman.activity.GenerateBillActivity;
-import com.atoms.purityhubserviceman.activity.ProductsActivity;
 import com.atoms.purityhubserviceman.activity.ServiceRequestDetailActivity;
 import com.atoms.purityhubserviceman.activity.ViewBillActivity;
 import com.atoms.purityhubserviceman.databinding.ServiceRequestLayoutBinding;
 import com.chinalwb.slidetoconfirmlib.ISlideListener;
-import com.chinalwb.slidetoconfirmlib.SlideToConfirm;
-import com.myapplication.model.ServiceRequestData;
+import com.atoms.purityhubserviceman.model.ServiceRequestData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,6 +68,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                 intent.putExtra("problemType",model.getProblem_type());
                 intent.putExtra("remark",model.getRemark());
                 intent.putExtra("createdAt",model.getCreated_at());
+                intent.putExtra("geoTag",model.getGeo_tag());
                 getContext().startActivity(intent);
 
             }

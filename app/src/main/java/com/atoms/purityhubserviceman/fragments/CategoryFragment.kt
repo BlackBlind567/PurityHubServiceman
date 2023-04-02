@@ -89,6 +89,7 @@ class CategoryFragment : Fragment() {
         val blackBlind = BlackBlind(requireContext())
         blackBlind.headersRequired(false)
         categoryArray.clear()
+        blackBlind.addParams("type", "2")
         blackBlind.requestUrl(ServerApi.CATEGORY_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
             override fun getResponse(response: String?) {

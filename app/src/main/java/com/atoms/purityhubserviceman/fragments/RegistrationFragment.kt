@@ -516,65 +516,6 @@ class RegistrationFragment : Fragment() {
     }
 
 
-//    private fun requestPermission() {
-//        ActivityCompat.requestPermissions(
-//            requireActivity(),
-//            arrayOf(
-//                Manifest.permission.CAMERA,
-//                Manifest.permission.READ_EXTERNAL_STORAGE,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE
-//            ),
-//            PERMISSION_REQUEST_CODE
-//        )
-//    }
-//
-//    private fun checkPermission(): Boolean {
-//        return !((ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-//                != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(
-//            requireContext(),
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//        )
-//                != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(
-//            requireContext(),
-//            Manifest.permission.READ_EXTERNAL_STORAGE
-//        )
-//                != PackageManager.PERMISSION_GRANTED))
-//    }
-
-//    private fun checkPermission() {
-//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-//
-//            // Requesting the permission
-//            ActivityCompat.requestPermissions(requireActivity(),
-//                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA))
-//        } else {
-//            Toast.makeText( requireContext(), "Permission already granted", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
-    // This function is called when the user accepts or decline the permission.
-    // Request Code is used to check which permission called this function.
-    // This request code is provided when the user is prompt for permission.
-//    override fun onRequestPermissionsResult(requestCode: Int,
-//                                            permissions: Array<String>,
-//                                            grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == CAMERA_PERMISSION_CODE) {
-//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(this@MainActivity, "Camera Permission Granted", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(this@MainActivity, "Camera Permission Denied", Toast.LENGTH_SHORT).show()
-//            }
-//        } else if (requestCode == STORAGE_PERMISSION_CODE) {
-//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(this@MainActivity, "Storage Permission Granted", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(this@MainActivity, "Storage Permission Denied", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-//}
-
     public fun startLoading(msg: String) {
         binding.loading.layoutPage.visibility = View.VISIBLE
         binding.loading.customLoading.playAnimation()

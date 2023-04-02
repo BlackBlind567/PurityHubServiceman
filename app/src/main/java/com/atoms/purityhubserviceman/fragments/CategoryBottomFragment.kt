@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -47,6 +48,7 @@ class CategoryBottomFragment(var categoryShortName: String) : BottomSheetDialogF
         val blackBlind = BlackBlind(requireContext())
         blackBlind.headersRequired(false)
         categoryArray.clear()
+        blackBlind.addParams("type", "1")
         blackBlind.requestUrl(ServerApi.CATEGORY_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
             override fun getResponse(response: String?) {

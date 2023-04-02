@@ -13,13 +13,12 @@ import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.adapter.ServiceRequestAdapter
 import com.atoms.purityhubserviceman.databinding.FragmentClosedBinding
-import com.atoms.purityhubserviceman.databinding.FragmentOpenBinding
 import com.atoms.purityhubserviceman.extra.BlindGridSpacing
 import com.atoms.purityhubserviceman.extra.BlindRecyclerMargin
 import com.atoms.purityhubserviceman.extra.Constants
 import com.google.gson.GsonBuilder
 import com.myapplication.model.HistoryRequest
-import com.myapplication.model.ServiceRequestData
+import com.atoms.purityhubserviceman.model.ServiceRequestData
 import java.util.*
 
 class ClosedFragment : Fragment(), UpdateListener {
@@ -75,7 +74,7 @@ class ClosedFragment : Fragment(), UpdateListener {
                 if (historyRequest.success && historyRequest.status == 1){
                     stopLoading()
                     Toast.makeText(requireContext(),"closed == " + historyRequest.message, Toast.LENGTH_SHORT).show()
-                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
+                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
                     val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Close")
                     binding.closeRv.adapter = serviceAdapter

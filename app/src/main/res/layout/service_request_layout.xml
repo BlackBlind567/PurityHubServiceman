@@ -5,7 +5,7 @@
     <data>
         <variable
             name="serviceRequest"
-            type="com.myapplication.model.ServiceRequestData" />
+            type="com.atoms.purityhubserviceman.model.ServiceRequestData" />
     </data>
 
     <androidx.cardview.widget.CardView

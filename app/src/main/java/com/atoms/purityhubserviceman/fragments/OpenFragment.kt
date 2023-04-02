@@ -18,7 +18,7 @@ import com.atoms.purityhubserviceman.extra.BlindRecyclerMargin
 import com.atoms.purityhubserviceman.extra.Constants
 import com.google.gson.GsonBuilder
 import com.myapplication.model.HistoryRequest
-import com.myapplication.model.ServiceRequestData
+import com.atoms.purityhubserviceman.model.ServiceRequestData
 import java.util.*
 
 
@@ -75,7 +75,7 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
                 if (historyRequest.success && historyRequest.status == 1){
                     stopLoading()
                     Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
-                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
+                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
                      serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Open")
                     binding.openRv.adapter = serviceAdapter

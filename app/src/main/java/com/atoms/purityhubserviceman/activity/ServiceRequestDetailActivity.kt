@@ -1,17 +1,20 @@
 package com.atoms.purityhubserviceman.activity
 
 import android.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.atoms.purityhubserviceman.R
 import com.atoms.purityhubserviceman.databinding.ActivityServiceRequestBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlin.jvm.internal.Intrinsics
+
 
 class ServiceRequestDetailActivity : AppCompatActivity() {
 
@@ -35,6 +38,7 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
         val problemType = intent.getStringExtra("problemType").toString()
         val remark = intent.getStringExtra("remark").toString()
         val createdAt = intent.getStringExtra("createdAt").toString()
+        val geoTag = intent.getStringExtra("geoTag").toString()
 
         binding.srServiceman.text = servicemanName
         binding.srBrand.text = brandName
@@ -47,7 +51,14 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
         binding.srProblemType.text = problemType
         binding.srRemark.text = remark
         binding.srReqDate.text = createdAt
+        binding.srLocation.setOnClickListener {
 
+//            val gmmIntentUri: Uri = Uri.parse("geo:37.7749,-122.4194")
+            val gmmIntentUri: Uri = Uri.parse("geo:$geoTag")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
 
         binding.srProblemImage.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this).create()

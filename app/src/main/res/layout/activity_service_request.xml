@@ -457,7 +457,39 @@
                     android:layout_height="1dp"
                     android:background="@color/bg_gray"
                     android:layout_margin="2dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="User Location"
+                        android:textColor="@color/text_active_color"
+                        android:gravity="left"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:textSize="@dimen/_14sp" />
+
+                    <TextView
+                        android:id="@+id/sr_location"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="View on Google Map"
+                        android:textColor="@color/black"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:textSize="@dimen/_14sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.myapplication.model
+package com.atoms.purityhubserviceman.model
 
 data class ServiceRequestData(
     val address: String,

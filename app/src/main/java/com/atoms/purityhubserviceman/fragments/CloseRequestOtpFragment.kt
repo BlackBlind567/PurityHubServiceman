@@ -85,7 +85,7 @@ class CloseRequestOtpFragment(var requestId: String?, var position: Int) : Botto
 //                if (historyRequest.success && historyRequest.status == 1){
 //                    stopLoading()
 //                    Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
-//                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.myapplication.model.ServiceRequestData> */
+//                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
 //                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
 //                        updateListener, "Pending")
 //                    binding.pendingRv.adapter = serviceAdapter
