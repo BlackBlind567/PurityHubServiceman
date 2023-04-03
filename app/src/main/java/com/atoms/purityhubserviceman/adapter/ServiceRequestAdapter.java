@@ -69,6 +69,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                 intent.putExtra("remark",model.getRemark());
                 intent.putExtra("createdAt",model.getCreated_at());
                 intent.putExtra("geoTag",model.getGeo_tag());
+                intent.putExtra("userHouse",model.getUser());
                 getContext().startActivity(intent);
 
             }

@@ -125,14 +125,17 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
         }
 
         binding.applyTv.setOnClickListener {
-            discountValue = binding.discountEt.text.toString()
-            if (discountValue.equals("")){
-                Toast.makeText(this, "please enter discount amount", Toast.LENGTH_SHORT).show()
-            }else{
-                notChangedAmount = finalTotalItemPrice
-                finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
-                binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
-            }
+           if(binding.applyTv.text == "Apply"){
+               discountValue = binding.discountEt.text.toString()
+               if (discountValue.equals("")){
+                   Toast.makeText(this, "please enter discount amount", Toast.LENGTH_SHORT).show()
+               }else{
+                   binding.applyTv.text = "Applied"
+                   notChangedAmount = finalTotalItemPrice
+                   finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
+                   binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+               }
+           }
 
         }
 
@@ -150,6 +153,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (count == 0){
+                    binding.applyTv.text = "Apply"
                         finalTotalItemPrice = notChangedAmount
                     binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
                 }else {
@@ -183,6 +187,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                 if (jsonObject.has("data")) {
                     val dataString = jsonObject.get("data")
                     if (dataString is JSONObject) {
+                        stopLoading()
                         Toast.makeText(
                             this@GenerateBillActivity,
                             jsonObject.getString("message"),
@@ -190,6 +195,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                         ).show()
                     }
                     if (success && status == 1) {
+                        stopLoading()
                         Toast.makeText(
                             this@GenerateBillActivity,
                             msg,
@@ -227,6 +233,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
 
 //                    }
                 } else {
+                    stopLoading()
                     Toast.makeText(
                         this@GenerateBillActivity,
                         jsonObject.getString("message"),
@@ -242,6 +249,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             }
 
             override fun getError(error: String?) {
+                stopLoading()
 //                Toast.makeText(this@GenerateBillActivity, responseMsg, Toast.LENGTH_SHORT).show()
             }
         })
