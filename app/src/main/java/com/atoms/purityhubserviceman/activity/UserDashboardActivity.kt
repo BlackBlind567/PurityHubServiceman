@@ -1,7 +1,12 @@
 package com.atoms.purityhubserviceman.activity
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
@@ -11,14 +16,9 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.CompoundButtonBindingAdapter.setChecked
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
@@ -28,9 +28,12 @@ import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.fragments.ClosedFragment
 import com.atoms.purityhubserviceman.fragments.OpenFragment
 import com.atoms.purityhubserviceman.fragments.PendingFragment
-import com.atoms.purityhubserviceman.model.VerifyOtp
 import com.google.android.material.navigation.NavigationView
-import com.google.gson.GsonBuilder
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import org.json.JSONObject
 
 
@@ -160,14 +163,27 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
 //                startActivity(intent)
             }
             R.id.nav_call_us -> {
-                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
-                intent.putExtra("PageId", "5")
-                startActivity(intent)
+               requestPermissions()
+
             }
-            R.id.nav_how_it_work -> {
-                val intent = Intent(this@UserDashboardActivity, DynamicPageActivity::class.java)
-                intent.putExtra("PageId", "4")
-                startActivity(intent)
+            R.id.nav_visit_website ->{
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse("https://www.purityhub.co.in")
+                    intent.setPackage("com.android.chrome")
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    // chrome app not install
+                    Toast.makeText(this@UserDashboardActivity, "Please install chrome browser", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            R.id.nav_earning->{
+                Toast.makeText(this@UserDashboardActivity, "Coming Soon", Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.nav_review->{
+                Toast.makeText(this@UserDashboardActivity, "Coming Soon", Toast.LENGTH_SHORT).show()
             }
 
             R.id.nav_about_us -> {
@@ -194,6 +210,7 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
                 finish()
             }
         }
+
         return true
     }
 
@@ -221,7 +238,77 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         }
     }
 
-//    var updateListener = object: UpdateListener{
-//
-//    }
+    override fun onBackPressed() {
+        finishAffinity()
+        super.onBackPressed()
+    }
+
+
+    private fun requestPermissions() {
+        // below line is use to request permission in the current activity.
+        // this method is use to handle error in runtime permissions
+        Dexter.withContext(this@UserDashboardActivity)
+            // below line is use to request the number of permissions which are required in our app.
+            .withPermissions( Manifest.permission.CALL_PHONE)
+            // after adding permissions we are calling an with listener method.
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(multiplePermissionsReport: MultiplePermissionsReport) {
+                    // this method is called when all permissions are granted
+                    if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                        // do you work now
+                        callPhone()
+//                        Toast.makeText(requireContext(), "All the permissions are granted..", Toast.LENGTH_SHORT).show()
+                    }
+                    // check for permanent denial of any permission
+                    if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied) {
+                        // permission is denied permanently, we will show user a dialog message.
+                        showSettingsDialog()
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(list: List<PermissionRequest>, permissionToken: PermissionToken) {
+                    // this method is called when user grants some permission and denies some of them.
+                    permissionToken.continuePermissionRequest()
+                }
+            }).withErrorListener {
+                // we are displaying a toast message for error message.
+//                Toast.makeText(this@UserDashboardActivity, "Error occurred! ", Toast.LENGTH_SHORT).show()
+            }
+            // below line is use to run the permissions on same thread and to check the permissions
+            .onSameThread().check()
+    }
+
+    private fun callPhone() {
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "6262100101"))
+        startActivity(intent)
+    }
+
+    // below is the shoe setting dialog method
+    // which is use to display a dialogue message.
+    private fun showSettingsDialog() {
+        // we are displaying an alert dialog for permissions
+        val builder = AlertDialog.Builder(this@UserDashboardActivity)
+
+        // below line is the title for our alert dialog.
+        builder.setTitle("Need Permissions")
+
+        // below line is our message for our dialog
+        builder.setMessage("This app needs permission to use call feature. You can grant them in app settings.")
+        builder.setPositiveButton("GOTO SETTINGS") { dialog, which ->
+            // this method is called on click on positive button and on clicking shit button
+            // we are redirecting our user from our app to the settings page of our app.
+            dialog.cancel()
+            // below is the intent from which we are redirecting our user.
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivityForResult(intent, 101)
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            // this method is called when user click on negative button.
+            dialog.cancel()
+        }
+        // below line is used to display our dialog
+        builder.show()
+    }
 }

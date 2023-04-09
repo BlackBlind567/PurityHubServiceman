@@ -65,6 +65,7 @@ class ProductsActivity : AppCompatActivity(),
     }
 
     private fun getBrandsDetails(brandId:String, categoryId: String) {
+        startLoading(msg = "Getting data...")
         val blackBlind = BlackBlind(this@ProductsActivity)
         blackBlind.headersRequired(true)
         blackBlind.authToken(tokenValue)
@@ -83,6 +84,7 @@ class ProductsActivity : AppCompatActivity(),
                if (jsonObject.has("data")){
                    val dataString = jsonObject.get("data")
                    if (dataString is JSONObject ){
+                       stopLoading()
                        Toast.makeText(this@ProductsActivity, jsonObject.getString("message"), Toast.LENGTH_SHORT).show()
                    }else if (dataString is JSONArray){
                        val gsonBuilder = GsonBuilder()
@@ -103,13 +105,14 @@ class ProductsActivity : AppCompatActivity(),
 
 
                        }else {
-
+                           stopLoading()
                            Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
                        }
 
 
                    }
                }else{
+                   stopLoading()
                    Toast.makeText(this@ProductsActivity, jsonObject.getString("message"), Toast.LENGTH_SHORT).show()
                }
                 val productsAdapter = ProductsAdapter(
@@ -117,7 +120,7 @@ class ProductsActivity : AppCompatActivity(),
                     productArray
                 )
                 binding.productsRv.setAdapter(productsAdapter)
-
+                stopLoading()
             }
 
             override fun getError(error: String?) {
@@ -177,5 +180,15 @@ class ProductsActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
+    public fun startLoading(msg: String) {
+        binding.loading.layoutPage.visibility = View.VISIBLE
+        binding.loading.customLoading.playAnimation()
+        binding.loading.customLoading.loop(true)
+        binding.loading.customDialogMessage.text = msg
+    }
 
+    public fun stopLoading() {
+        binding.loading.customLoading.pauseAnimation()
+        binding.loading.layoutPage.visibility = View.GONE
+    }
 }

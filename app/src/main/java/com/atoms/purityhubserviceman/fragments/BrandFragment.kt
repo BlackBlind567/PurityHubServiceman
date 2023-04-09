@@ -56,7 +56,7 @@ class BrandFragment : Fragment() {
         binding.brandsRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         nameValue = arguments?.getString("nameValue").toString()
         emailValue = arguments?.getString("emailValue").toString()
-        mobileValue = arguments?.getString("mobileValue").toString()
+        mobileValue = arguments?.getString(Constants.mobile).toString()
         addValue = arguments?.getString("addValue").toString()
         stateId = arguments?.getString("stateId").toString()
         cityId = arguments?.getString("cityId").toString()
@@ -120,7 +120,7 @@ class BrandFragment : Fragment() {
                     stopLoading()
                     sharedpref.putString(Constants.token, signUp.data.token)
                     sharedpref.putString(Constants.name, signUp.data.name)
-                    sharedpref.putString(Constants.email, signUp.data.email)
+                    sharedpref.putString(Constants.email, signUp.data.email.toString())
                     sharedpref.putString(Constants.mobile, signUp.data.mobile)
                     sharedpref.putString(Constants.login, "true")
 //                    Toast.makeText(requireContext(), signUp.message, Toast.LENGTH_SHORT).show()
@@ -138,6 +138,7 @@ class BrandFragment : Fragment() {
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })
@@ -184,6 +185,7 @@ class BrandFragment : Fragment() {
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })

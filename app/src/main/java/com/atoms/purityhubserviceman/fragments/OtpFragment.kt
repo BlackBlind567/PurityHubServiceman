@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.activity.UserDashboardActivity
@@ -39,12 +40,15 @@ class OtpFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         otpFragment =DataBindingUtil.inflate(inflater, R.layout.fragment_otp, container, false)
-        mobileNUmber = arguments?.getString("mobile").toString()
+        mobileNUmber = arguments?.getString(Constants.mobile).toString()
         sharedpref = Sharedpref.getInstance(requireContext())
         otpFragment.otpTv.text = "Enter OTP sent to your mobile number $mobileNUmber"
         otpFragment.validateOtpBtn.setOnClickListener {
             otpValue = otpFragment.otpView.otp
-
+        otpFragment.backImage.setOnClickListener {
+            Navigation.findNavController(otpFragment.root)
+                .navigate(R.id.numberCheckFragment)
+        }
             println("otpview == "+ otpFragment.otpView.otp)
 //            println("otpview == "+ otpFragment.otpView. )
 
@@ -114,7 +118,7 @@ class OtpFragment : Fragment() {
                         println("otpValue == " + verifyOtp.data.otp_id)
                         val bundle = bundleOf(
                             "otpId" to verifyOtp.data.otp_id.toString(),
-                            "number" to mobileNUmber
+                            Constants.mobile to mobileNUmber
                         )
                         Navigation.findNavController(otpFragment.root)
                             .navigate(R.id.action_otpFragment_to_registationFragment, bundle)
@@ -136,11 +140,13 @@ class OtpFragment : Fragment() {
                         startActivity(intent)
                     }
                 }else {
+                    stopLoading()
                     Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })
@@ -169,11 +175,13 @@ class OtpFragment : Fragment() {
 //                    Navigation.findNavController(numberCheckFragment.root)
 //                        .navigate(R.id.action_numberCheckFragment_to_otpFragment, bundle)
                 }else {
+                    stopLoading()
                     Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })

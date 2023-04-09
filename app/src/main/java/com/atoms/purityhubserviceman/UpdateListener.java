@@ -28,6 +28,8 @@ public interface UpdateListener {
 
    }
 
+   public default void makeCall(String phoneNumber){
 
+   }
 
 }

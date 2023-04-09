@@ -1,7 +1,8 @@
-package com.atoms.purityhubserviceman
+package com.atoms.purityhubserviceman.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.atoms.purityhubserviceman.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

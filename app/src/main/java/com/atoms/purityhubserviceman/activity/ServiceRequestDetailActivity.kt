@@ -39,7 +39,9 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
         val remark = intent.getStringExtra("remark").toString()
         val createdAt = intent.getStringExtra("createdAt").toString()
         val geoTag = intent.getStringExtra("geoTag").toString()
-
+        val userHouse = intent.getStringExtra("userHouse").toString()
+        val openDatetime = intent.getStringExtra("open_datetime").toString()
+        val closeDatetime = intent.getStringExtra("close_datetime").toString()
         binding.srServiceman.text = servicemanName
         binding.srBrand.text = brandName
         binding.srCategory.text = categoryName
@@ -48,13 +50,22 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
         binding.srCity.text = city
         binding.srAddress.text = address
         binding.srProblemPriority.text = priority
-        binding.srProblemType.text = problemType
+//        binding.srProblemType.text = problemType
         binding.srRemark.text = remark
-        binding.srReqDate.text = createdAt
+//        binding.srReqDate.text = createdAt
+        binding.srCreated.text = createdAt
+        binding.srOpen.text = openDatetime
+        binding.srClosed.text = closeDatetime
         binding.srLocation.setOnClickListener {
 
 //            val gmmIntentUri: Uri = Uri.parse("geo:37.7749,-122.4194")
-            val gmmIntentUri: Uri = Uri.parse("geo:$geoTag")
+            val label = "$userHouse Home"
+            val uriBegin = "geo:$geoTag"
+            val query = "$geoTag($label)"
+            val encodedQuery = Uri.encode(query)
+            val uriString = "$uriBegin?q=$encodedQuery"
+
+            val gmmIntentUri: Uri = Uri.parse(uriString)
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
@@ -87,5 +98,21 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
 //            }
             alertDialog.show()
         }
+    }
+
+    override fun onNavigateUp(): Boolean {
+
+        finish()
+        return super.onNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        finish()
+        super.onBackPressed()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

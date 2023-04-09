@@ -51,6 +51,7 @@ class PendingFragment : Fragment(), UpdateListener {
 
             startLoading("Getting Request...")
             callUserServiceRequestHistory()
+
         }
 
 
@@ -75,7 +76,6 @@ class PendingFragment : Fragment(), UpdateListener {
                 responseMsg = historyRequest.message
                 if (historyRequest.success && historyRequest.status == 1){
                     stopLoading()
-                    Toast.makeText(requireContext(), "pending == " + historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
                     serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Pending")
@@ -88,6 +88,7 @@ class PendingFragment : Fragment(), UpdateListener {
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })
@@ -130,26 +131,15 @@ class PendingFragment : Fragment(), UpdateListener {
                 val success = jsonObject.getBoolean("success")
                 if (success && status == 1){
                     serviceAdapter.removeItem(position, serviceRequestArray)
+                    println("size == s${serviceRequestArray.size}")
+                    if(serviceRequestArray.size == 0) {
+                        serviceRequestArray.clear()
+                        serviceAdapter.notifyDataSetChanged()
+                    }else{
+                        serviceAdapter.notifyDataSetChanged()
+                    }
                 }
-//                val gsonBuilder = GsonBuilder()
-//                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
-//                val gson = gsonBuilder.create()
-//                val historyRequest = gson.fromJson(
-//                    response,
-//                    HistoryRequest::class.java
-//                )
-//                responseMsg = historyRequest.message
-//                if (historyRequest.success && historyRequest.status == 1){
-//                    stopLoading()
-//                    Toast.makeText(requireContext(), historyRequest.message, Toast.LENGTH_SHORT).show()
-//                    serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
-//                    val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
-//                        updateListener, "Pending")
-//                    binding.pendingRv.adapter = serviceAdapter
-//
-//                }else {
-//                    Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-//                }
+
             }
 
             override fun getError(error: String?) {

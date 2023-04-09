@@ -35,6 +35,8 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
     var discountValue = ""
     var serviceId = ""
     var notChangedAmount = 0
+    var billPaidValue = ""
+    var remarkValue = ""
     var otpValue = ""
     var finalTotalItemPrice = 0
     var newItemArray = false
@@ -109,14 +111,35 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             startActivity(intent)
         }
 
+        binding.rbGroup.setOnCheckedChangeListener { group, checkedId ->
+
+            when(checkedId){
+                R.id.bill_paid->{
+                    binding.remarkTil.visibility = View.VISIBLE
+                    billPaidValue = "Paid"
+                }
+                R.id.bill_not_paid->{
+                    binding.remarkTil.visibility = View.GONE
+                    billPaidValue = "Not Paid"
+                    binding.remarkEt.text!!.clear()
+                }
+            }
+
+        }
+
         binding.generateBill.setOnClickListener {
 
             discountValue = binding.discountEt.text.toString()
-
+            remarkValue = binding.remarkEt.text.toString()
             otpValue = binding.otpView.otp
             if (otpValue.length < 6){
                 binding.otpView.showError()
-            }else {
+            }else if (billPaidValue == "") {
+                Toast.makeText(this@GenerateBillActivity, "Please select bill is paid by user or not", Toast.LENGTH_SHORT).show()
+            }else if (billPaidValue == "Paid" && remarkValue == ""){
+                Toast.makeText(this@GenerateBillActivity, "Please fill remark", Toast.LENGTH_SHORT).show()
+            }
+            else {
                 startLoading("sending data...")
                 generateBillForUser()
             }
@@ -172,6 +195,8 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
         blackBlind.addParams("quantity", selectedQuantityIdValue)
         blackBlind.addParams("discount", discountValue)
         blackBlind.addParams("otp", otpValue)
+        blackBlind.addParams("remark", remarkValue)
+        blackBlind.addParams("billStatus", billPaidValue)
         blackBlind.requestUrl(ServerApi.GENERATE_BILL_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
             override fun getResponse(response: String?) {
@@ -227,6 +252,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
 
 //                    }
                 } else {
+                    stopLoading()
                     Toast.makeText(
                         this@GenerateBillActivity,
                         jsonObject.getString("message"),
@@ -296,5 +322,10 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
     public fun stopLoading() {
         binding.loading.customLoading.pauseAnimation()
         binding.loading.layoutPage.visibility = View.GONE
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 }

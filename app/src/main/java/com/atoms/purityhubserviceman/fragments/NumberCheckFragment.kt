@@ -15,6 +15,7 @@ import com.atoms.purityhubserviceman.R
 import com.atoms.purityhubserviceman.ServerApi
 import com.atoms.purityhubserviceman.VolleyCallback
 import com.atoms.purityhubserviceman.databinding.FragmentNumberCheckBinding
+import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.model.SendOtp
 import com.google.gson.GsonBuilder
 
@@ -86,7 +87,7 @@ class NumberCheckFragment : Fragment() {
                     stopLoading()
                     Toast.makeText(requireContext(), sendOtp.message, Toast.LENGTH_SHORT).show()
 
-                    val bundle = bundleOf("mobile" to numberValue)
+                    val bundle = bundleOf(Constants.mobile to numberValue)
                     Navigation.findNavController(numberCheckFragment.root)
                         .navigate(R.id.action_numberCheckFragment_to_otpFragment, bundle)
                 }else {
@@ -96,6 +97,7 @@ class NumberCheckFragment : Fragment() {
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })

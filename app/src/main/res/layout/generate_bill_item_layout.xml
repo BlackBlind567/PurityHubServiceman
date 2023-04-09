@@ -34,7 +34,7 @@
                    android:paddingTop="10dp"
                    android:paddingEnd="10dp"
                    android:textColor="@color/text_active_color"
-                   android:textSize="16sp"
+                   android:textSize="14sp"
                    android:textStyle="bold" />
                <ImageView
                    android:id="@+id/deleteItem"
@@ -67,7 +67,7 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="5dp"
                         android:paddingEnd="5dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -79,7 +79,7 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingEnd="5dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -98,7 +98,7 @@
                         android:gravity="center"
                         android:text="*"
                         android:textAlignment="center"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
 
@@ -118,7 +118,7 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingEnd="5dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:paddingEnd="5dp"
                         android:textColor="@color/black"
                         android:paddingBottom="10dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -150,7 +150,7 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingEnd="5dp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -172,7 +172,7 @@
                         android:paddingBottom="10dp"
                         android:paddingEnd="10dp"
                         android:text="10000.00"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 

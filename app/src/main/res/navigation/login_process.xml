@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_otpFragment_to_registationFragment"
             app:destination="@id/registationFragment" />
+        <action
+            android:id="@+id/action_otpFragment_to_numberCheckFragment"
+            app:destination="@id/numberCheckFragment" />
 
     </fragment>
     <fragment
@@ -33,6 +36,9 @@
         <action
             android:id="@+id/action_registationFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_registationFragment_to_numberCheckFragment"
+            app:destination="@id/numberCheckFragment" />
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -41,11 +47,19 @@
         <action
             android:id="@+id/action_categoryFragment_to_brandFragment"
             app:destination="@id/brandFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_registationFragment"
+            app:destination="@id/registationFragment" />
+        <!--        app:popUpToSaveState="true"-->
     </fragment>
     <fragment
         android:id="@+id/brandFragment"
         android:name="com.atoms.purityhubserviceman.fragments.BrandFragment"
-        android:label="BrandFragment" />
+        android:label="BrandFragment" >
+        <action
+            android:id="@+id/action_brandFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+    </fragment>
 
     <!--    <fragment-->
 <!--        android:id="@+id/detailHistoryServiceFragment2"-->

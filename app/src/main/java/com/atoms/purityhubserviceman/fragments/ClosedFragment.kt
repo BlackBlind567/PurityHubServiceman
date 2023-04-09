@@ -73,18 +73,19 @@ class ClosedFragment : Fragment(), UpdateListener {
                 responseMsg = historyRequest.message
                 if (historyRequest.success && historyRequest.status == 1){
                     stopLoading()
-                    Toast.makeText(requireContext(),"closed == " + historyRequest.message, Toast.LENGTH_SHORT).show()
                     serviceRequestArray = historyRequest.data as ArrayList<ServiceRequestData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
                     val serviceAdapter = ServiceRequestAdapter(requireContext(), serviceRequestArray,
                         updateListener, "Close")
                     binding.closeRv.adapter = serviceAdapter
 
                 }else {
+                    stopLoading()
                     Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun getError(error: String?) {
+                stopLoading()
                 Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
             }
         })

@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.adapter.BrandCategoryAdapter
@@ -93,7 +94,7 @@ class RegistrationFragment : Fragment() {
             R.layout.fragment_registation, container, false
         )
         otpId = arguments?.getString("otpId").toString()
-        mobileNumber = arguments?.getString("number").toString()
+        mobileNumber = arguments?.getString(Constants.mobile).toString()
         sharedpref = Sharedpref.getInstance(requireContext())
         tokenValue = sharedpref.getString(Constants.token)
 //        checkPermission()
@@ -112,7 +113,15 @@ class RegistrationFragment : Fragment() {
                 binding.chooseState.setText(stateArray[position].name)
                 val stateCityAdapter = StateCityAdapter(requireContext(), stateArray)
                 binding.chooseState.setAdapter(stateCityAdapter)
+                cityId = ""
+                binding.chooseCity.text.clear()
             }
+        binding.backImage.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.numberCheckFragment)
+
+        }
+
 
         binding.chooseCity.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -120,7 +129,7 @@ class RegistrationFragment : Fragment() {
 
                 binding.chooseCity.setText(cityArray[position].name)
                 val stateCityAdapter = StateCityAdapter(requireContext(), cityArray)
-                binding.chooseState.setAdapter(stateCityAdapter)
+                binding.chooseCity.setAdapter(stateCityAdapter)
             }
 
 //        getBrandsDetails(apiType = "Brands")
@@ -194,7 +203,7 @@ class RegistrationFragment : Fragment() {
         } else {
             println("else")
             val bundle = bundleOf("nameValue" to nameValue,
-                "emailValue" to emailValue, "mobileValue" to mobileNumber,
+                "emailValue" to emailValue, Constants.mobile to mobileNumber,
                 "addValue" to addValue, "stateId" to stateId, "otpId" to otpId,
                 "cityId" to cityId, "base64Image" to base64Image)
             Navigation.findNavController(binding.root)
@@ -204,119 +213,7 @@ class RegistrationFragment : Fragment() {
 
     }
 
-//    private fun getServiceManList(brandId: String, categoryId: String, cityId: String) {
-//        val blackBlind = BlackBlind(requireContext())
-//        blackBlind.headersRequired(true)
-//        blackBlind.authToken(tokenValue)
-//        blackBlind.addParams("brands_id", brandId)
-//        blackBlind.addParams("service_req_catid", categoryId)
-//        blackBlind.addParams("city_id", cityId)
-//        blackBlind.requestUrl(ServerApi.TECHNICIAN_REQUEST)
-//        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
-//            override fun getResponse(response: String?) {
-//                val jsonObject = JSONObject(response.toString())
-//                if (jsonObject.has("data")) {
-//                    val dataString = jsonObject.get("data")
-//                    if (dataString is JSONObject) {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            jsonObject.getString("message"),
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    } else if (dataString is JSONArray) {
-//                        val gsonBuilder = GsonBuilder()
-//                        gsonBuilder.setDateFormat("M/d/yy hh:mm a")
-//                        val gson = gsonBuilder.create()
-////                        serviceman = gson.fromJson(
-////                            response,
-////                            Serviceman::class.java
-////                        )
-////                        responseMsg = serviceman!!.message
-////                        if (serviceman!!.success && serviceman!!.status == 1) {
-////                            servicemanArray = serviceman!!.data as ArrayList<ServicemanData>
-////                            stopLoading()
-////                            val bottomSheet = ServicemanFragment(
-////                                brandId, categoryId, cityId, problemType,
-////                                stateId, priorityType, remarkValue, base64Image, addValue, latitude,
-////                                longitude, servicemanArray
-////                            )
-////                            bottomSheet.show(
-////                                parentFragmentManager,
-////                                "BrandsFragment"
-////                            )
-////                        } else {
-////
-////                            Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-////                        }
-//
-//
-//                    }
-//                } else {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        jsonObject.getString("message"),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//
-//            override fun getError(error: String?) {
-//                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
 
-//    private fun getBrandsDetails(apiType: String) {
-//        val blackBlind = BlackBlind(requireContext())
-//        blackBlind.headersRequired(false)
-//        if (apiType.equals("Brands")) {
-//            brandArray.clear()
-//            blackBlind.requestUrl(ServerApi.BRAND_REQUEST)
-//        } else if (apiType.equals("Category")) {
-//            categoryArray.clear()
-//            blackBlind.requestUrl(ServerApi.CATEGORY_REQUEST)
-//        }
-//
-//        blackBlind.executeRequest(Request.Method.POST, object : VolleyCallback {
-//            override fun getResponse(response: String?) {
-//                val gsonBuilder = GsonBuilder()
-//                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
-//                val gson = gsonBuilder.create()
-//                val brandCategory = gson.fromJson(
-//                    response,
-//                    BrandCategory::class.java
-//                )
-//                responseMsg = brandCategory.message
-//                if (brandCategory.success && brandCategory.status == 1) {
-////                    Toast.makeText(requireContext(), brandCategory.message, Toast.LENGTH_SHORT)
-////                        .show()
-////
-////                    for (i in 0 until brandCategory.data.size) {
-////
-////                    }
-//
-//                    if (apiType.equals("Brands")) {
-//                        brandArray = brandCategory.data as ArrayList<BrandCategoryData>
-//                        val brandCategoryAdapter =
-//                            BrandCategoryAdapter(requireContext(), brandArray)
-//                        binding.chooseBrand.setAdapter(brandCategoryAdapter)
-//                    } else if (apiType.equals("Category")) {
-//                        categoryArray = brandCategory.data as ArrayList<BrandCategoryData>
-//                        val brandCategoryAdapter =
-//                            BrandCategoryAdapter(requireContext(), categoryArray)
-//                        binding.chooseCategory.setAdapter(brandCategoryAdapter)
-//                    }
-//
-//                } else {
-//                    Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun getError(error: String?) {
-//                Toast.makeText(requireContext(), responseMsg, Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
 
 
     private fun getCityStateDetails(apiType: String) {
@@ -380,6 +277,7 @@ class RegistrationFragment : Fragment() {
             .showFolderView(false)
             .enableSelectAll(false)
             .enableImagePicker(true)
+            .setActivityTheme(R.style.Theme_PurityHubServiceman)
             .setCameraPlaceholder(R.drawable.camera)
             .withOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
             .pickPhoto(this, CAMERA_REQUEST);

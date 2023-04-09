@@ -54,7 +54,7 @@
                         android:paddingBottom="5dp"
                         android:text="Please click on add item to add new product for generate bill for user"
                         android:textColor="@color/grey_text"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="italic" />
 
 
@@ -83,7 +83,7 @@
                                 android:paddingBottom="5dp"
                                 android:text="Add Item"
                                 android:textColor="@color/text_active_color"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -109,7 +109,7 @@
                                 android:paddingBottom="5dp"
                                 android:text="Apply Discount"
                                 android:textColor="@color/text_active_color"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -225,11 +225,61 @@
                         app:bar_height="2dp"
                         app:bar_inactive_color="@color/text_inactive_color"
                         app:height="40dp"
-                        app:length="6"
+                        app:length="4"
                         app:otp=""
                         app:otp_box_background="@color/otp_color"
                         app:otp_text_size="24dp"
                         app:width="40dp" />
+
+
+                    <RadioGroup
+                        android:id="@+id/rb_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/bill_paid"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dp"
+                            android:text="Bill Paid"/>
+
+
+                        <RadioButton
+                            android:id="@+id/bill_not_paid"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="20dp"
+                            android:text="Bill Pending"/>
+
+                    </RadioGroup>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/remark_til"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:hint="Bill Remrk"
+                        app:errorEnabled="true"
+                        app:errorTextColor="@color/red_error"
+                        app:helperTextEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/remark_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:maxLength="100"
+                            android:maxLines="1" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
             </LinearLayout>

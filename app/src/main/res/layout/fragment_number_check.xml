@@ -80,8 +80,25 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_margin="20dp"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:text="We will send you an OTP(One Time Password) in sms"/>
+
 
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:src="@drawable/powered_by"
+            android:layout_marginBottom="30dp"
+            android:layout_above="@id/send_otp_btn"/>
 
         <Button
             android:id="@+id/send_otp_btn"

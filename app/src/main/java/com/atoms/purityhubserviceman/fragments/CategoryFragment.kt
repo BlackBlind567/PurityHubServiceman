@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -16,6 +17,7 @@ import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.adapter.CategoryAdapter
 import com.atoms.purityhubserviceman.databinding.FragmentCategoryBinding
+import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.model.BrandCategory
 import com.atoms.purityhubserviceman.model.BrandCategoryData
 import com.google.gson.GsonBuilder
@@ -54,7 +56,7 @@ class CategoryFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         nameValue = arguments?.getString("nameValue").toString()
         emailValue = arguments?.getString("emailValue").toString()
-        mobileValue = arguments?.getString("mobileValue").toString()
+        mobileValue = arguments?.getString(Constants.mobile).toString()
         addValue = arguments?.getString("addValue").toString()
         stateId = arguments?.getString("stateId").toString()
         cityId = arguments?.getString("cityId").toString()
@@ -69,7 +71,7 @@ class CategoryFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please select any one of them in category", Toast.LENGTH_SHORT).show()
             }else{
                 val bundle = bundleOf("nameValue" to nameValue,
-                    "emailValue" to emailValue, "mobileValue" to mobileValue,
+                    "emailValue" to emailValue, Constants.mobile to mobileValue,
                     "addValue" to addValue, "stateId" to stateId,
                     "cityId" to cityId, "base64Image" to base64Image,"otpId" to otpId,
                 "selectedCatId" to selectedCatIdValue.toString())
@@ -79,8 +81,17 @@ class CategoryFragment : Fragment() {
 
 
         }
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true /* enabled by default */) {
+                override fun handleOnBackPressed() {
+                    val bundle = bundleOf( Constants.mobile to mobileValue,
+                        "otpId" to otpId)
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.registationFragment, bundle )
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-//        binding.filterText.text = categoryShortName
         return binding.root
     }
 
@@ -118,7 +129,7 @@ class CategoryFragment : Fragment() {
                             "categoryShortName"
                         )
                     binding.categoryRv.adapter = brandCategoryAdapter
-                        stopLoading()
+                    stopLoading()
 
                 } else {
                     stopLoading()
@@ -172,5 +183,15 @@ class CategoryFragment : Fragment() {
     public fun stopLoading() {
         binding.loading.customLoading.pauseAnimation()
         binding.loading.layoutPage.visibility = View.GONE
+    }
+
+
+    fun Fragment.onBackPressedCustomAction(action: () -> Unit) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override
+            fun handleOnBackPressed() {
+                action()
+            }
+        })
     }
 }
