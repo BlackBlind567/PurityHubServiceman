@@ -2,6 +2,8 @@ package com.atoms.purityhubserviceman.activity
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -76,6 +78,7 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
             val var21: LayoutInflater = this.layoutInflater
             Intrinsics.checkNotNullExpressionValue(var21, "layoutInflater")
             val convertView: View = var21.inflate(R.layout.image_dialog_layout, null)
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             Intrinsics.checkNotNullExpressionValue(alertDialog, "alertDialog")
             val var22 = alertDialog.window
             Intrinsics.checkNotNull(var22)
@@ -83,9 +86,14 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
 //            val convertView = var21.inflate(R.layout.image_dialog_layout, null)
             val iv = convertView.findViewById<ImageView>(R.id.request_image)
             Glide.with(this)
-                .load(R.drawable.camera)
+                .load(image)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(iv)
+
+
+//                            salesPageBinding.amazonSalesPage.
+            /*Glide.with(this).load(
+                image).into(iv)*/
 //            val body = dialog.findViewById(R.id.body) as TextView
 //            body.text = title
 //            val yesBtn = dialog.findViewById(R.id.yesBtn) as Button
@@ -96,6 +104,7 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
 //            noBtn.setOnClickListener {
 //                dialog.dismiss()
 //            }
+            alertDialog.setView(convertView)
             alertDialog.show()
         }
     }

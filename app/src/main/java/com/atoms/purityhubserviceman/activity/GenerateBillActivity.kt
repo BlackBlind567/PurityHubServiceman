@@ -132,7 +132,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             discountValue = binding.discountEt.text.toString()
             remarkValue = binding.remarkEt.text.toString()
             otpValue = binding.otpView.otp
-            if (otpValue.length < 6){
+            if (otpValue.length < 4){
                 binding.otpView.showError()
             }else if (billPaidValue == "") {
                 Toast.makeText(this@GenerateBillActivity, "Please select bill is paid by user or not", Toast.LENGTH_SHORT).show()
@@ -148,14 +148,17 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
         }
 
         binding.applyTv.setOnClickListener {
-            discountValue = binding.discountEt.text.toString()
-            if (discountValue.equals("")){
-                Toast.makeText(this, "please enter discount amount", Toast.LENGTH_SHORT).show()
-            }else{
-                notChangedAmount = finalTotalItemPrice
-                finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
-                binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
-            }
+           if(binding.applyTv.text == "Apply"){
+               discountValue = binding.discountEt.text.toString()
+               if (discountValue.equals("")){
+                   Toast.makeText(this, "please enter discount amount", Toast.LENGTH_SHORT).show()
+               }else{
+                   binding.applyTv.text = "Applied"
+                   notChangedAmount = finalTotalItemPrice
+                   finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
+                   binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+               }
+           }
 
         }
 
@@ -173,6 +176,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (count == 0){
+                    binding.applyTv.text = "Apply"
                         finalTotalItemPrice = notChangedAmount
                     binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
                 }else {
@@ -208,6 +212,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                 if (jsonObject.has("data")) {
                     val dataString = jsonObject.get("data")
                     if (dataString is JSONObject) {
+                        stopLoading()
                         Toast.makeText(
                             this@GenerateBillActivity,
                             jsonObject.getString("message"),
@@ -215,6 +220,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                         ).show()
                     }
                     if (success && status == 1) {
+                        stopLoading()
                         Toast.makeText(
                             this@GenerateBillActivity,
                             msg,
@@ -224,6 +230,13 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                             Intent(this@GenerateBillActivity, UserDashboardActivity::class.java)
                         startActivity(intent)
                         finish()
+                    }else {
+                        stopLoading()
+                        Toast.makeText(
+                            this@GenerateBillActivity,
+                            jsonObject.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
 //                    else if (dataString is JSONArray){
@@ -268,6 +281,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             }
 
             override fun getError(error: String?) {
+                stopLoading()
 //                Toast.makeText(this@GenerateBillActivity, responseMsg, Toast.LENGTH_SHORT).show()
             }
         })

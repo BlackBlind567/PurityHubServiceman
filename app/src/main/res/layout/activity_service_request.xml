@@ -321,6 +321,7 @@
 <!--                        android:paddingEnd="8dp"-->
 <!--                        android:textSize="@dimen/_14sp" />-->
 
+<!--<<<<<<< HEAD-->
 <!--                    <TextView-->
 <!--                        android:id="@+id/sr_req_date"-->
 <!--                        android:layout_width="0dp"-->
@@ -332,6 +333,20 @@
 <!--                        android:paddingEnd="8dp"-->
 <!--                        android:paddingBottom="4dp"-->
 <!--                        android:textSize="@dimen/_14sp" />-->
+<!--=======-->
+<!--                    <TextView-->
+<!--                        android:id="@+id/sr_req_date"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="end"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:paddingStart="8dp"-->
+<!--                        android:paddingTop="4dp"-->
+<!--                        android:paddingEnd="8dp"-->
+<!--                        android:paddingBottom="4dp"-->
+<!--                        android:textSize="@dimen/_14sp" />-->
+<!--&gt;>>>>>> 8e3ef10ec9b8315c55ca5388c3b6d2f1882b4a0c-->
 
 <!--                </LinearLayout>-->
 
