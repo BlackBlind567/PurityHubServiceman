@@ -1,6 +1,7 @@
 package com.atoms.purityhubserviceman.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,8 @@ public class VIewBillAdapter extends BlindAdapter<ViewBillData, GenerateBillItem
     public void onBindData(ViewBillData model, int position, GenerateBillItemLayoutBinding dataBinding) {
         dataBinding.itemPrize.setText("\u20B9" +model.getPrice());
         dataBinding.itemTitle.setText(model.getProduct_name());
+        dataBinding.itemMrp.setText(model.getMrp());
+        dataBinding.itemMrp.setPaintFlags(dataBinding.itemMrp.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
         dataBinding.itemQuantity.setText(String.valueOf(model.getQuantity()));
         dataBinding.itemTotalPrize.setText("\u20B9" + model.getTotal_amount());
         dataBinding.deleteItem.setVisibility(View.GONE);

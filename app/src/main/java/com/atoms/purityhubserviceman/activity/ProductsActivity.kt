@@ -166,7 +166,9 @@ class ProductsActivity : AppCompatActivity(),
         itemName: String,
         itemPrice: String,
         itemQuantity: String,
-        totalItemPrice: Int
+        totalItemPrice: Int,
+        itemMrp: String,
+        itemImage: String
     ) {
 
         val intent = Intent(this@ProductsActivity, GenerateBillActivity::class.java)
@@ -177,6 +179,8 @@ class ProductsActivity : AppCompatActivity(),
         intent.putExtra("itemArray", itemArray)
         intent.putExtra("serviceId", serviceId)
         intent.putExtra("totalItemPrice", totalItemPrice.toInt())
+        intent.putExtra("mrp", itemMrp)
+        intent.putExtra("image", itemImage)
         startActivity(intent)
     }
 

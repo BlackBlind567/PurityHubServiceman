@@ -27,11 +27,56 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/item_layout"
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:orientation="vertical"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/border_qr_list">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="Enter Happy Code"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/color_primary_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/otp_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:textStyle="italic"
+                        android:textAlignment="textStart"
+                        android:text="You can find this happy code from user" />
+
+                    <in.aabhasjindal.otptextview.OtpTextView
+                        android:id="@+id/otp_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/text_active_color"
+                        app:bar_active_color="@color/text_active_color"
+                        app:bar_enabled="true"
+                        app:bar_height="2dp"
+                        app:bar_inactive_color="@color/text_inactive_color"
+                        app:height="40dp"
+                        app:length="4"
+                        app:otp=""
+                        app:otp_box_background="@color/otp_color"
+                        app:otp_text_size="24dp"
+                        app:width="40dp" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
 
                 <LinearLayout
                     android:id="@+id/add_layout"
@@ -39,11 +84,30 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/product_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Product List"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
+
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:background="@color/grey_text" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/item_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -194,42 +258,7 @@
                         android:layout_marginTop="20dp"
                         android:background="@color/grey_text" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="Enter OTP"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/color_primary_text"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/otp_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:textStyle="italic"
-                        android:textAlignment="textStart"
-                        android:text="You can find this otp from user" />
 
-                    <in.aabhasjindal.otptextview.OtpTextView
-                        android:id="@+id/otp_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="40dp"
-                        android:textColor="@color/text_active_color"
-                        app:bar_active_color="@color/text_active_color"
-                        app:bar_enabled="true"
-                        app:bar_height="2dp"
-                        app:bar_inactive_color="@color/text_inactive_color"
-                        app:height="40dp"
-                        app:length="4"
-                        app:otp=""
-                        app:otp_box_background="@color/otp_color"
-                        app:otp_text_size="24dp"
-                        app:width="40dp" />
 
 
                     <RadioGroup

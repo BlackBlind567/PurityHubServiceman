@@ -12,7 +12,13 @@ import com.atoms.purityhubserviceman.databinding.FragmentProductItemDetailBindin
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class ProductItemDetailFragment(Id: Int, var Title: String, var Price: String) : BottomSheetDialogFragment() {
+class ProductItemDetailFragment(
+    Id: Int,
+    var Title: String,
+    var Price: String,
+    var mrp: String,
+    var image: String
+) : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentProductItemDetailBinding
     var itemQuantity = ""
@@ -24,7 +30,9 @@ class ProductItemDetailFragment(Id: Int, var Title: String, var Price: String) :
             itemName: String,
             itemPrice: String,
             itemQuantity: String,
-            totalItemPrice: Int,)
+            totalItemPrice: Int,
+            itemMrp: String,
+            itemImage: String)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +42,7 @@ class ProductItemDetailFragment(Id: Int, var Title: String, var Price: String) :
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_item_detail, container, false)
 
         binding.itemName.text = Title
-        binding.itemPrice.text = Price
+        binding.itemPrice.text = "\u20B9" +Price
 
         binding.addItem.setOnClickListener {
             itemQuantity = binding.itemQuantity.text.toString()
@@ -42,7 +50,8 @@ class ProductItemDetailFragment(Id: Int, var Title: String, var Price: String) :
                 Toast.makeText(requireContext(), "Please enter quantity", Toast.LENGTH_SHORT).show()
             }else {
                 val totalItemPrice = Price.toInt() * itemQuantity.toInt()
-                callback!!.onAddItem(productId.toString(), Title, Price, itemQuantity,totalItemPrice)
+                callback!!.onAddItem(productId.toString(), Title, Price,
+                    itemQuantity,totalItemPrice, mrp, image)
             }
 
         }

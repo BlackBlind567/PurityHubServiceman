@@ -7,5 +7,6 @@ data class ViewBillData(
     val product_name: String,
     val quantity: Int,
     val status: Int,
-    val total_amount: Int
+    val total_amount: Int,
+    val mrp: String,
 )

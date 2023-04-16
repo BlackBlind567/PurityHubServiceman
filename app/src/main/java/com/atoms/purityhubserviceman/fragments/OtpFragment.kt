@@ -12,7 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.activity.UserDashboardActivity
@@ -129,6 +128,12 @@ class OtpFragment : Fragment() {
                         sharedpref.putString(Constants.email, verifyOtp.data.email)
                         sharedpref.putString(Constants.mobile, verifyOtp.data.mobile)
                         sharedpref.putString(Constants.online, verifyOtp.data.online.toString())
+                        sharedpref.putString(Constants.address, verifyOtp.data.address)
+                        sharedpref.putString(Constants.stateId, verifyOtp.data.state_id)
+                        sharedpref.putString(Constants.cityId, verifyOtp.data.city_id)
+                        sharedpref.putString(Constants.stateName, verifyOtp.data.state_name)
+                        sharedpref.putString(Constants.cityName, verifyOtp.data.city_name)
+//                        sharedpref.putString(Constants.cityName, verifyOtp.data.city_name)
                         sharedpref.putString(Constants.login, "true")
 
 //                        val bundle = bundleOf("token" to verifyOtp.data.token)

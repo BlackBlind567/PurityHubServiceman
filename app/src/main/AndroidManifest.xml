@@ -45,9 +45,12 @@
             android:exported="false"
             android:label="@string/title_activity_generate_bill"
             android:theme="@style/Theme.PurityHubServiceman.NoActionBar" /> <!-- <activity -->
-        <!-- android:name=".GenerateBillActivity" -->
-        <!-- android:exported="false" /> -->
-        <!--  -->
+        <activity
+            android:name=".activity.ChangeStateCityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.UserDashboardActivity"
             android:exported="true" />

@@ -33,7 +33,7 @@ public class ProductsAdapter extends BlindAdapter<ProductData, ProductsLayoutBin
 
     @Override
     public void onBindData(ProductData model, int position, ProductsLayoutBinding dataBinding) {
-        dataBinding.title.setText(model.getTitle() + " == " + model.getId());
+        dataBinding.title.setText(model.getTitle());
         dataBinding.mrp.setText( model.getMrp());
         dataBinding.price.setText( "Price: " + model.getPrice());
         dataBinding.mrp.setPaintFlags(dataBinding.mrp.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
@@ -49,7 +49,7 @@ public class ProductsAdapter extends BlindAdapter<ProductData, ProductsLayoutBin
 //                intent.putExtra("price", String.valueOf(model.getPrice()));
 //                getContext().startActivity(intent);
                 ProductItemDetailFragment bottomSheet = new ProductItemDetailFragment(model.getId(), model.getTitle(),
-                        model.getPrice());
+                        model.getPrice(), model.getMrp(), model.getImage());
                 bottomSheet.show(
                         ((FragmentActivity)mContext).getSupportFragmentManager(),
                         "BrandsFragment"

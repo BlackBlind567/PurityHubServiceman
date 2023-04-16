@@ -62,9 +62,8 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         name = sharedpref.getString(Constants.name)
         online = sharedpref.getString(Constants.online)
         println("nameValue == $name")
-//        binding.tool.toolbarText.setTextColor(ContextCompat.getColor(this@UserDashboardActivity,
-//            R.color.text_active_color
-//        ))
+        binding.tool.toolImage.visibility = View.VISIBLE
+        binding.tool.toolbarText.visibility = View.GONE
         binding.tool.toolbarText.setPadding(40,0,0,0);
         binding.tool.toolbarText.textSize = 25f
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -95,7 +94,7 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
         val headerView = navigationView.getHeaderView(0)
         val navTitle = headerView.findViewById<View>(R.id.nav_header_title) as TextView
         navSwitchStatus = headerView.findViewById<View>(R.id.switchcompat) as SwitchCompat
-        navTitle.text = "Hi ${name},"
+        navTitle.text = "${name}"
 
         navSwitchStatus!!.setOnCheckedChangeListener(this)
 
@@ -159,8 +158,8 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.nav_profile -> {
-//                val intent = Intent(this,ProfileActivity::class.java)
-//                startActivity(intent)
+                val intent = Intent(this,ProfileActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_call_us -> {
                requestPermissions()

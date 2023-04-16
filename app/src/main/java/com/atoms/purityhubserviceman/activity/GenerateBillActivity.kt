@@ -16,6 +16,7 @@ import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.adapter.GenerateBillAdapter
 import com.atoms.purityhubserviceman.databinding.ActivityGenerateBillBinding
+import com.atoms.purityhubserviceman.extra.BlindRecyclerMargin
 import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.model.GenerateBill
 import com.google.gson.Gson
@@ -26,9 +27,12 @@ import java.lang.reflect.Type
 class GenerateBillActivity : AppCompatActivity(), UpdateListener {
     private var generateBillArray = java.util.ArrayList<GenerateBill>()
     lateinit var binding: ActivityGenerateBillBinding
+    private var mEditor: SharedPreferences.Editor? = null
     var id = ""
     var title = ""
     var price = ""
+    var mrp = ""
+    var image = ""
     var quantity = ""
     var tokenValue = ""
     var totalItemPrice = ""
@@ -46,7 +50,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
     var selectedProductIdValue = ""
     lateinit var sharedpref: Sharedpref
     lateinit var prefs: SharedPreferences
-
+    private lateinit var generateBillAdapter: GenerateBillAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_generate_bill)
@@ -56,12 +60,15 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             LinearLayoutManager(this@GenerateBillActivity, LinearLayoutManager.VERTICAL, false)
         binding.tool.toolbarText.text = "Generate Bill"
         setSupportActionBar(binding.tool.toolbar)
+        println("array1212121212 == $generateBillArray")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         prefs = PreferenceManager.getDefaultSharedPreferences(this@GenerateBillActivity)
         if (intent != null) {
             id = intent.getStringExtra("id").toString()
             title = intent.getStringExtra("title").toString()
             price = intent.getStringExtra("price").toString()
+            mrp = intent.getStringExtra("mrp").toString()
+            image = intent.getStringExtra("image").toString()
             quantity = intent.getStringExtra("quantity").toString()
             serviceId = intent.getStringExtra("serviceId").toString()
             totalItemPrice = intent.getIntExtra("totalItemPrice", 0).toString()
@@ -71,19 +78,21 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             println("array13 == $selectedQuantityIdValue")
             if (newItemArray) {
                 binding.itemLayout.visibility = View.VISIBLE
+                binding.productTv.visibility = View.VISIBLE
                 println("array12 == ${generateBillArray.size}")
 //                if (generateBillArray.size != 0){
 
                 generateBillArray = getArrayList("arrayName")
 //                }
 
-                val itemData = GenerateBill(id, title, price, quantity, totalItemPrice)
+                val itemData = GenerateBill(id, title, image, price, mrp, quantity, totalItemPrice)
                 generateBillArray.add(itemData)
-                val generateBillAdapter = GenerateBillAdapter(
+                generateBillAdapter = GenerateBillAdapter(
                     this@GenerateBillActivity,
                     generateBillArray, updateListener
                 )
                 binding.itemLayout.adapter = generateBillAdapter
+                binding.itemLayout.addItemDecoration(BlindRecyclerMargin(32,1))
                 for (i in 0 until generateBillArray.size) {
                     finalTotalItemPrice += generateBillArray[i].productTotalItemPrice.toInt()
                     selectedProductId.add(generateBillArray[i].productId)
@@ -96,6 +105,8 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                 binding.totalPrice.text = "\u20B9" + finalTotalItemPrice.toString()
 
                 println("array == $generateBillArray")
+            }else{
+//                clearArrayList(generateBillArray)
             }
 
         }
@@ -298,31 +309,51 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
 
     private fun saveArrayList(list: java.util.ArrayList<GenerateBill>, key: String?) {
 
-        val editor: SharedPreferences.Editor = prefs.edit()
+        mEditor = prefs.edit()
         val gson = Gson()
         val json: String = gson.toJson(list)
 //        sharedpref.putString(key, json)
-        editor.putString(key, json)
-        editor.apply()
+        mEditor!!.putString(key, json)
+        mEditor!!.apply()
+    }
+
+    private fun clearArrayList(list: java.util.ArrayList<GenerateBill>){
+        mEditor = prefs.edit()
+        mEditor!!.clear()
     }
 
     val updateListener = object : UpdateListener {
         override fun generatedRemoveBillData(
             productId: String?,
             productQuantity: String?,
-            productPrice: String
+            productPrice: String,
+            position: Int
         ) {
-            super.generatedRemoveBillData(productId, productQuantity, productPrice)
+            super.generatedRemoveBillData(productId, productQuantity, productPrice, position)
             if (!selectedProductId.contains(id)) {
                 selectedProductId.remove(id)
             }
             if (!selectedQuantityId.contains(id)) {
                 selectedQuantityId.remove(id)
             }
+
             println("array14 == $selectedProductId")
-            println("array134 == $selectedQuantityId")
+            println("array143 == $selectedQuantityId")
+            println("array144 == $generateBillArray")
+            generateBillArray.removeAt(position)
+            generateBillAdapter.notifyItemRemoved(position)
+            generateBillAdapter.notifyDataSetChanged()
+            println("array146 == $generateBillArray")
+            saveArrayList(generateBillArray, "arrayName")
+            println("array145 == $generateBillArray")
             finalTotalItemPrice -= productPrice.toInt()
             binding.totalPrice.text = "\u20B9" + finalTotalItemPrice.toString()
+            if(finalTotalItemPrice == 0){
+                binding.itemLayout.visibility = View.GONE
+                binding.productTv.visibility = View.GONE
+                binding.btnLayout.visibility = View.GONE
+                clearArrayList(generateBillArray)
+            }
         }
     }
 

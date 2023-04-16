@@ -18,16 +18,32 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:theme="@style/ToolbarTheme">
 
-            <TextView
-                android:id="@+id/toolbar_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textAlignment="textStart"
-                android:transitionName="nameChange"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_active_color"/>
+                android:orientation="horizontal">
+
+
+
+                <TextView
+                    android:id="@+id/toolbar_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:transitionName="nameChange"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_active_color"/>
+                <ImageView
+                    android:id="@+id/toolImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:visibility="gone"
+                    android:layout_marginLeft="-60dp"
+                    android:src="@drawable/header_logo"
+                    android:padding="5dp"/>
+            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 

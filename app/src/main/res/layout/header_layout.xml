@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="150dp"
     android:orientation="vertical"
     android:background="@drawable/header_bg">
 
@@ -12,10 +12,10 @@
 
 
        <TextView
-           android:id="@+id/nav_header_title"
+
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="hi"
+           android:text="Hello,"
            android:paddingLeft="10dp"
            android:paddingTop="10dp"
            android:paddingRight="10dp"
@@ -23,26 +23,26 @@
            android:textSize="20sp"
            android:textColor="@color/black"/>
 
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:paddingLeft="10dp"
-           android:paddingTop="5dp"
-           android:paddingRight="10dp"
-           android:paddingBottom="5dp"
-           android:text="Welcome to the"
-           android:textColor="@color/black"
-           android:textSize="20sp" />
+<!--       <TextView-->
+<!--           android:layout_width="match_parent"-->
+<!--           android:layout_height="wrap_content"-->
+<!--           android:paddingLeft="10dp"-->
+<!--           android:paddingTop="5dp"-->
+<!--           android:paddingRight="10dp"-->
+<!--           android:paddingBottom="5dp"-->
+<!--           android:text="Welcome to the"-->
+<!--           android:textColor="@color/black"-->
+<!--           android:textSize="20sp" />-->
 
        <TextView
+           android:id="@+id/nav_header_title"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="Purity Hub"
            android:paddingLeft="10dp"
-           android:paddingTop="5dp"
            android:paddingRight="10dp"
            android:paddingBottom="5dp"
-           android:textSize="28sp"
+           android:textSize="20sp"
            android:textColor="@color/text_active_color"
            android:textStyle="bold"/>
 
