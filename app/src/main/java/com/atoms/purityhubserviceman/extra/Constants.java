@@ -15,5 +15,7 @@ public class Constants {
     public static final String stateName ="stateName";
     public static final String cityName ="cityName";
     public static final String arrayName ="arrayName";
+    public static final String brandArray ="brandArray";
+    public static final String categoryArray ="categoryArray";
 //    public static final String otp_id ="otp_id";
 }

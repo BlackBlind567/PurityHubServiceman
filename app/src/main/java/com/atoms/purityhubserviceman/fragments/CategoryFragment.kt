@@ -74,7 +74,7 @@ class CategoryFragment : Fragment() {
                     "emailValue" to emailValue, Constants.mobile to mobileValue,
                     "addValue" to addValue, "stateId" to stateId,
                     "cityId" to cityId, "base64Image" to base64Image,"otpId" to otpId,
-                "selectedCatId" to selectedCatIdValue.toString())
+                "selectedCatId" to selectedCatIdValue.toString(), "activityName" to "CategoryFragment")
                 Navigation.findNavController(binding.root)
                     .navigate(R.id.action_categoryFragment_to_brandFragment, bundle)
             }
@@ -84,10 +84,14 @@ class CategoryFragment : Fragment() {
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
-                    val bundle = bundleOf( Constants.mobile to mobileValue,
-                        "otpId" to otpId)
-                    Navigation.findNavController(binding.root)
-                        .navigate(R.id.registationFragment, bundle )
+                  if (nameValue.equals("CategoryFragment")){
+
+                  }else {
+                      val bundle = bundleOf( Constants.mobile to mobileValue,
+                          "otpId" to otpId)
+                      Navigation.findNavController(binding.root)
+                          .navigate(R.id.registationFragment, bundle )
+                  }
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)

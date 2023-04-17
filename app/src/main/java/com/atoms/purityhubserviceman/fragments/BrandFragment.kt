@@ -21,6 +21,7 @@ import com.atoms.purityhubserviceman.model.BrandCategory
 import com.atoms.purityhubserviceman.model.BrandCategoryData
 import com.atoms.purityhubserviceman.model.SignUp
 import com.google.gson.GsonBuilder
+import org.json.JSONObject
 
 class BrandFragment : Fragment() {
 
@@ -36,6 +37,7 @@ class BrandFragment : Fragment() {
     var base64Image = ""
     var otpId = ""
     var selectedCatId = ""
+    var activityName = ""
     var selectedBrandId = ArrayList<String>()
     var selectedBrandIdValue = ""
     lateinit var sharedpref: Sharedpref
@@ -62,17 +64,28 @@ class BrandFragment : Fragment() {
         cityId = arguments?.getString("cityId").toString()
         base64Image = arguments?.getString("base64Image").toString()
         selectedCatId = arguments?.getString("selectedCatId").toString()
+    activityName = arguments?.getString("activityName").toString()
     otpId = arguments?.getString("otpId").toString()
     startLoading("Getting brands...")
         getBrandsDetails(apiType = "Brands")
-
+    if (activityName.equals("CategoryFragment")){
+        binding.regBtn.text = "Update Profile"
+    }
         binding.regBtn.setOnClickListener {
 
             if(selectedBrandIdValue.isEmpty()){
                 Toast.makeText(requireContext(), "Please select any one of them in category", Toast.LENGTH_SHORT).show()
             }else {
-                startLoading("Registering Serviceman...")
-                sendDataForRegistration()
+
+                if (activityName.equals("CategoryFragment")){
+                    startLoading("Please wait while updating profile...")
+                    updateProfile()
+                }else{
+                    startLoading("Registering Serviceman...")
+                    sendDataForRegistration()
+                }
+
+
             }
             println("nameValue = $nameValue")
             println("emailValue = $emailValue")
@@ -87,6 +100,57 @@ class BrandFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun updateProfile() {
+        val blackBlind = BlackBlind(requireContext())
+        blackBlind.headersRequired(true)
+        blackBlind.authToken(sharedpref.getString(Constants.token))
+        blackBlind.requestUrl(ServerApi.UPDATE_PROFILE_REQUEST)
+        blackBlind.addParams("brands_id",selectedBrandIdValue)
+        blackBlind.addParams("service_req_catid",selectedCatId)
+        blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
+            override fun getResponse(response: String?) {
+                val jsonObject = JSONObject(response.toString())
+                val msg = jsonObject.getString("message")
+                val status = jsonObject.getInt("status")
+                val success = jsonObject.getBoolean("success")
+                if (success && status == 1) {
+                    stopLoading()
+//                    sharedpref.putString(Constants.address, addValue)
+//                    sharedpref.putString(Constants.stateId,stateId)
+//                    sharedpref.putString(Constants.cityId, cityId)
+//                    sharedpref.putString(Constants.stateName, binding.chooseState.text.toString())
+//                    sharedpref.putString(Constants.cityName,  binding.chooseCity.text.toString())
+                    Toast.makeText(
+                        requireContext(),
+                        msg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val intent =
+                        Intent(requireContext(), UserDashboardActivity::class.java)
+                    startActivity(intent)
+
+                }else {
+                    stopLoading()
+                    Toast.makeText(
+                        requireContext(),
+                        msg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+            }
+
+            override fun getError(error: String?) {
+                stopLoading()
+                Toast.makeText(
+                    requireContext(),
+                    error.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     private fun sendDataForRegistration() {

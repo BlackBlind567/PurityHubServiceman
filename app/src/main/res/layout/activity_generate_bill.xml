@@ -183,7 +183,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
+                        android:layout_height="1dp"
                         android:layout_marginTop="10dp"
                         android:background="@color/grey_text" />
 
@@ -250,65 +250,84 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:id="@+id/view_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:visibility="gone"
-                        android:layout_marginTop="20dp"
-                        android:background="@color/grey_text" />
-
-
-
-
-                    <RadioGroup
-                        android:id="@+id/rb_group"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/bill_paid"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dp"
-                            android:text="Bill Paid"/>
-
-
-                        <RadioButton
-                            android:id="@+id/bill_not_paid"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginRight="20dp"
-                            android:text="Bill Pending"/>
-
-                    </RadioGroup>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/remark_til"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:hint="Bill Remrk"
-                        app:errorEnabled="true"
-                        app:errorTextColor="@color/red_error"
-                        app:helperTextEnabled="true">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/remark_et"
+                        android:orientation="vertical"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/border_qr_list">
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:maxLength="100"
-                            android:maxLines="1" />
+                            android:text="Select Payment Mode"
+                            android:paddingTop="10dp"
+                            android:textSize="16sp"
+                            android:visibility="visible"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/grey_text" />
 
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <RadioGroup
+                            android:id="@+id/rb_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/bill_paid"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="20dp"
+                                android:text="Cash"/>
+
+
+                            <RadioButton
+                                android:id="@+id/bill_not_paid"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginRight="20dp"
+                                android:text="Gateway"/>
+
+                        </RadioGroup>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/remark_til"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:hint="Bill Remrk"
+                            android:visibility="gone"
+                            app:errorEnabled="true"
+                            app:errorTextColor="@color/red_error"
+                            app:helperTextEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/remark_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:maxLength="100"
+                                android:maxLines="1" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -326,7 +345,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.35"
                 android:background="@color/bg_gray"
                 android:padding="5dp"
                 android:orientation="vertical">
@@ -353,7 +372,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.65"
                 android:background="@color/text_active_color"
                 android:padding="5dp"
                 android:orientation="vertical">
@@ -362,7 +381,7 @@
                     android:id="@+id/generate_bill"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Generate Bill"
+                    android:text="Generate Sales order and close ticket"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="@color/white"

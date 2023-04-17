@@ -133,6 +133,8 @@ class OtpFragment : Fragment() {
                         sharedpref.putString(Constants.cityId, verifyOtp.data.city_id)
                         sharedpref.putString(Constants.stateName, verifyOtp.data.state_name)
                         sharedpref.putString(Constants.cityName, verifyOtp.data.city_name)
+                        sharedpref.saveArrayList(Constants.brandArray, verifyOtp.data.brands)
+                        sharedpref.saveArrayList(Constants.categoryArray, verifyOtp.data.service_category)
 //                        sharedpref.putString(Constants.cityName, verifyOtp.data.city_name)
                         sharedpref.putString(Constants.login, "true")
 

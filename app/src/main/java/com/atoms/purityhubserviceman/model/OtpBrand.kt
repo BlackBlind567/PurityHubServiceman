@@ -3,7 +3,7 @@ package com.atoms.purityhubserviceman.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class OtpBrand(
+data class  OtpBrand(
     val name: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(parcel.readString()) {

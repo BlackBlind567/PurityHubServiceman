@@ -55,7 +55,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_generate_bill)
         sharedpref = Sharedpref.getInstance(this)
-        tokenValue = sharedpref.getString(Constants.token)
+        tokenValue = sharedpref.getString(Constants.token).toString()
         binding.itemLayout.layoutManager =
             LinearLayoutManager(this@GenerateBillActivity, LinearLayoutManager.VERTICAL, false)
         binding.tool.toolbarText.text = "Generate Bill"
@@ -175,7 +175,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
 
         binding.itemDiscount.setOnClickListener {
             binding.discountLayout.visibility = View.VISIBLE
-            binding.viewBg.visibility = View.VISIBLE
+//            binding.viewBg.visibility = View.VISIBLE
         }
 
         binding.discountEt.addTextChangedListener(object : TextWatcher {

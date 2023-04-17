@@ -1,8 +1,8 @@
 package com.atoms.purityhubserviceman.model
 
 data class VerifyOtpData(
-    val brands: List<OtpBrand>,
-    val service_category: List<OtpServiceCategory>,
+    val brands: ArrayList<OtpBrand>,
+    val service_category: ArrayList<OtpServiceCategory>,
     val address: String,
     val city_id: String,
     val city_name: String,
