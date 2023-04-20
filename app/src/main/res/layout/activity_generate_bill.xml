@@ -38,7 +38,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:text="Enter Happy Code"
+                        android:text="Happy Code"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/color_primary_text"
                         android:textSize="16sp"
@@ -49,6 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:textStyle="italic"
+                        android:visibility="gone"
                         android:textAlignment="textStart"
                         android:text="You can find this happy code from user" />
 
@@ -109,17 +110,17 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="10dp"
-                        android:paddingTop="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="5dp"
-                        android:text="Please click on add item to add new product for generate bill for user"
-                        android:textColor="@color/grey_text"
-                        android:textSize="14sp"
-                        android:textStyle="italic" />
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:paddingStart="10dp"-->
+<!--                        android:paddingTop="10dp"-->
+<!--                        android:paddingEnd="10dp"-->
+<!--                        android:paddingBottom="5dp"-->
+<!--                        android:text="Please click on add item to add new product for generate bill for user"-->
+<!--                        android:textColor="@color/grey_text"-->
+<!--                        android:textSize="14sp"-->
+<!--                        android:textStyle="italic" />-->
 
 
                     <LinearLayout
@@ -288,7 +289,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginLeft="20dp"
-                                android:text="Cash"/>
+                                android:text="Cash/QR"/>
 
 
                             <RadioButton

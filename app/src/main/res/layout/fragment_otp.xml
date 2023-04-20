@@ -40,18 +40,16 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:text="Welcome to the"
+                android:text="Welcome to"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <TextView
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_marginLeft="20dp"
-                android:text="Purity Hub"
-                android:textColor="@color/color_primary_text"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+                android:src="@drawable/header_logo" />
+
 
             <TextView
                 android:id="@+id/otp_tv"
