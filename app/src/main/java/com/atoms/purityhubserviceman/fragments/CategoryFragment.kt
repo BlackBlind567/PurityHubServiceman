@@ -70,11 +70,17 @@ class CategoryFragment : Fragment() {
             if (selectedCatIdValue.isEmpty()){
                 Toast.makeText(requireContext(), "Please select any one of them in category", Toast.LENGTH_SHORT).show()
             }else{
+                var actName = ""
+                if (nameValue.equals("CategoryFragment")){
+                    actName = "CategoryFragment"
+                }else {
+                    actName = "NoCategoryFragment"
+                }
                 val bundle = bundleOf("nameValue" to nameValue,
                     "emailValue" to emailValue, Constants.mobile to mobileValue,
                     "addValue" to addValue, "stateId" to stateId,
                     "cityId" to cityId, "base64Image" to base64Image,"otpId" to otpId,
-                "selectedCatId" to selectedCatIdValue.toString(), "activityName" to "CategoryFragment")
+                "selectedCatId" to selectedCatIdValue.toString(), "activityName" to actName)
                 Navigation.findNavController(binding.root)
                     .navigate(R.id.action_categoryFragment_to_brandFragment, bundle)
             }

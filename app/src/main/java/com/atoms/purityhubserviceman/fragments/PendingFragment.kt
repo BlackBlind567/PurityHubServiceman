@@ -1,6 +1,7 @@
 package com.atoms.purityhubserviceman.fragments
 
 import android.os.Bundle
+import android.os.Parcel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,12 @@ import com.atoms.purityhubserviceman.databinding.FragmentPendingBinding
 import com.atoms.purityhubserviceman.extra.BlindGridSpacing
 import com.atoms.purityhubserviceman.extra.BlindRecyclerMargin
 import com.atoms.purityhubserviceman.extra.Constants
+import com.atoms.purityhubserviceman.model.ServiceRequestData
 import com.google.gson.GsonBuilder
 import com.myapplication.model.HistoryRequest
-import com.atoms.purityhubserviceman.model.ServiceRequestData
 import org.json.JSONObject
 import java.util.*
+
 
 class PendingFragment : Fragment(), UpdateListener {
 
@@ -169,6 +171,25 @@ class PendingFragment : Fragment(), UpdateListener {
             fragmentResume=false;
         }
     }
+    val MAX_BUNDLE_SIZE = 300
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val bundleSize = getBundleSize(outState)
+        if (bundleSize > MAX_BUNDLE_SIZE * 1024) {
+            outState.clear()
+        }
+    }
 
+    private fun getBundleSize(bundle: Bundle): Long {
+        val dataSize: Long
+        val obtain = Parcel.obtain()
+        dataSize = try {
+            obtain.writeBundle(bundle)
+            obtain.dataSize().toLong()
+        } finally {
+            obtain.recycle()
+        }
+        return dataSize
+    }
 
 }

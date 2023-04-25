@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ContentInfoCompat.Flags
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -129,6 +130,7 @@ class BrandFragment : Fragment() {
                     ).show()
                     val intent =
                         Intent(requireContext(), UserDashboardActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
 
                 }else {
@@ -187,12 +189,20 @@ class BrandFragment : Fragment() {
                     sharedpref.putString(Constants.email, signUp.data.email.toString())
                     sharedpref.putString(Constants.mobile, signUp.data.mobile)
                     sharedpref.putString(Constants.login, "true")
+                    sharedpref.putString(Constants.address, signUp.data.address)
+                    sharedpref.putString(Constants.stateId, signUp.data.state_id)
+                    sharedpref.putString(Constants.cityId, signUp.data.city_id)
+                    sharedpref.putString(Constants.stateName, signUp.data.state_name)
+                    sharedpref.putString(Constants.cityName, signUp.data.city_name)
+                    sharedpref.saveArrayList(Constants.brandArray, signUp.data.brands)
+                    sharedpref.saveArrayList(Constants.categoryArray, signUp.data.service_category)
 //                    Toast.makeText(requireContext(), signUp.message, Toast.LENGTH_SHORT).show()
 //                    val bundle = bundleOf("token" to signUp.data.token)
 //                    Navigation.findNavController(registrationFragment.root)
 //                        .navigate(R.id.action_registationFragment_to_userFragment, bundle)
                     val intent = Intent(requireContext(), UserDashboardActivity::class.java)
                     intent.putExtra("token", signUp.data.token)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
 
                 } else {
