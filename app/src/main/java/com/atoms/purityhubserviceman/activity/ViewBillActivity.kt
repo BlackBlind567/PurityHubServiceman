@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -16,6 +17,7 @@ import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.model.ViewBill
 import com.atoms.purityhubserviceman.model.ViewBillData
 import com.google.gson.GsonBuilder
+import org.json.JSONObject
 import java.util.ArrayList
 
 class ViewBillActivity : AppCompatActivity() {
@@ -54,27 +56,54 @@ class ViewBillActivity : AppCompatActivity() {
         blackBlind.requestUrl(ServerApi.GET_SERVICE_REQUEST)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
-                val gsonBuilder = GsonBuilder()
-                gsonBuilder.setDateFormat("M/d/yy hh:mm a")
-                val gson = gsonBuilder.create()
-                val viewBill = gson.fromJson(
-                    response,
-                    ViewBill::class.java
-                )
-                responseMsg = viewBill.message
-                if (viewBill.success && viewBill.status == 1){
+                val jsonObject = JSONObject(response.toString())
+                val msg = jsonObject.getString("message")
+                val status = jsonObject.getInt("status")
+                val success = jsonObject.getBoolean("success")
+                if (jsonObject.has("data")) {
+                    val dataString = jsonObject.get("data")
+                    if (dataString is JSONObject) {
+                        stopLoading()
+                        Toast.makeText(
+                            this@ViewBillActivity,
+                            jsonObject.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    if (success && status == 1) {
+                        stopLoading()
+                        val gsonBuilder = GsonBuilder()
+                        gsonBuilder.setDateFormat("M/d/yy hh:mm a")
+                        val gson = gsonBuilder.create()
+                        val viewBill = gson.fromJson(
+                            response,
+                            ViewBill::class.java
+                        )
+                        responseMsg = viewBill.message
+                        viewBillArray = viewBill.data as ArrayList<ViewBillData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
+                        val viewBillAdapter = VIewBillAdapter(
+                            this@ViewBillActivity,
+                            viewBillArray
+                        )
+                        binding.viewBillRv.adapter = viewBillAdapter
+                        binding.totalPrice.text = "\u20B9" +viewBill.summery.grand_total
+
+                    }else {
+                        stopLoading()
+                        Toast.makeText(
+                            this@ViewBillActivity,
+                            jsonObject.getString("message"),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }else{
                     stopLoading()
-//                    Toast.makeText(requireContext(), "pending == " + historyRequest.message, Toast.LENGTH_SHORT).show()
-                    viewBillArray = viewBill.data as ArrayList<ViewBillData> /* = java.util.ArrayList<com.atoms.purityhubserviceman.model.ServiceRequestData> */
-                    val viewBillAdapter = VIewBillAdapter(
+                    Toast.makeText(
                         this@ViewBillActivity,
-                        viewBillArray
-                    )
-                    binding.viewBillRv.adapter = viewBillAdapter
-                    binding.totalPrice.text = "\u20B9" +viewBill.summery.grand_total
-                }else {
-                    stopLoading()
-                    Toast.makeText(this@ViewBillActivity, responseMsg, Toast.LENGTH_SHORT).show()
+                        jsonObject.getString("message"),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 

@@ -13,7 +13,7 @@ public class ServerApi {
     public static final String CATEGORY_REQUEST = BASE_URL +"get/masters/api/category";
     public static final String GET_STATE_LIST = BASE_URL +"get-state-api";
     public static final String GET_CITY_LIST = BASE_URL +"get-city-api";
-    public static final String PRODUCT_REQUEST = BASE_URL + "get/product/api";
+    public static final String PRODUCT_REQUEST = BASE_URL + "get/product/api?page=";
     public static final String GENERATE_BILL_REQUEST = BASE_URL + "generate/service/bill";
     public static final String TECHNICIAN_REQUEST = BASE_URL + "get/technician/user";
     public static final String SUBMIT_SERVICE_REQUEST = BASE_URL + "service/request/store";

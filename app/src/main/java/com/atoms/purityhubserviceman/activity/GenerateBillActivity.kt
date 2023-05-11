@@ -127,11 +127,11 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
             when(checkedId){
                 R.id.bill_paid->{
                     binding.remarkTil.visibility = View.VISIBLE
-                    billPaidValue = "Paid"
+                    billPaidValue = "Cash"
                 }
                 R.id.bill_not_paid->{
-                    binding.remarkTil.visibility = View.GONE
-                    billPaidValue = "Not Paid"
+                    binding.remarkTil.visibility = View.VISIBLE
+                    billPaidValue = "UPI"
                     binding.remarkEt.text!!.clear()
                 }
             }
@@ -147,7 +147,7 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                 binding.otpView.showError()
             }else if (billPaidValue == "") {
                 Toast.makeText(this@GenerateBillActivity, "Please select bill is paid by user or not", Toast.LENGTH_SHORT).show()
-            }else if (billPaidValue == "Paid" && remarkValue == ""){
+            }else if (billPaidValue != "" && remarkValue == ""){
                 Toast.makeText(this@GenerateBillActivity, "Please fill remark", Toast.LENGTH_SHORT).show()
             }
             else {

@@ -34,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, ServiceRequestLayoutBinding> {
 
@@ -68,7 +69,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
         dataBinding.imgCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (valueCheck.equals("Open")) {
+                if (Objects.equals(getValueCheck(), "Open")) {
                     getUpdatelistner().makeCall(model.getUser_mobile());
                 }
             }
@@ -100,15 +101,15 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
 
             }
         });
-        if (valueCheck.equals("Open")){
+        if (Objects.equals(getValueCheck(), "Open")){
             dataBinding.btnSlider.setEngageText("Slide to close");
             dataBinding.btnSlider.setCompletedText("Closed");
             dataBinding.imgCall.setVisibility(View.VISIBLE);
-        }else if (valueCheck.equals("Close")){
+        }else if (Objects.equals(getValueCheck(), "Close")){
             dataBinding.btnSlider.setEngageText("View Bill");
             dataBinding.btnSlider.setCompletedText("Generated");
             dataBinding.imgCall.setVisibility(View.GONE);
-        }else if (valueCheck.equals("Pending")){
+        }else if (Objects.equals(getValueCheck(), "Pending")){
             dataBinding.btnSlider.setEngageText("Slide to open");
             dataBinding.btnSlider.setCompletedText("Opened");
             dataBinding.imgCall.setVisibility(View.GONE);
@@ -134,9 +135,9 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
             @Override
             public void onSlideDone() {
                 System.out.println("api call ");
-                if (valueCheck.equals("Pending")) {
-                    getUpdatelistner().openRequest(String.valueOf(model.getId()), position);
-                }else if (valueCheck.equals("Open")) {
+                if (Objects.equals(getValueCheck(), "Pending")) {
+                    Objects.requireNonNull(getUpdatelistner()).openRequest(String.valueOf(model.getId()), position);
+                }else if (Objects.equals(getValueCheck(), "Open")) {
 //                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
                     Intent intent = new Intent(getContext(), GenerateBillActivity.class);
                     intent.putExtra("serviceId", String.valueOf(model.getId()));
@@ -150,7 +151,7 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                         }
                     }, 1000);
 
-                }else if (valueCheck.equals("Close")){
+                }else if (Objects.equals(getValueCheck(), "Close")){
 //                    getUpdatelistner().closeRequest(String.valueOf(model.getId()), position);
                     Intent intent = new Intent(getContext(), ViewBillActivity.class);
                     intent.putExtra("serviceId", String.valueOf(model.getId()));

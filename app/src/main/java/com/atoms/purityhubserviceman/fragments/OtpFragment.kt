@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -42,15 +43,16 @@ class OtpFragment : Fragment() {
         mobileNUmber = arguments?.getString(Constants.mobile).toString()
         sharedpref = Sharedpref.getInstance(requireContext())
         otpFragment.otpTv.text = "Enter OTP sent to your mobile number $mobileNUmber"
-        otpFragment.validateOtpBtn.setOnClickListener {
-            otpValue = otpFragment.otpView.otp
+
         otpFragment.backImage.setOnClickListener {
             Navigation.findNavController(otpFragment.root)
                 .navigate(R.id.numberCheckFragment)
         }
-            println("otpview == "+ otpFragment.otpView.otp)
-//            println("otpview == "+ otpFragment.otpView. )
 
+//            println("otpview == "+ otpFragment.otpView. )
+        otpFragment.validateOtpBtn.setOnClickListener {
+            println("otpview == "+ otpFragment.otpView.otp)
+            otpValue = otpFragment.otpView.otp
             if (otpValue.length < 6){
 
                 otpFragment.otpView.showError()

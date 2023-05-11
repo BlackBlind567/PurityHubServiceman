@@ -13,6 +13,7 @@ import com.atoms.purityhubserviceman.model.BrandCategoryData;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CategoryBottomAdapter extends BlindAdapter<BrandCategoryData, BottomItemLayoutBinding> {
 
@@ -31,12 +32,12 @@ public class CategoryBottomAdapter extends BlindAdapter<BrandCategoryData, Botto
         Glide.with(getContext()).load(model.getImage()).into(dataBinding.shapeIv);
         dataBinding.radioButton.setVisibility(View.VISIBLE);
 
-        if (valueCheck.equalsIgnoreCase(model.getName())){
+        if (Objects.requireNonNull(getValueCheck()).equalsIgnoreCase(model.getName())){
             dataBinding.radioButton.setChecked(true);
         }else {
             dataBinding.radioButton.setChecked(false);
         }
-        dataBinding.radioButton.setChecked(valueCheck.equalsIgnoreCase(model.getName()));
+        dataBinding.radioButton.setChecked(getValueCheck().equalsIgnoreCase(model.getName()));
 
 
 

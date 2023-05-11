@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BrandBottomAdapter extends BlindAdapter<BrandCategoryData, BottomItemLayoutBinding>{
 
@@ -32,7 +33,8 @@ public class BrandBottomAdapter extends BlindAdapter<BrandCategoryData, BottomIt
         Glide.with(getContext()).load(model.getImage()).into(dataBinding.shapeIv);
         dataBinding.radioButton.setVisibility(View.VISIBLE);
 
-        if (valueCheck.equalsIgnoreCase(model.getName())){
+
+        if (Objects.requireNonNull(getValueCheck()).equalsIgnoreCase(model.getName())){
             dataBinding.radioButton.setChecked(true);
         }else {
             dataBinding.radioButton.setChecked(false);

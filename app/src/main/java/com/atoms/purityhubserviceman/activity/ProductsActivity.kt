@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.atoms.purityhubserviceman.*
 import com.atoms.purityhubserviceman.adapter.ProductsAdapter
@@ -15,6 +16,7 @@ import com.atoms.purityhubserviceman.extra.Constants
 import com.atoms.purityhubserviceman.fragments.*
 import com.atoms.purityhubserviceman.model.Product
 import com.atoms.purityhubserviceman.model.ProductData
+import com.atoms.purityhubserviceman.model.ProductDataData
 import com.google.gson.GsonBuilder
 import org.json.JSONArray
 import org.json.JSONObject
@@ -22,7 +24,7 @@ import org.json.JSONObject
 class ProductsActivity : AppCompatActivity(),
     CategoryBottomFragment.onCateoryListener, BrandBottomFragment.onBrandListener, UpdateListener,
     ProductItemDetailFragment.OnAddItemListener{
-    private var productArray = ArrayList<ProductData>()
+    private var productArray = ArrayList<ProductDataData>()
 
     lateinit var binding: ActivityProductsBinding
     var responseMsg = ""
@@ -35,6 +37,14 @@ class ProductsActivity : AppCompatActivity(),
     private var serviceId = ""
     private var itemArray = false
     var product: Product? = null
+    var pageNumber = 1
+    private var isLoading = false
+    private var isLastPage = false
+    var lastPage = 0
+    var currentPage = 0
+    var perPage = 0
+    private var layoutManager: LinearLayoutManager? = null
+    private var productsAdapter: ProductsAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_products)
@@ -44,8 +54,11 @@ class ProductsActivity : AppCompatActivity(),
         itemArray = intent.getBooleanExtra("arrayName", false)
         serviceId = intent.getStringExtra("serviceId").toString()
         println("itemArray == $itemArray")
-        binding.productsRv.layoutManager = LinearLayoutManager(this@ProductsActivity, LinearLayoutManager.VERTICAL, false)
-        getBrandsDetails(brandId,categoryId)
+
+
+        layoutManager = LinearLayoutManager(this@ProductsActivity, LinearLayoutManager.VERTICAL, false)
+        binding.productsRv.layoutManager = layoutManager
+        getBrandsDetails(brandId,categoryId, pageNumber)
 
         binding.sortByCategory.setOnClickListener {
             val bottomSheet = CategoryBottomFragment(categoryShortName)
@@ -62,9 +75,33 @@ class ProductsActivity : AppCompatActivity(),
                 "BrandsFragment"
             )
         }
+
+        productsAdapter = ProductsAdapter(
+            this@ProductsActivity,
+            productArray
+        )
+        binding.productsRv.setAdapter(productsAdapter)
+
+        binding.productsRv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = layoutManager!!.childCount
+                val totalItemCount = layoutManager!!.itemCount
+                val firstVisibleItemPosition = layoutManager!!.findFirstVisibleItemPosition()
+                if (!isLastPage && !isLoading) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= perPage) {
+
+
+                        getBrandsDetails(brandId,categoryId, pageNumber)
+
+                    }
+                }
+            }
+        })
     }
 
-    private fun getBrandsDetails(brandId:String, categoryId: String) {
+    private fun getBrandsDetails(brandId:String, categoryId: String, page:Int) {
         startLoading(msg = "Getting data...")
         val blackBlind = BlackBlind(this@ProductsActivity)
         blackBlind.headersRequired(true)
@@ -76,17 +113,18 @@ class ProductsActivity : AppCompatActivity(),
             blackBlind.addParams("cat_id", categoryId)
         }
 
-        blackBlind.requestUrl(ServerApi.PRODUCT_REQUEST)
+        blackBlind.requestUrl(ServerApi.PRODUCT_REQUEST + page)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
-
+                    println("ListData == $response")
                 val jsonObject = JSONObject(response.toString())
                if (jsonObject.has("data")){
-                   val dataString = jsonObject.get("data")
-                   if (dataString is JSONObject ){
+                   val dataString = jsonObject.getJSONObject("data")
+                   val data = dataString.get("data")
+                   if (data is JSONObject ){
                        stopLoading()
                        Toast.makeText(this@ProductsActivity, jsonObject.getString("message"), Toast.LENGTH_SHORT).show()
-                   }else if (dataString is JSONArray){
+                   }else if (data is JSONArray){
                        val gsonBuilder = GsonBuilder()
                        gsonBuilder.setDateFormat("M/d/yy hh:mm a")
                        val gson = gsonBuilder.create()
@@ -96,15 +134,29 @@ class ProductsActivity : AppCompatActivity(),
                        )
                        responseMsg = product!!.message
                        if (product!!.success && product!!.status == 1){
+                           currentPage = product!!.data.current_page
+                           lastPage =  product!!.data.last_page
+                           perPage =  product!!.data.per_page
 //                    Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
-                           productArray = product!!.data as ArrayList<ProductData>
-//                    for (i in 0 until product.data.size){
-//
-//                    }
+                           println("ListData12 == $currentPage")
+                           println("ListData13 == $lastPage")
+                         if (currentPage <= lastPage){
+                             println("ListData11 == $response")
+                             productsAdapter!!.addAll(product!!.data.data)
+//                             productsAdapter!!.notifyDataSetChanged()
+                             pageNumber += 1
+                             stopLoading()
+                             isLoading = false
+                         }else{
+                             stopLoading()
+                            isLoading = true
+                             isLastPage = true
+                         }
 
 
 
                        }else {
+                           isLoading = true
                            stopLoading()
                            Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
                        }
@@ -112,18 +164,16 @@ class ProductsActivity : AppCompatActivity(),
 
                    }
                }else{
+                   isLoading = true
                    stopLoading()
                    Toast.makeText(this@ProductsActivity, jsonObject.getString("message"), Toast.LENGTH_SHORT).show()
                }
-                val productsAdapter = ProductsAdapter(
-                    this@ProductsActivity,
-                    productArray
-                )
-                binding.productsRv.setAdapter(productsAdapter)
-                stopLoading()
+
+
             }
 
             override fun getError(error: String?) {
+                isLoading = true
                 Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
             }
         })
@@ -142,7 +192,8 @@ class ProductsActivity : AppCompatActivity(),
         }
 
         productArray.clear()
-        getBrandsDetails(brandId, categoryId)
+        pageNumber = 1
+        getBrandsDetails(brandId, categoryId, pageNumber)
     }
 
     override fun onBrandSendListener(brandName: String, id: Int) {
@@ -158,7 +209,8 @@ class ProductsActivity : AppCompatActivity(),
         }
 
         productArray.clear()
-        getBrandsDetails(brandId, categoryId)
+        pageNumber = 1
+        getBrandsDetails(brandId, categoryId, pageNumber)
     }
 
     override fun onAddItem(
@@ -195,4 +247,6 @@ class ProductsActivity : AppCompatActivity(),
         binding.loading.customLoading.pauseAnimation()
         binding.loading.layoutPage.visibility = View.GONE
     }
+
+
 }
