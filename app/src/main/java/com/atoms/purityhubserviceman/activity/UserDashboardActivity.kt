@@ -230,9 +230,9 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
 
         if(isChecked){
             navSwitchStatus!!.text = "Switch to Offline"
-            updateServiceManStatus("0")
-        }else {
             updateServiceManStatus("1")
+        }else {
+            updateServiceManStatus("0")
             navSwitchStatus!!.text = "Switch to Online"
         }
     }

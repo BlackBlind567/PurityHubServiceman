@@ -191,11 +191,12 @@ class RegistrationFragment : Fragment() {
             focusView = binding.cityLayout
             binding.cityLayout.error = "Please choose any brand"
             cancel = true
-        } else if (base64Image == "") {
-            focusView = binding.addImgLayout
-            Toast.makeText(requireContext(), "Please upload image", Toast.LENGTH_SHORT).show()
-            cancel = true
         }
+//        else if (base64Image == "") {
+//            focusView = binding.addImgLayout
+//            Toast.makeText(requireContext(), "Please upload image", Toast.LENGTH_SHORT).show()
+//            cancel = true
+//        }
 
         if (cancel) {
             println("elseIF")
