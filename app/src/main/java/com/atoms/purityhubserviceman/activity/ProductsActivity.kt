@@ -3,8 +3,10 @@ package com.atoms.purityhubserviceman.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +24,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class ProductsActivity : AppCompatActivity(),
-    CategoryBottomFragment.onCateoryListener, BrandBottomFragment.onBrandListener, UpdateListener,
+    UpdateListener,
     ProductItemDetailFragment.OnAddItemListener{
     private var productArray = ArrayList<ProductDataData>()
 
@@ -37,12 +39,13 @@ class ProductsActivity : AppCompatActivity(),
     private var serviceId = ""
     private var itemArray = false
     var product: Product? = null
-    var pageNumber = 1
+    var pageNumber = 0
     private var isLoading = false
     private var isLastPage = false
     var lastPage = 0
     var currentPage = 0
     var perPage = 0
+    var queryData = ""
     private var layoutManager: LinearLayoutManager? = null
     private var productsAdapter: ProductsAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,23 +61,28 @@ class ProductsActivity : AppCompatActivity(),
 
         layoutManager = LinearLayoutManager(this@ProductsActivity, LinearLayoutManager.VERTICAL, false)
         binding.productsRv.layoutManager = layoutManager
-        getBrandsDetails(brandId,categoryId, pageNumber)
+        pageNumber = 1
+        getBrandsDetails(queryData, pageNumber)
 
-        binding.sortByCategory.setOnClickListener {
-            val bottomSheet = CategoryBottomFragment(categoryShortName)
-            bottomSheet.show(
-                supportFragmentManager,
-                "CategoryFragment"
-            )
-        }
+        binding.simpleSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                binding.loading.layoutPage.visibility = View.VISIBLE
+                binding.loading.customLoading.playAnimation()
+                binding.loading.customLoading.loop(true)
+                isLoading = true
+                queryData = query!!
+                productArray.clear()
+                pageNumber = 1
+                getBrandsDetails(queryData, pageNumber)
+                return false
+            }
 
-        binding.quotaFilter.setOnClickListener {
-            val bottomSheet = BrandBottomFragment(brandSortName)
-            bottomSheet.show(
-                supportFragmentManager,
-                "BrandsFragment"
-            )
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
+
 
         productsAdapter = ProductsAdapter(
             this@ProductsActivity,
@@ -92,31 +100,29 @@ class ProductsActivity : AppCompatActivity(),
                 if (!isLastPage && !isLoading) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= perPage) {
 
-
-                        getBrandsDetails(brandId,categoryId, pageNumber)
-
+                        println("countPrint")
+                        getBrandsDetails(queryData, pageNumber)
+                        isLoading = true
                     }
                 }
             }
         })
     }
 
-    private fun getBrandsDetails(brandId:String, categoryId: String, page:Int) {
+    private fun getBrandsDetails(searchValue: String, page:Int) {
         startLoading(msg = "Getting data...")
         val blackBlind = BlackBlind(this@ProductsActivity)
         blackBlind.headersRequired(true)
         blackBlind.authToken(tokenValue)
-        if (brandId != ""){
-           blackBlind.addParams("brand_id", brandId)
-        }
-        if (categoryId != ""){
-            blackBlind.addParams("cat_id", categoryId)
-        }
+        blackBlind.addParams("key", "title")
+        blackBlind.addParams("value", searchValue)
+
 
         blackBlind.requestUrl(ServerApi.PRODUCT_REQUEST + page)
         blackBlind.executeRequest(Request.Method.POST, object: VolleyCallback {
             override fun getResponse(response: String?) {
-                    println("ListData == $response")
+                isLoading = true
+//                    println("ListData == $response")
                 val jsonObject = JSONObject(response.toString())
                if (jsonObject.has("data")){
                    val dataString = jsonObject.getJSONObject("data")
@@ -138,10 +144,10 @@ class ProductsActivity : AppCompatActivity(),
                            lastPage =  product!!.data.last_page
                            perPage =  product!!.data.per_page
 //                    Toast.makeText(this@ProductsActivity, responseMsg, Toast.LENGTH_SHORT).show()
-                           println("ListData12 == $currentPage")
-                           println("ListData13 == $lastPage")
+//                           println("ListData12 == $currentPage")
+//                           println("ListData13 == $lastPage")
                          if (currentPage <= lastPage){
-                             println("ListData11 == $response")
+//                             println("ListData11 == $response")
                              productsAdapter!!.addAll(product!!.data.data)
 //                             productsAdapter!!.notifyDataSetChanged()
                              pageNumber += 1
@@ -179,39 +185,7 @@ class ProductsActivity : AppCompatActivity(),
         })
     }
 
-    override fun onCategorySendListener(categoryName: String, id: Int) {
-       categoryShortName = categoryName
-        if (categoryShortName.equals("All")){
-            binding.CategoryBy.visibility = View.GONE
-            binding.CategoryBy.text = categoryShortName
-            categoryId = ""
-        }else{
-            binding.CategoryBy.visibility = View.VISIBLE
-            binding.CategoryBy.text = categoryShortName
-            categoryId = id.toString()
-        }
 
-        productArray.clear()
-        pageNumber = 1
-        getBrandsDetails(brandId, categoryId, pageNumber)
-    }
-
-    override fun onBrandSendListener(brandName: String, id: Int) {
-        brandSortName = brandName
-        if (brandSortName.equals("All")){
-            binding.brandsTv.visibility = View.GONE
-            binding.brandsTv.text = brandSortName
-            brandId =""
-        }else{
-            binding.brandsTv.visibility = View.VISIBLE
-            binding.brandsTv.text = brandSortName
-            brandId = id.toString()
-        }
-
-        productArray.clear()
-        pageNumber = 1
-        getBrandsDetails(brandId, categoryId, pageNumber)
-    }
 
     override fun onAddItem(
         itemId: String,

@@ -22,7 +22,7 @@ class ProductsAdapter(context: Context, arrayList: ArrayList<ProductDataData>) :
         position: Int,
         dataBinding: ProductsLayoutBinding
     ) {
-        println("modeldata == $model")
+//        println("modeldata == $model")
         dataBinding.title.setText(model!!.title)
         dataBinding.mrp.setText(model.mrp)
         dataBinding.price.text = "Price: " + model.price

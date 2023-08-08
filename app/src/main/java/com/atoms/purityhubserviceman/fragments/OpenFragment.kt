@@ -128,11 +128,11 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
 
         override fun makeCall(phoneNumber: String?) {
             super.makeCall(phoneNumber)
-            requestPermissions()
+            requestPermissions(phoneNumber!!)
         }
     }
 
-    private fun requestPermissions() {
+    private fun requestPermissions(phoneNumber:String) {
         // below line is use to request permission in the current activity.
         // this method is use to handle error in runtime permissions
         Dexter.withContext(requireContext())
@@ -144,7 +144,7 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
                     // this method is called when all permissions are granted
                     if (multiplePermissionsReport.areAllPermissionsGranted()) {
                         // do you work now
-                        callPhone()
+                        callPhone(phoneNumber)
 //                        Toast.makeText(requireContext(), "All the permissions are granted..", Toast.LENGTH_SHORT).show()
                     }
                     // check for permanent denial of any permission
@@ -217,8 +217,8 @@ class OpenFragment : Fragment(), UpdateListener, CloseRequestOtpFragment.OnServi
     override fun OnServiceRequestListener(requestID: String, requestPosition: Int) {
         serviceAdapter.removeItem(requestPosition, serviceRequestArray)
     }
-    private fun callPhone() {
-        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "6262100101"))
+    private fun callPhone(phoneNumber: String) {
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber))
         startActivity(intent)
     }
 }

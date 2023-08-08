@@ -229,11 +229,11 @@ class UserDashboardActivity : AppCompatActivity(),  NavigationView.OnNavigationI
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
 
         if(isChecked){
-            navSwitchStatus!!.text = "Switch to Offline"
+//            navSwitchStatus!!.text = "Switch to Offline"
             updateServiceManStatus("1")
         }else {
             updateServiceManStatus("0")
-            navSwitchStatus!!.text = "Switch to Online"
+//            navSwitchStatus!!.text = "Switch to Online"
         }
     }
 

@@ -164,10 +164,16 @@ class GenerateBillActivity : AppCompatActivity(), UpdateListener {
                if (discountValue.equals("")){
                    Toast.makeText(this, "please enter discount amount", Toast.LENGTH_SHORT).show()
                }else{
-                   binding.applyTv.text = "Applied"
-                   notChangedAmount = finalTotalItemPrice
-                   finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
-                   binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+                   if (finalTotalItemPrice >= discountValue.toInt()){
+                       binding.applyTv.text = "Applied"
+                       notChangedAmount = finalTotalItemPrice
+                       finalTotalItemPrice = finalTotalItemPrice.toInt() - discountValue.toInt()
+                       binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+                   }else{
+                       Toast.makeText(this, "Discount shoule be less than Total Amount", Toast.LENGTH_SHORT).show()
+                       notChangedAmount = finalTotalItemPrice
+                       binding.totalPrice.text = "\u20B9" + finalTotalItemPrice
+                   }
                }
            }
 
