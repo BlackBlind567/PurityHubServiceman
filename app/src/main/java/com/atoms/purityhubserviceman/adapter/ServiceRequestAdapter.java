@@ -101,18 +101,22 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
 
             }
         });
+        dataBinding.srWarranty.setText("Warranty: " + model.getWarranty());
         if (Objects.equals(getValueCheck(), "Open")){
             dataBinding.btnSlider.setEngageText("Slide to close");
             dataBinding.btnSlider.setCompletedText("Closed");
             dataBinding.imgCall.setVisibility(View.VISIBLE);
+            dataBinding.srWarranty.setVisibility(View.GONE);
         }else if (Objects.equals(getValueCheck(), "Close")){
             dataBinding.btnSlider.setEngageText("View Bill");
             dataBinding.btnSlider.setCompletedText("Generated");
             dataBinding.imgCall.setVisibility(View.GONE);
+            dataBinding.srWarranty.setVisibility(View.GONE);
         }else if (Objects.equals(getValueCheck(), "Pending")){
             dataBinding.btnSlider.setEngageText("Slide to open");
             dataBinding.btnSlider.setCompletedText("Opened");
             dataBinding.imgCall.setVisibility(View.GONE);
+            dataBinding.srWarranty.setVisibility(View.VISIBLE);
         }
 
 

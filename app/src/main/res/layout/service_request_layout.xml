@@ -150,6 +150,13 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
                                 android:maxLines="2"/>
+                            <TextView
+                                android:id="@+id/sr_warranty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="@color/black"
+                                android:maxLines="2"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -162,7 +169,7 @@
                             <ImageView
                                 android:id="@+id/sr_viewDetails"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="40dp"
                                 android:textColor="@color/black"
                                 android:backgroundTint="@color/text_active_color"
                                 android:background="@drawable/ic_baseline_arrow_right_24"
@@ -182,6 +189,8 @@
 
 
             </LinearLayout>
+
+
 
             <com.chinalwb.slidetoconfirmlib.SlideToConfirm
             android:id="@+id/btn_slider"

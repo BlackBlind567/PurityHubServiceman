@@ -23,6 +23,7 @@ data class ServiceRequestData(
     val state: String,
     val status: String,
     val user: String,
+    val warranty: String,
     val user_mobile: String,
     var expanded: Boolean = false
 ) {
