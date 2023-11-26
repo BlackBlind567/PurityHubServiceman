@@ -10,8 +10,8 @@ android {
         applicationId "com.atoms.purityhubserviceman"
         minSdk 22
         targetSdk 32
-        versionCode 5
-        versionName "0.3.2"
+        versionCode 7
+        versionName "0.3.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -41,5 +41,8 @@
     <style name="Theme.PurityHubServiceman.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PurityHubServiceman.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/lightGrey</item>
+        <item name="colorControlActivated">@color/duskYellow</item>
+    </style>
 </resources>

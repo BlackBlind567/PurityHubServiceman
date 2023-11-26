@@ -19,6 +19,7 @@ data class ServiceRequestData(
     val service_category: String,
     val serviceman: String,
     val serviceman_mobile: String,
+    val message: String,
     val star: String,
     val state: String,
     val status: String,

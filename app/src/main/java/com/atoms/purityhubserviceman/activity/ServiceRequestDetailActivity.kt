@@ -15,7 +15,10 @@ import com.atoms.purityhubserviceman.R
 import com.atoms.purityhubserviceman.databinding.ActivityServiceRequestBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import java.lang.String
+import kotlin.Boolean
 import kotlin.jvm.internal.Intrinsics
+import kotlin.toString
 
 
 class ServiceRequestDetailActivity : AppCompatActivity() {
@@ -43,11 +46,14 @@ class ServiceRequestDetailActivity : AppCompatActivity() {
         val geoTag = intent.getStringExtra("geoTag").toString()
         val userHouse = intent.getStringExtra("userHouse").toString()
         val openDatetime = intent.getStringExtra("open_datetime").toString()
+        val star = intent.getStringExtra("star").toString()
+        val message = intent.getStringExtra("message").toString()
         val closeDatetime = intent.getStringExtra("close_datetime").toString()
         binding.srServiceman.text = servicemanName
         binding.srBrand.text = brandName
         binding.srCategory.text = categoryName
-//        binding.srProblemImage.text = image
+        binding.srFeedback.text = message
+        binding.ratingBar.rating = String.valueOf(star).toFloat()
         binding.srState.text = state
         binding.srCity.text = city
         binding.srAddress.text = address

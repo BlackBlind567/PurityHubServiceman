@@ -95,13 +95,14 @@ public class ServiceRequestAdapter extends BlindAdapter<ServiceRequestData, Serv
                 intent.putExtra("open_datetime",model.getOpen_datetime());
                 intent.putExtra("close_datetime",model.getClose_datetime());
                 intent.putExtra("grand_total",String.valueOf(model.getGrand_total()));
-                intent.putExtra("star",model.getUser());
+                intent.putExtra("star",model.getStar());
+                intent.putExtra("message",model.getMessage());
                 intent.putExtra("geoTag",model.getGeo_tag());
                 getContext().startActivity(intent);
 
             }
         });
-        dataBinding.srWarranty.setText("Warranty: " + model.getWarranty());
+        dataBinding.srWarranty.setText( model.getWarranty());
         if (Objects.equals(getValueCheck(), "Open")){
             dataBinding.btnSlider.setEngageText("Slide to close");
             dataBinding.btnSlider.setCompletedText("Closed");
